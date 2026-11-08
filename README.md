@@ -44,3 +44,11 @@ Set the production runtime environment variable `GYM_ADMIN_EMAILS` to comma-sepa
 - New Sites start owner-private. Publishing this version preserves that audience.
 
 See `backend-notes.md` for API contracts, privacy inventory and integration-test evidence.
+
+## Social archive and original photography
+
+`/community` now contains a dated snapshot of94verified Instagram posts and108Facebook entries.151entries contain locally retained media;51Facebook photo entries link to originals that require source access. This is not a claim that the whole account history has been imported: Instagram reports224posts and Facebook reports242photos, and public scrolling hit login walls. See `ig-ingestion-report.md` and `facebook-ingestion-report.md` for retrieval methods and exact limitations. A Meta account export or authorized signed-in access is needed for the remaining history.
+
+The archive preserves full captions, all41slides from10Instagram carousels,125original Instagram image/poster files and11native video files, plus57Facebook assets. Historical offers remain dated archive content and are not current price quotes. Caption integrity was checked against all94official embeds;25appended Instagram comment-interface tails were removed.
+
+Main photography uses the actual2048×1365gym and pool carousel originals; the class poster is3277×4096. Display WebPs retain the same pixel dimensions. No images were upscaled or generated. `lib/site-media.ts` records the selected sources. `lib/social-posts.ts` combines/normalizes the imported metadata; no live Meta feed or scheduled synchronization is implied.

@@ -3,7 +3,7 @@ import { LAST_UPDATED } from "@/lib/legal";
 const origin = "https://hydrogen-plus-fitness.abdullahqudah19.chatgpt.site";
 
 export function GET() {
-  const entries = ["/", "/privacy", "/terms", "/ar/privacy", "/ar/terms"].map((path) => {
+  const entries = ["/", "/community", "/privacy", "/terms", "/ar/privacy", "/ar/terms"].map((path) => {
     const kind = path.endsWith("privacy") ? "privacy" : path.endsWith("terms") ? "terms" : null;
     const alternate = kind ? `<xhtml:link rel="alternate" hreflang="en" href="${origin}/${kind}"/><xhtml:link rel="alternate" hreflang="ar" href="${origin}/ar/${kind}"/>` : "";
     return `<url><loc>${origin}${path}</loc><lastmod>${LAST_UPDATED}</lastmod>${alternate}</url>`;
