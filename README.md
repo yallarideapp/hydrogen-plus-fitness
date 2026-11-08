@@ -45,6 +45,24 @@ Set the production runtime environment variable `GYM_ADMIN_EMAILS` to comma-sepa
 
 See `backend-notes.md` for API contracts, privacy inventory and integration-test evidence.
 
+## November 2026 update — service pages and full Instagram import
+
+**Full Instagram history.** All **225 posts** on the profile on 8 November 2026 (plus one collaborative reel) are now in `lib/instagram-posts.json` — 226 entries, up from 94. The post list and dates came from a signed-in browser session (read-only); captions and media came from each post's official public embed. 162 new photos/posters went into `public/images/archive/`, 35 new reels into `public/videos/` (re-encoded to 720p H.264 for the web; untouched originals are in `social-originals/instagram-videos/`, outside the deployed folder). Raw embed data is in `social-originals/instagram-data/`. Facebook's 65 reels mirror the Instagram reels, and the Facebook page still has no reviews, so no further Facebook content was added. Story highlights (Courses, Pilates, Feedback, Opening, Contact Us) were read for facts — for example the second phone line and the kids' swimming course — but are not stored as media.
+
+**One page per service** (`lib/services.ts`, template `components/gym/ServicePage.tsx`): `/services` plus
+`/services/gym`, `/ladies`, `/group-classes`, `/pilates`, `/martial-arts`, `/pool-spa`, `/swimming-academy`, `/kids`, `/personal-training`, `/hydro-rest`, `/lounge`, `/events`. Each page has a bilingual overview, a "As published by the club" panel (every price and time shows its publication date and source post, and older offers are flagged "Past post"), videos (local MP4s play inline; others link to Instagram), a photo gallery with lightbox, the related Instagram posts, FAQs and related services. Posts are assigned to services in `lib/service-posts.json` (edit the JSON to move a post between pages).
+
+**New features**
+- `/offers` — News & offers: a filterable timeline of every hours change, holiday closure, launch and membership offer published (Feb 2025 – Nov 2026).
+- `/contact` — map (loads Google Maps only on click), both phone lines, e-mail (`hydrogenplusfitness@gmail.com`, from the 2025 pool poster), WhatsApp, live open/closed status per area, first-visit steps.
+- `/calculators` — BMI, daily calories (Mifflin–St Jeor, with a safe minimum), macros, one-rep max, heart-rate zones, water and tape-measure body fat; bilingual, metric.
+- `/coaches` — coaches named on the timetable and in posts, their classes this week, "ask to train with" enquiries, guest coaches listed separately.
+- `/careers` — the last published vacancy (female trainers, Aug 2025) with the CV WhatsApp number from that post.
+- Site-wide: Services mega-menu, Offers in the main nav, live "Open now" bar (Asia/Amman time), floating contact button (call / WhatsApp / e-mail / directions), larger minimum font sizes in the shell, a services section on the home page, links from each Club space to its service page, schema.org `ExerciseGym` data in `app/layout.tsx`, and every new route in `sitemap.xml`.
+- Performance: 640-px WebP thumbnails for every archive image in `public/images/thumbs/`; the home page now receives its three social posts from the server instead of bundling the whole archive.
+
+**Still needs the gym's confirmation:** current membership prices (the latest published offer is Dec 2025), whether 079 215 1000 answers WhatsApp (no post confirms it), this winter's pool hours, and gym personal-training prices (never published).
+
 ## Social archive and original photography
 
 `/community` now contains a dated snapshot of94verified Instagram posts and108Facebook entries.151entries contain locally retained media;51Facebook photo entries link to originals that require source access. This is not a claim that the whole account history has been imported: Instagram reports224posts and Facebook reports242photos, and public scrolling hit login walls. See `ig-ingestion-report.md` and `facebook-ingestion-report.md` for retrieval methods and exact limitations. A Meta account export or authorized signed-in access is needed for the remaining history.

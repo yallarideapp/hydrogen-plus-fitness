@@ -43,3 +43,6 @@ yarn-error.log*
 
 # OS metadata
 .DS_Store
+
+# Original-quality Instagram videos (kept locally; web versions are in public/videos)
+/social-originals/instagram-videos/

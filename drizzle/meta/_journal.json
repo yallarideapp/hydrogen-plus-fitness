@@ -8,6 +8,13 @@
       "when": 1794104723403,
       "tag": "0000_skinny_cerise",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1794151540452,
+      "tag": "0001_lumpy_boomerang",
+      "breakpoints": true
     }
   ]
 }
