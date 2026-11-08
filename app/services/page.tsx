@@ -7,5 +7,6 @@ export const metadata: Metadata = {
   title: 'Services | Hydrogen Plus Fitness & Spa, Irbid',
   description: 'Gym floor, ladies’ club, group classes, reformer Pilates, boxing & martial arts, rooftop pool & spa, swimming lessons, kids’ programmes, personal training, Hydro Rest nutrition, Hydrogen Lounge and events.',
   alternates: { canonical: '/services' },
+  openGraph: { images: [{ url: '/images/og/services.jpg', width: 1200, height: 630 }] },
 };
 export default function ServicesPage() { return <SiteShell active="services"><ServicesIndex cards={serviceCards()} total={instagramCount} /></SiteShell>; }
