@@ -43,4 +43,8 @@
 .hp3 .hp3-home-hero .hp3-hero-tour>span:first-child{display:none}
 .hp3 .hp3-home-hero .hp3-hero-tour>strong{margin-top:0;font-size:19px}
 }
-@media(max-width:600px){.hp3:has(>.hx-announce) .hp3-home-hero{height:calc(100svh - 164px - 37px - env(safe-area-inset-bottom))}}
+@media(max-width:600px){
+.hp3:has(>.hx-announce){--hx-ann:37px}.hp3:has(>.hx-preview){--hx-prev:31px}
+.hp3 section.hp3-home-hero{height:calc(100svh - 164px - var(--hx-ann,0px) - var(--hx-prev,0px) - env(safe-area-inset-bottom));padding-bottom:40px}
+}
+@media(max-width:600px) and (max-height:740px){.hp3 section.hp3-home-hero{padding-bottom:64px}.hp3 .hp3-home-hero .hp3-hero-photos{min-height:120px}.hp3 .hp3-home-hero .hp3-hero-tour-link{display:none}}
