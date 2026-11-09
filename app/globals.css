@@ -29,3 +29,10 @@ html[dir=rtl] body{font-family:'Noto Sans Arabic','Manrope',sans-serif}html[dir=
 /* Saved Arabic preference: keep the page hidden for the moment before the Arabic version renders, so it never flashes English. */
 html.hp-ar-pending .hp3{visibility:hidden}
 html.hp-ar-pending body{background:#111312}
+/* Page transitions: the page fades in and its content rises in; leaving fades the content out. */
+@keyframes hx-fade{from{opacity:0}}
+@keyframes hx-rise{from{opacity:0;transform:translateY(16px)}}
+html:not(.hp-ar-pending) .hp3{animation:hx-fade .28s ease-out both}
+html:not(.hp-ar-pending) .hp3 #page-content{animation:hx-rise .55s cubic-bezier(.2,.75,.25,1) .04s both}
+html.hx-leaving .hp3 #page-content{opacity:0;transform:translateY(-8px);transition:opacity .17s ease-in,transform .17s ease-in}
+@media(prefers-reduced-motion:reduce){html .hp3,html .hp3 #page-content{animation:none!important}}
