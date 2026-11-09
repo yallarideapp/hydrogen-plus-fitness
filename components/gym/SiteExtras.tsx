@@ -63,7 +63,7 @@ export function OpenStatus({ t, lang, compact = false }: { t: T; lang: Lang; com
   return (
     <span className={`hx-open ${any ? 'is-open' : 'is-closed'}`}>
       <i aria-hidden />{any ? t('OPEN NOW', 'مفتوح الآن') : t('CLOSED NOW', 'مغلق الآن')}
-      {!compact && <> · {part(['Men', 'الرجال'], men, m)} · {part(['Ladies', 'السيدات'], women, w)}</>}
+      {!compact && <span className="hx-open-detail"> · {part(['Men', 'الرجال'], men, m)} · {part(['Ladies', 'السيدات'], women, w)}</span>}
     </span>
   );
 }
