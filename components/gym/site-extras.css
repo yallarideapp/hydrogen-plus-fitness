@@ -132,3 +132,6 @@ a.hx-announce:hover{filter:brightness(1.08)}
 }
 @media(max-width:600px) and (prefers-reduced-motion:reduce){.hx-dock-main-icon::after{animation:none}.hx-dock-ind{transition:none}}
 @media(max-width:600px){.hp3 .hp3-mobile-dock{height:calc(62px + env(safe-area-inset-bottom));min-height:0;box-sizing:border-box}.hp3 .hp3-mobile-dock>a,.hp3 .hp3-mobile-dock>button{min-height:0;height:100%}}
+/* Logo subtitle: small, like a wordmark tagline */
+.hp3 .hp3-logo small{font-size:10px;letter-spacing:3.4px;margin-top:6px;font-weight:600}
+@media(max-width:600px){.hp3 .hp3-logo small{font-size:8.5px;letter-spacing:3px;margin-top:5px}}
