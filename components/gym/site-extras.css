@@ -80,3 +80,6 @@
 
 @media(max-width:600px){.hx-open-detail{display:none}.hp3-top{white-space:nowrap}.hp3-top a{white-space:nowrap}}
 @media(max-width:900px){.hp3-top>span:first-child{display:none}.hp3-top{justify-content:space-between}}
+/* Phone: keep the call button out of the home banner until the visitor scrolls (the top bar already has the phone number). */
+.hx-float{transition:opacity .25s,transform .25s}
+@media(max-width:600px){.hx-float.is-top{opacity:0;transform:translateY(16px);pointer-events:none}}

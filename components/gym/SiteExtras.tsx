@@ -68,11 +68,17 @@ export function OpenStatus({ t, lang, compact = false }: { t: T; lang: Lang; com
   );
 }
 
+function subscribeScroll(cb: () => void) {
+  window.addEventListener('scroll', cb, { passive: true });
+  return () => window.removeEventListener('scroll', cb);
+}
+
 export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
   const [open, setOpen] = useState(false);
+  const scrolled = useSyncExternalStore(subscribeScroll, () => window.scrollY > 280, () => false);
   const msg = encodeURIComponent(lang === 'ar' ? 'مرحباً، لدي استفسار عن هايدروجين بلس' : 'Hello, I have a question about Hydrogen Plus');
   return (
-    <div className={`hx-float ${open ? 'is-open' : ''}`}>
+    <div className={`hx-float ${open ? 'is-open' : ''} ${scrolled || open ? '' : 'is-top'}`}>
       {open && (
         <div className="hx-float-panel" role="dialog" aria-label={t('Contact the club', 'تواصل مع النادي')}>
           <b>{t('Talk to the club', 'تواصل مع النادي')}</b>
