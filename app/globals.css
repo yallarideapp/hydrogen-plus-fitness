@@ -26,3 +26,6 @@ html[dir=rtl] body{font-family:'Noto Sans Arabic','Manrope',sans-serif}html[dir=
 .amenity-phone{display:flex;align-items:center;gap:7px;font-size:11px;margin-top:12px}.amenity-phone>svg{color:var(--red)}.contact-details>div:last-child a+a{margin-top:7px}
 @media(max-width:600px){.hero h1{font-size:15vw}}@media(max-width:370px){.hero h1{font-size:14.5vw}}
 .image-index{direction:ltr}.hp-community-brand{direction:ltr}
+/* Saved Arabic preference: keep the page hidden for the moment before the Arabic version renders, so it never flashes English. */
+html.hp-ar-pending .hp3{visibility:hidden}
+html.hp-ar-pending body{background:#111312}

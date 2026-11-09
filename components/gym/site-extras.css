@@ -99,3 +99,17 @@ a.hx-announce:hover{filter:brightness(1.08)}
 .hx-admin>span{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .hx-preview{font-size:12px;padding:6px 14px;flex-wrap:nowrap;white-space:nowrap}.hx-preview strong{display:none}.hx-preview .hx-preview-short{display:inline}
 }
+/* Bottom bar (phones): five tabs with icon + label, Visit us in the middle, Contact opens the call / WhatsApp sheet */
+@media(max-width:600px){
+.hp3 .hp3-mobile-dock{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;height:auto;min-height:62px;padding:5px 4px max(5px,env(safe-area-inset-bottom));background:#121512f7;border-top:1px solid #ffffff1f;box-shadow:0 -8px 28px #0004}
+.hp3 .hp3-mobile-dock>a,.hp3 .hp3-mobile-dock>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:52px;padding:4px 2px;border:0;border-radius:12px;background:none;color:#aeb5a8;font:inherit;font-size:11.5px;font-weight:600;line-height:1.2;text-align:center;cursor:pointer}
+.hp3[dir=rtl] .hp3-mobile-dock>a,.hp3[dir=rtl] .hp3-mobile-dock>button{font-size:12px}
+.hp3 .hp3-mobile-dock>a:last-child{background:none}
+.hp3 .hp3-mobile-dock>a[aria-current=page]{color:#fff;background:#ffffff0d}
+.hp3 .hp3-mobile-dock>a[aria-current=page]>svg{color:var(--hp3-red)}
+.hp3 .hp3-mobile-dock>a.hx-dock-main{color:#fff}
+.hx-dock-main-icon{display:grid;place-items:center;width:42px;height:42px;margin-top:-20px;border-radius:50%;background:var(--hp3-red);color:#fff;box-shadow:0 6px 18px color-mix(in srgb,var(--hp3-red) 45%,transparent);border:3px solid #121512}
+.hp3 .hp3-mobile-dock>a.hx-dock-main[aria-current=page]{background:none}
+.hx-float-btn{display:none}
+.hx-float{bottom:calc(76px + env(safe-area-inset-bottom));inset-inline-end:12px}
+}

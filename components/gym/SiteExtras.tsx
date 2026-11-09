@@ -1,5 +1,5 @@
 'use client';
-import { useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { ArrowUpRight, Baby, CalendarDays, Dumbbell, Flower2, Mail, MapPin, MessageCircle, Moon, Navigation, Phone, Salad, Sparkles, Swords, Tag, UserRound, Users, Waves, X } from 'lucide-react';
 import { sessionState, formatClock } from '@/lib/site-info';
 import { useSiteInfo } from '@/lib/admin/overrides';
@@ -79,9 +79,22 @@ export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
   const [open, setOpen] = useState(false);
   const { contact } = useSiteInfo();
   const scrolled = useSyncExternalStore(subscribeScroll, () => window.scrollY > 280, () => false);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const toggle = () => setOpen((v) => !v);
+    window.addEventListener('hx-contact-toggle', toggle);
+    return () => window.removeEventListener('hx-contact-toggle', toggle);
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => { const el = e.target as Element; if (!box.current?.contains(el) && !el.closest('.hp3-mobile-dock')) setOpen(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', away); document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', esc); };
+  }, [open]);
   const msg = encodeURIComponent(lang === 'ar' ? 'مرحباً، لدي استفسار عن هايدروجين بلس' : 'Hello, I have a question about Hydrogen Plus');
   return (
-    <div className={`hx-float ${open ? 'is-open' : ''} ${scrolled || open ? '' : 'is-top'}`}>
+    <div ref={box} className={`hx-float ${open ? 'is-open' : ''} ${scrolled || open ? '' : 'is-top'}`}>
       {open && (
         <div className="hx-float-panel" role="dialog" aria-label={t('Contact the club', 'تواصل مع النادي')}>
           <b>{t('Talk to the club', 'تواصل مع النادي')}</b>
