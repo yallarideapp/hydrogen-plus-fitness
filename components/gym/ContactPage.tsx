@@ -55,6 +55,7 @@ export default function ContactPage() {
           <h2 className="fp-h2">{t('Every way to reach us', 'كل طرق التواصل')}</h2>
           <div className="fp-channels">
             {contact.phones.map((p) => <a key={p.tel} href={`tel:${p.tel}`}><Phone size={18} /><span><b dir="ltr">{p.display}</b><small>{t('Call the club', 'اتصل بالنادي')}</small></span><ArrowUpRight size={15} /></a>)}
+            <a href={`tel:${contact.loungePhone.tel}`}><Phone size={18} /><span><b dir="ltr">{contact.loungePhone.display}</b><small>{t('Hydrogen Lounge reservations', 'حجوزات هايدروجين لاونج')}</small></span><ArrowUpRight size={15} /></a>
             <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} /><span><b>WhatsApp</b><small dir="ltr">079 215 1000</small></span><ArrowUpRight size={15} /></a>
             <a href={`mailto:${contact.email}`}><Mail size={18} /><span><b dir="ltr">{contact.email}</b><small>{t('Email', 'البريد الإلكتروني')}</small></span><ArrowUpRight size={15} /></a>
             <a href="/join?kind=contact"><Send size={18} /><span><b>{t('Send a message', 'أرسل رسالة')}</b><small>{t('Get a reference and track the reply', 'احصل على رقم مرجعي وتابع الرد')}</small></span><ArrowUpRight size={15} /></a>

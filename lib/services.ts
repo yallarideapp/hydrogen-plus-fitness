@@ -9,6 +9,8 @@ export type ServiceFaq = { q: Bi; a: Bi };
 export type TimelineTag = 'offer' | 'hours' | 'news' | 'event' | 'closure' | 'opening';
 export type TimelineItem = { date: string; tag: TimelineTag; title: Bi; text?: Bi; source: string; image?: string };
 export type ServiceIcon = 'dumbbell' | 'sparkles' | 'users' | 'flower' | 'swords' | 'waves' | 'swim' | 'baby' | 'user' | 'salad' | 'moon' | 'calendar' | 'tag';
+export type MenuItem = { name: Bi; desc?: Bi; prices: { label?: Bi; jd: string }[] };
+export type MenuSection = { title: Bi; items: MenuItem[] };
 export type Service = {
   slug: string; path: string; icon: ServiceIcon;
   name: Bi; kicker: Bi; headline: Bi; intro: Bi; body?: Bi[];
@@ -23,6 +25,8 @@ export type Service = {
   coaches?: { name: Bi; role: Bi; source: string }[];
   links?: { label: Bi; href: string; external?: boolean }[];
   featured?: string[];
+  phone?: { display: string; tel: string; label: Bi };
+  menu?: { note: Bi; source: string; sections: MenuSection[]; pages: string[] };
 };
 
 const p = (code: string) => `https://www.instagram.com/p/${code}/`;
@@ -277,7 +281,7 @@ export const services: Service[] = [
     slug: 'hydro-rest', path: '/services/hydro-rest', icon: 'salad',
     name: ['Hydro Rest & nutrition', 'هايدرو ريست والتغذية'], kicker: ['HEALTHY KITCHEN', 'مطبخ صحي'],
     headline: ['Refuel right after every session.', 'غذِّ جسمك بالشكل الصحيح بعد كل تمرين.'],
-    intro: ['Hydro Rest is the club’s healthy restaurant, café and protein store — calorie-counted meals, monthly meal subscriptions, a nutritionist on site and delivery on Talabat.', 'هايدرو ريست هو المطعم الصحي والمقهى ومتجر البروتين في النادي — وجبات محسوبة السعرات، واشتراكات شهرية للوجبات، وأخصائية تغذية في النادي، وتوصيل عبر طلبات.'],
+    intro: ['“Eat clean. Train mean.” Hydro Rest is the club’s healthy restaurant, café and protein store — a full menu from 2 JD, calorie-counted meals, monthly meal subscriptions, a nutritionist on site and delivery on Talabat.', '«Eat clean. Train mean.» هايدرو ريست هو المطعم الصحي والمقهى ومتجر البروتين في النادي — منيو كامل يبدأ من ٢ دينار، ووجبات محسوبة السعرات، واشتراكات شهرية للوجبات، وأخصائية تغذية في النادي، وتوصيل عبر طلبات.'],
     body: [['Opened in May 2025, Hydro Rest serves dishes like grilled salmon, protein omelettes with American coffee and healthy chicken meals — fresh, balanced and calorie-counted.', 'افتُتح هايدرو ريست في أيار ٢٠٢٥، ويقدّم أطباقاً مثل السلمون المشوي وأومليت البروتين مع القهوة الأمريكية ووجبات الدجاج الصحية — طازجة ومتوازنة ومحسوبة السعرات.']],
     hero: hero('hydro-rest', 1080, 1350, ['The Hydro Rest counter inside the club.', 'كاونتر هايدرو ريست داخل النادي.']),
     highlights: [
@@ -299,22 +303,66 @@ export const services: Service[] = [
     ],
     cta: { kind: 'contact', interest: 'Hydro Rest meal plan / nutrition', label: ['Ask about meal plans', 'استفسر عن اشتراك الوجبات'] },
     related: ['gym', 'lounge', 'personal-training'],
+    menu: {
+      note: ['From the Hydro Rest menu posted on @hydrorest (about August 2025). Prices may have changed — ask at the counter.', 'من منيو هايدرو ريست المنشور على ‎@hydrorest (حوالي آب ٢٠٢٥). قد تتغير الأسعار — اسأل على الكاونتر.'],
+      source: 'https://www.instagram.com/stories/highlights/17939036148024881/',
+      pages: ['/images/hydro-rest/menu-page-1.webp', '/images/hydro-rest/menu-page-2.webp', '/images/hydro-rest/menu-page-3.webp'],
+      sections: [
+        { title: ['Pasta', 'باستا'], items: [
+          { name: ['Pesto Pasta', 'بيستو باستا'], desc: ['150 g pasta with 150 g grilled chicken in a creamy basil pesto sauce', '١٥٠ غم معكرونة مع ١٥٠ غم دجاج مشوي بصلصة الريحان الكريمية'], prices: [{ jd: '4.00' }] },
+          { name: ['Pink Pasta', 'بينك باستا'], desc: ['150 g pasta with 150 g grilled chicken in a creamy Italian tomato sauce', '١٥٠ غم معكرونة مع ١٥٠ غم دجاج مشوي بصلصة الطماطم الإيطالية الكريمية'], prices: [{ jd: '4.00' }] },
+          { name: ['Alfredo Pasta', 'ألفريدو باستا'], desc: ['150 g pasta with 150 g grilled chicken in a creamy Alfredo sauce', '١٥٠ غم معكرونة مع ١٥٠ غم دجاج مشوي بصلصة ألفريدو الكريمية'], prices: [{ jd: '4.00' }] },
+        ] },
+        { title: ['Chicken', 'دجاج'], items: [
+          { name: ['Chicken Pesto', 'دجاج بيستو'], desc: ['150 g grilled chicken breast, pesto sauce, rice or mashed potato & sautéed vegetables', '١٥٠ غم صدر دجاج مشوي بصلصة البيستو، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '4.50' }] },
+          { name: ['Chicken Mushroom', 'دجاج بالفطر'], desc: ['150 g grilled chicken breast, creamy mushroom sauce, rice or mashed potato & sautéed vegetables', '١٥٠ غم صدر دجاج مشوي بصلصة كريمية وشرائح الفطر، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '4.50' }] },
+          { name: ['Chicken Rocca', 'دجاج روكا'], desc: ['150 g grilled chicken breast, rocca sauce, rice or mashed potato & sautéed vegetables', '١٥٠ غم صدر دجاج مشوي بصلصة الروكا، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '4.50' }] },
+          { name: ['Chicken Shish', 'شيش دجاج'], desc: ['150 g grilled chicken breast with lemon sauce and 150 g rice', '١٥٠ غم صدر دجاج مشوي بصلصة الليمون مع ١٥٠ غم أرز'], prices: [{ jd: '4.50' }] },
+          { name: ['Chicken Masala', 'دجاج ماسالا'], desc: ['150 g grilled chicken breast, mild Indian masala sauce, 150 g rice', '١٥٠ غم صدر دجاج مشوي بصلصة الماسالا الهندية الخفيفة مع ١٥٠ غم أرز'], prices: [{ jd: '4.50' }] },
+        ] },
+        { title: ['Steak & salmon', 'ستيك وسلمون'], items: [
+          { name: ['Gravy Steak', 'جريفي ستيك'], desc: ['150 g grilled beef steak with gravy, rice or mashed potato & sautéed vegetables', '١٥٠ غم ستيك لحم بقري مشوي بصلصة الجريفي، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '6.00' }] },
+          { name: ['Dijon Steak', 'ديجون ستيك'], desc: ['150 g grilled beef steak with Dijon sauce, rice or mashed potato & sautéed vegetables', '١٥٠ غم ستيك لحم بقري مشوي بصلصة الديجون، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '6.00' }] },
+          { name: ['Grilled Salmon', 'سلمون مشوي'], desc: ['150 g grilled salmon fillet with creamy lemon sauce, rice or mashed potato & sautéed vegetables', '١٥٠ غم فيليه سلمون مشوي بصلصة الليمون الكريمية، مع أرز أو بطاطا مهروسة وخضار سوتيه'], prices: [{ jd: '7.00' }] },
+        ] },
+        { title: ['Sandwiches', 'ساندويشات'], items: [
+          { name: ['Roast Beef', 'روست بيف'], desc: ['Roast beef, cheddar, arugula & tomato, cream-cheese sauce, whole-wheat panini', 'روست بيف وشيدر وجرجير وطماطم مع صلصة الجبنة الكريمية بخبز بانيني من القمح الكامل'], prices: [{ label: ['Meal', 'وجبة'], jd: '3.00' }, { label: ['Sandwich', 'ساندويش'], jd: '2.00' }] },
+          { name: ['Turkey', 'تيركي'], desc: ['Turkey, cheddar, lettuce & tomato, cream-cheese sauce, whole-wheat panini', 'ديك رومي وشيدر وخس وطماطم مع صلصة الجبنة الكريمية بخبز بانيني من القمح الكامل'], prices: [{ label: ['Meal', 'وجبة'], jd: '3.00' }, { label: ['Sandwich', 'ساندويش'], jd: '2.00' }] },
+          { name: ['Pesto Halloumi', 'حلوم بيستو'], desc: ['Grilled halloumi, arugula & tomato, pesto sauce, whole-wheat panini, with vegetables', 'حلوم مشوي وجرجير وطماطم بصلصة البيستو بخبز بانيني من القمح الكامل مع الخضار'], prices: [{ label: ['Meal', 'وجبة'], jd: '4.00' }, { label: ['Sandwich', 'ساندويش'], jd: '3.00' }] },
+          { name: ['Omelette', 'أومليت'], desc: ['Eggs with arugula & tomato, cream-cheese sauce, whole-wheat panini, with vegetables', 'أومليت مع جرجير وطماطم وصلصة الجبنة الكريمية بخبز بانيني من القمح الكامل مع الخضار'], prices: [{ label: ['Meal', 'وجبة'], jd: '4.00' }, { label: ['Sandwich', 'ساندويش'], jd: '3.00' }] },
+          { name: ['Ricotta Cheese', 'جبنة الريكوتا'], desc: ['Ricotta with fig and cranberry on whole-wheat bread, with fresh vegetables', 'جبنة ريكوتا مع التين والتوت البري على خبز القمح الكامل مع الخضار الطازجة'], prices: [{ jd: '4.00' }] },
+        ] },
+        { title: ['Add-ons & protein by weight', 'إضافات وبروتين بالوزن'], items: [
+          { name: ['Grilled chicken', 'دجاج مشوي'], prices: [{ label: ['50 g', '٥٠ غم'], jd: '1.00' }, { label: ['100 g', '١٠٠ غم'], jd: '1.75' }, { label: ['150 g', '١٥٠ غم'], jd: '2.50' }, { label: ['200 g', '٢٠٠ غم'], jd: '3.00' }] },
+          { name: ['Beef steak', 'ستيك لحم بقري'], prices: [{ label: ['50 g', '٥٠ غم'], jd: '1.50' }, { label: ['100 g', '١٠٠ غم'], jd: '2.50' }, { label: ['150 g', '١٥٠ غم'], jd: '3.50' }, { label: ['200 g', '٢٠٠ غم'], jd: '4.25' }] },
+          { name: ['White rice', 'أرز أبيض'], prices: [{ label: ['150 g with a meal', '١٥٠ غم مع وجبة'], jd: '0.75' }, { label: ['200 g plate', 'طبق ٢٠٠ غم'], jd: '1.50' }] },
+          { name: ['Sautéed vegetables (150 g)', 'خضار سوتيه (١٥٠ غم)'], prices: [{ jd: '1.00' }] },
+          { name: ['Healthy sauces (30 g)', 'صوصات صحية (٣٠ غم)'], prices: [{ jd: '0.75' }] },
+          { name: ['Mashed potato (100 g)', 'بطاطا مهروسة (١٠٠ غم)'], prices: [] },
+        ] },
+      ],
+    },
     links: [{ label: ['@hydrorest on Instagram', '‎@hydrorest على إنستغرام'], href: 'https://www.instagram.com/hydrorest/', external: true }],
-    featured: ['DcgXKyFjmnp', 'DMVD08HR15B', 'DeTpgyPI2-9', 'DfKq8jsoxTV', 'DO8rTH8AFnz', 'DQPOLAUACyJ', 'DKPBIiQCIcF'],
+    featured: ['DMArpvGtBAB', 'DcgXKyFjmnp', 'DMVD08HR15B', 'DeTpgyPI2-9', 'DfKq8jsoxTV', 'DO8rTH8AFnz', 'DQPOLAUACyJ', 'DKPBIiQCIcF'],
   },
   {
     slug: 'lounge', path: '/services/lounge', icon: 'moon',
     name: ['Hydrogen Lounge', 'هايدروجين لاونج'], kicker: ['EVENINGS', 'الأمسيات'],
     headline: ['Big matches, slow evenings.', 'مباريات كبيرة وأمسيات هادئة.'],
-    intro: ['A poolside lounge with comfortable seating and your favourite drinks, big-screen football nights and themed evenings — open to everyone, not only members.', 'لاونج بجانب المسبح بجلسات مريحة ومشروباتك المفضلة، وسهرات مباريات على شاشة كبيرة، وأمسيات خاصة — مفتوح للجميع وليس للمشتركين فقط.'],
-    body: [['The lounge has screened the 2026 World Cup, El Clásico and Champions League nights, and hosts Ladies Night dinners. A new venue for special occasions, Hydrogen Garden, has been announced as opening soon.', 'عرض اللاونج مباريات كأس العالم ٢٠٢٦ والكلاسيكو ودوري الأبطال، ويستضيف أمسيات Ladies Night. كما أُعلن عن قرب افتتاح Hydrogen Garden، وجهة جديدة للمناسبات الخاصة.']],
-    hero: hero('lounge', 1216, 1616, ['Outdoor seating at Hydrogen Lounge.', 'الجلسات الخارجية في هايدروجين لاونج.']),
+    intro: ['A premium rooftop lounge by the pool — coffee, drinks and food with sunset views over Irbid, big-screen football nights and themed evenings. Open to everyone, not only members.', 'لاونج على السطح بجانب المسبح — قهوة ومشروبات وأكل مع إطلالة على غروب إربد، وسهرات مباريات على شاشة كبيرة، وأمسيات خاصة. مفتوح للجميع وليس للمشتركين فقط.'],
+    body: [
+      ['“More than a lounge — an experience,” as its own Instagram puts it. Expect specialty coffee and desserts like cheesecake, milkshakes, fresh lemon & mint and handcrafted mocktails, served poolside with the city lights below. Birthdays are welcome — the lounge has posted its own “make a wish” celebrations.', '«أكثر من لاونج… تجربة» كما يصف نفسه على إنستغرام. قهوة مميزة وحلويات مثل التشيز كيك، وميلك شيك، وليمون ونعنع منعش، وموكتيلات محضّرة بعناية، تُقدَّم بجانب المسبح وأضواء المدينة تحتك. وأعياد الميلاد أهلاً وسهلاً — اللاونج نشر احتفالات «Make a wish» الخاصة فيه.'],
+      ['The lounge has screened the 2026 World Cup, El Clásico and Champions League nights, and hosts Ladies Night dinners. A new venue for special occasions, Hydrogen Garden, has been announced as opening soon.', 'عرض اللاونج مباريات كأس العالم ٢٠٢٦ والكلاسيكو ودوري الأبطال، ويستضيف أمسيات Ladies Night. كما أُعلن عن قرب افتتاح Hydrogen Garden، وجهة جديدة للمناسبات الخاصة.'],
+    ],
+    hero: hero('lounge', 1800, 1013, ['Hydrogen Lounge and the rooftop pool at night.', 'هايدروجين لاونج والمسبح على السطح ليلاً.']),
     highlights: [
-      ['Open daily from 6 PM', 'يومياً من ٦ مساءً'], ['Open to everyone', 'مفتوح للجميع'], ['Giant-screen matches', 'مباريات على شاشة عملاقة'],
-      ['Poolside seating', 'جلسات بجانب المسبح'], ['Ladies Night', 'Ladies Night'], ['Member voucher', 'قسيمة للمشتركين'],
+      ['Open daily 6 PM – 2 AM', 'يومياً ٦ م – ٢ ص'], ['Rooftop & sunset views', 'سطح وإطلالة على الغروب'], ['Coffee, drinks & food', 'قهوة ومشروبات وأكل'],
+      ['Giant-screen matches', 'مباريات على شاشة عملاقة'], ['Birthdays & Ladies Night', 'أعياد ميلاد وLadies Night'], ['Open to everyone', 'مفتوح للجميع'],
     ],
     facts: [
       { label: ['Hours', 'أوقات الدوام'], value: ['Daily 6:00 PM – 2:00 AM', 'يومياً ٦:٠٠ م – ٢:٠٠ ص'], date: '2026-07-29', source: p('DbY_mTJIkc2') },
+      { label: ['Reservations', 'الحجوزات'], value: ['079 837 0157 (lounge line)', '٠٧٩٨٣٧٠١٥٧ (خط اللاونج)'], date: '2026-08-20', source: 'https://www.instagram.com/hydrogen.lounge/p/DcQkM0wDo7z/' },
+      { label: ['What’s served', 'ماذا يقدّم'], value: ['Coffee · drinks · food — specialty coffee, desserts, milkshakes, mocktails', 'قهوة · مشروبات · أكل — قهوة مميزة وحلويات وميلك شيك وموكتيلات'], date: '2026-11-09', source: 'https://www.instagram.com/hydrogen.lounge/' },
       { label: ['Who can come', 'لمن؟'], value: ['Everyone — not only members', 'للجميع وليس للمشتركين فقط'], date: '2026-08-02', source: p('Dbh-UDXgBbK') },
       { label: ['Membership voucher', 'قسيمة الاشتراك'], value: ['Join for a month, get a 10 JD lounge voucher', 'اشترك شهراً واحصل على قسيمة بقيمة ١٠ دنانير من اللاونج'], date: '2026-09-16', source: p('DdYRaVDIeMj'), past: true },
       { label: ['Latest match night', 'آخر سهرة مباراة'], value: ['Barcelona vs Atlético Madrid · 8 Nov 2026, 11:00 PM', 'برشلونة × أتلتيكو مدريد · ٨/١١/٢٠٢٦، ١١:٠٠ م'], date: '2026-11-08', source: p('Dfd4JZRCqE-') },
@@ -322,11 +370,13 @@ export const services: Service[] = [
     faqs: [
       { q: ['Do I need to book for match nights?', 'هل أحتاج إلى الحجز في ليالي المباريات؟'], a: ['Big matches fill up — the club has asked guests to reserve their seats. Call ahead.', 'المباريات الكبيرة تمتلئ بسرعة، وقد طلب النادي من الضيوف حجز أماكنهم. اتصل مسبقاً.'] },
       { q: ['Is the lounge only for members?', 'هل اللاونج للمشتركين فقط؟'], a: ['No. The club says the lounge is open to everyone.', 'لا. يقول النادي إن اللاونج مفتوح للجميع.'] },
+      { q: ['Can I celebrate a birthday there?', 'هل أقدر أحتفل بعيد ميلاد في اللاونج؟'], a: ['Yes — the lounge has posted birthday celebrations. Call 079 837 0157 to arrange a table and a cake.', 'نعم، نشر اللاونج احتفالات أعياد ميلاد. اتصل على ٠٧٩٨٣٧٠١٥٧ لترتيب طاولة وكيكة.'] },
     ],
     cta: { kind: 'contact', interest: 'Hydrogen Lounge reservation', label: ['Reserve a table', 'احجز طاولة'] },
+    phone: { display: '079 837 0157', tel: '+962798370157', label: ['Lounge reservations', 'حجوزات اللاونج'] },
     related: ['pool-spa', 'hydro-rest', 'events'],
     links: [{ label: ['@hydrogen.lounge on Instagram', '‎@hydrogen.lounge على إنستغرام'], href: 'https://www.instagram.com/hydrogen.lounge/', external: true }, { label: ['Hydrogen Garden (opening soon)', 'Hydrogen Garden (قريباً)'], href: 'https://www.instagram.com/hydrogen_garden/', external: true }],
-    featured: ['DfXDBAxO5YP', 'De43yOEO4uf', 'De437YDO5eg', 'DbY_mTJIkc2', 'Dbh-UDXgBbK', 'Dbd4yifo8qA', 'DZ3MGPTod55', 'DZ7hugboRzQ'],
+    featured: ['DbqJqrGuc2d', 'DbqJpqeOd1S', 'DbqJm_nOv-P', 'Db-tg-5lBFL', 'Db0MHu-Dh-C', 'DbsmYT2Ds8W', 'DcGQGGGDhA_', 'DcLdhmNDRq5', 'Dcqb2BxDrnL', 'DbnTgsqE4ZT', 'Db73aMJAAgH', 'DcvmfMIk-_S', 'DfXDBAxO5YP', 'De43yOEO4uf', 'De437YDO5eg', 'DbY_mTJIkc2', 'Dbh-UDXgBbK', 'DZ3MGPTod55'],
   },
   {
     slug: 'events', path: '/services/events', icon: 'calendar',

@@ -142,6 +142,8 @@ export default function ServicePage({ service, posts, related }: { service: Serv
   const [shown, setShown] = useState(6);
   const [photosShown, setPhotosShown] = useState(16);
   const [tag, setTag] = useState<TimelineTag | 'all'>('all');
+  const [menuTab, setMenuTab] = useState(0);
+  const phone = service.phone ?? { ...contact.phones[0], label: ['Call the club', 'اتصل بالنادي'] as Bi };
 
   const videos = useMemo(() => posts.filter((p) => p.media.some((m) => m.kind === 'video') || p.kind === 'video'), [posts]);
   const gallery = useMemo<GalleryItem[]>(() => posts.flatMap((post) => post.media.filter((m) => m.kind === 'image').map((media, index) => ({ post, media, index }))), [posts]);
@@ -161,7 +163,7 @@ export default function ServicePage({ service, posts, related }: { service: Serv
           <p className="sp-intro">{L(service.intro)}</p>
           <div className="sp-actions">
             <a className="sp-btn sp-btn-red" href={enquire}>{L(service.cta.label)}<ArrowUpRight size={17} /></a>
-            <a className="sp-btn" href={`tel:${contact.phones[0].tel}`}><Phone size={15} /><span dir="ltr">{contact.phones[0].display}</span></a>
+            <a className="sp-btn" href={`tel:${phone.tel}`} title={L(phone.label)}><Phone size={15} /><span dir="ltr">{phone.display}</span></a>
             <a className="sp-btn sp-btn-ghost" href={wa} target="_blank" rel="noopener noreferrer"><MessageCircle size={15} />WhatsApp</a>
           </div>
           {posts.length > 0 && <p className="sp-stats"><b>{posts.length}</b> {t('posts', 'منشوراً')} · <b>{gallery.length}</b> {t('photos', 'صورة')} · <b>{videos.length}</b> {t('videos', 'فيديو')} <span>{t('from the club’s Instagram', 'من إنستغرام النادي')}</span></p>}
@@ -194,6 +196,18 @@ export default function ServicePage({ service, posts, related }: { service: Serv
         </div></section>
       )}
 
+      {service.menu && (
+        <section className="sp-section sp-paper" id="menu"><div className="sp-container">
+          <div className="sp-head"><div><span className="sp-eyebrow">{t('MENU', 'المنيو')}</span><h2>{t('The Hydro Rest menu', 'منيو هايدرو ريست')}</h2></div><a className="sp-link" href={service.menu.source} target="_blank" rel="noopener noreferrer">{t('Original menu on Instagram', 'المنيو الأصلي على إنستغرام')}<ArrowUpRight size={14} /></a></div>
+          <div className="sp-chips sp-menu-tabs" role="tablist" aria-label={t('Menu sections', 'أقسام المنيو')}>{service.menu.sections.map((sec, k) => <button key={k} role="tab" aria-selected={menuTab === k} className={menuTab === k ? 'is-on' : ''} onClick={() => setMenuTab(k)}>{L(sec.title)}</button>)}</div>
+          <ul className="sp-menu" role="tabpanel">{service.menu.sections[menuTab]?.items.map((it, k) => (
+            <li key={k}><div><b>{L(it.name)}</b>{it.desc && <p>{L(it.desc)}</p>}</div>
+              <span className="sp-menu-prices">{it.prices.length ? it.prices.map((pr, j) => <span key={j}>{pr.label && <small>{L(pr.label)}</small>}<em dir="ltr">{pr.jd} JD</em></span>) : <span><small>{t('Ask at the counter', 'اسأل على الكاونتر')}</small></span>}</span></li>
+          ))}</ul>
+          <p className="sp-note">{L(service.menu.note)}</p>
+          <div className="sp-menu-pages">{service.menu.pages.map((src, k) => <a key={src} href={src} target="_blank" rel="noopener noreferrer" aria-label={`${t('Menu page', 'صفحة المنيو')} ${k + 1}`}><img src={src} alt={`${t('Hydro Rest menu page', 'صفحة منيو هايدرو ريست')} ${k + 1}`} loading="lazy" /></a>)}</div>
+        </div></section>
+      )}
       {service.timeline && service.timeline.length > 0 && (
         <section className="sp-section sp-paper"><div className="sp-container">
           <div className="sp-head"><div><span className="sp-eyebrow">{t('TIMELINE', 'الخط الزمني')}</span><h2>{service.slug === 'offers' ? t('Announcements & offers', 'الإعلانات والعروض') : t('What’s happened', 'أبرز ما حدث')}</h2></div>
