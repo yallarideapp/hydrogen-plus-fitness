@@ -43,7 +43,7 @@ export default function ClassesExperience() {
  useEffect(() => { setVisible(12); }, [day, category, coach, period, query]);
  useEffect(() => { if (selected && dialog.current && !dialog.current.open) dialog.current.showModal(); if (!selected && dialog.current?.open) dialog.current.close(); }, [selected]);
  useEffect(() => { if (!selected) return; const previous = document.body.style.overflow; document.body.style.overflow = "hidden"; return () => { document.body.style.overflow = previous; }; }, [selected]);
- const filtered = useMemo(() => entries.filter((entry) => (day === "all" || entry.day === day) && (category === "all" || entry.category === category) && (coach === "all" || entry.coach === coach) && (period === "all" || entry.period === period) && (!query.trim() || `${entry.name} ${entry.ar} ${entry.coach}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))), [day, category, coach, period, query]);
+ const filtered = useMemo(() => entries.filter((entry) => (day === "all" || entry.day === day) && (category === "all" || entry.category === category) && (coach === "all" || entry.coach === coach) && (period === "all" || entry.period === period) && (!query.trim() || `${entry.name} ${entry.ar} ${entry.coach}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))), [entries, day, category, coach, period, query]);
  const hasFilters = day !== "all" || category !== "all" || coach !== "all" || period !== "all" || !!query;
  const saved = (entry: ClassEntry) => sessions.some((session) => session.classKey === entry.key && session.scheduledDate === entry.date && session.scheduledTime === entry.time24);
  const isPast = (entry: ClassEntry) => now > 0 && classStart(entry) <= now;
