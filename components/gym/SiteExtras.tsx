@@ -85,6 +85,7 @@ export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
     window.addEventListener('hx-contact-toggle', toggle);
     return () => window.removeEventListener('hx-contact-toggle', toggle);
   }, []);
+  useEffect(() => { window.dispatchEvent(new CustomEvent('hx-contact-state', { detail: open })); }, [open]);
   useEffect(() => {
     if (!open) return;
     const away = (e: PointerEvent) => { const el = e.target as Element; if (!box.current?.contains(el) && !el.closest('.hp3-mobile-dock')) setOpen(false); };

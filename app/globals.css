@@ -26,13 +26,17 @@ html[dir=rtl] body{font-family:'Noto Sans Arabic','Manrope',sans-serif}html[dir=
 .amenity-phone{display:flex;align-items:center;gap:7px;font-size:11px;margin-top:12px}.amenity-phone>svg{color:var(--red)}.contact-details>div:last-child a+a{margin-top:7px}
 @media(max-width:600px){.hero h1{font-size:15vw}}@media(max-width:370px){.hero h1{font-size:14.5vw}}
 .image-index{direction:ltr}.hp-community-brand{direction:ltr}
-/* Saved Arabic preference: keep the page hidden for the moment before the Arabic version renders, so it never flashes English. */
-html.hp-ar-pending .hp3{visibility:hidden}
+/* Saved Arabic preference: until the Arabic version renders, keep the header and bottom bar as empty
+   shells (mirrored) and hide all text, so the page never flashes English. */
 html.hp-ar-pending body{background:#111312}
-/* Page transitions: the page fades in and its content rises in; leaving fades the content out. */
-@keyframes hx-fade{from{opacity:0}}
-@keyframes hx-rise{from{opacity:0;transform:translateY(16px)}}
-html:not(.hp-ar-pending) .hp3{animation:hx-fade .28s ease-out both}
-html:not(.hp-ar-pending) .hp3 #page-content{animation:hx-rise .55s cubic-bezier(.2,.75,.25,1) .04s both}
-html.hx-leaving .hp3 #page-content{opacity:0;transform:translateY(-8px);transition:opacity .17s ease-in,transform .17s ease-in}
-@media(prefers-reduced-motion:reduce){html .hp3,html .hp3 #page-content{animation:none!important}}
+html.hp-ar-pending .hp3{direction:rtl}
+html.hp-ar-pending .hp3 *{visibility:hidden}
+html.hp-ar-pending .hp3 .hp3-top,html.hp-ar-pending .hp3 .hp3-header,html.hp-ar-pending .hp3 .hp3-mobile-dock,html.hp-ar-pending .hp3 .hx-dock-main-icon,html.hp-ar-pending .hp3 .hp3-logo,html.hp-ar-pending .hp3 .hp3-logo>img{visibility:visible}
+html.hp-ar-pending .hp3 .hx-dock-main-icon>*{visibility:hidden}
+
+/* Page transitions: content glides out when a link is tapped and rises in on the next page;
+   the header and bottom bar stay put. */
+@keyframes hx-rise{from{opacity:0;transform:translateY(18px)}}
+html:not(.hp-ar-pending) .hp3 #page-content{animation:hx-rise .6s cubic-bezier(.22,1,.36,1) both}
+html.hx-leaving .hp3 #page-content,html.hx-leaving .hp3 .hp3-footer{opacity:0;transform:translateY(-10px);transition:opacity .2s cubic-bezier(.4,0,1,1),transform .2s cubic-bezier(.4,0,1,1)}
+@media(prefers-reduced-motion:reduce){html .hp3 #page-content{animation:none!important}}
