@@ -1,11 +1,12 @@
 'use client';
 import { ArrowUpRight, Briefcase, GraduationCap, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
-import { contact } from '@/lib/site-info';
+import { useSiteInfo } from '@/lib/admin/overrides';
 import './service-page.css';
 import './feature-pages.css';
 
 export default function CareersPage() {
+  const { contact } = useSiteInfo();
   const { t } = useGymLanguage();
   const cvText = encodeURIComponent('Hello, I would like to apply to work at Hydrogen Plus Fitness. My CV is attached.');
   return (

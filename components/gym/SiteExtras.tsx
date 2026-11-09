@@ -1,7 +1,8 @@
 'use client';
 import { useState, useSyncExternalStore } from 'react';
 import { ArrowUpRight, Baby, CalendarDays, Dumbbell, Flower2, Mail, MapPin, MessageCircle, Moon, Navigation, Phone, Salad, Sparkles, Swords, Tag, UserRound, Users, Waves, X } from 'lucide-react';
-import { contact, hours, sessionState, formatClock } from '@/lib/site-info';
+import { sessionState, formatClock } from '@/lib/site-info';
+import { useSiteInfo } from '@/lib/admin/overrides';
 import type { Lang } from '@/lib/legal';
 
 type T = (en: string, ar: string) => string;
@@ -38,7 +39,7 @@ export const exploreNav: [string, string, string][] = [
 export function ServicesMega({ t, lang, onNavigate }: { t: T; lang: Lang; onNavigate?: () => void }) {
   return (
     <div className="hx-mega">
-      <div className="hx-mega-grid">{serviceNav.map(({ href, en, ar, icon: Icon }) => <a key={href} href={href} onClick={onNavigate}><Icon size={16} />{lang === 'ar' ? ar : en}</a>)}</div>
+      <div className="hx-mega-grid">{serviceNav.map(({ href, en, ar, icon: Icon }) => <a key={href} href={href} onClick={onNavigate}><Icon size={16} />{t(en, ar)}</a>)}</div>
       <div className="hx-mega-foot"><a href="/services" onClick={onNavigate}>{t('All services', 'كل الخدمات')}<ArrowUpRight size={14} /></a><a href="/offers" onClick={onNavigate}><Tag size={14} />{t('News & offers', 'الأخبار والعروض')}</a></div>
     </div>
   );
@@ -55,11 +56,12 @@ export function useNow(): Date | null {
 /** Live open/closed status in Amman time. */
 export function OpenStatus({ t, lang, compact = false }: { t: T; lang: Lang; compact?: boolean }) {
   const now = useNow();
+  const { hours } = useSiteInfo();
   if (!now) return <span className="hx-open">{t('MEN 6 AM–MIDNIGHT  /  LADIES 8 AM–11 PM', 'الرجال ٦ ص–منتصف الليل / السيدات ٨ ص–١١ م')}</span>;
   const men = hours[0], women = hours[1];
   const m = sessionState(men, now), w = sessionState(women, now);
   const any = m.isOpen || w.isOpen;
-  const part = (label: [string, string], row: typeof men, st: { isOpen: boolean }) => `${lang === 'ar' ? label[1] : label[0]} ${st.isOpen ? t('until', 'حتى') + ' ' + formatClock(row.close, lang) : t('opens', 'يفتح') + ' ' + formatClock(row.open, lang)}`;
+  const part = (label: [string, string], row: typeof men, st: { isOpen: boolean }) => `${t(label[0], label[1])} ${st.isOpen ? t('until', 'حتى') + ' ' + formatClock(row.close, lang) : t('opens', 'يفتح') + ' ' + formatClock(row.open, lang)}`;
   return (
     <span className={`hx-open ${any ? 'is-open' : 'is-closed'}`}>
       <i aria-hidden />{any ? t('OPEN NOW', 'مفتوح الآن') : t('CLOSED NOW', 'مغلق الآن')}
@@ -75,6 +77,7 @@ function subscribeScroll(cb: () => void) {
 
 export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
   const [open, setOpen] = useState(false);
+  const { contact } = useSiteInfo();
   const scrolled = useSyncExternalStore(subscribeScroll, () => window.scrollY > 280, () => false);
   const msg = encodeURIComponent(lang === 'ar' ? 'مرحباً، لدي استفسار عن هايدروجين بلس' : 'Hello, I have a question about Hydrogen Plus');
   return (

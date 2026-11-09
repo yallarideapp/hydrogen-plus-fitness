@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { ArrowDown, ArrowUp, ArrowUpRight, Check, Clock3, Download, Dumbbell, LoaderCircle, Pause, Play, Plus, Printer, RotateCcw, Search, Timer, Trash2 } from "lucide-react";
 import { legalConsent, legalError } from "@/lib/legal";
-import { useGymLanguage } from "./SiteShell";
+import { useGymLanguage, useWords } from "./SiteShell";
 import "./workout-studio.css";
 
 type Group = "all" | "upper" | "lower" | "core" | "full" | "cardio";
@@ -58,8 +58,8 @@ function formatClock(total: number) {
 }
 
 export default function WorkoutStudio() {
-  const { lang } = useGymLanguage();
-  const t = copy[lang];
+  const { lang, t: tr } = useGymLanguage();
+  const t = useWords(copy);
   const [search, setSearch] = useState("");
   const [group, setGroup] = useState<Group>("all");
   const [plan, setPlan] = useState<PlannedExercise[]>([]);
@@ -144,7 +144,7 @@ export default function WorkoutStudio() {
     return plan.map((item, index) => {
       const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
       const unit = exercise.unit ? t[exercise.unit] : t.reps;
-      return `${index + 1}. ${exercise[lang]} — ${item.sets} ${t.sets} × ${item.reps} ${unit}; ${t.rest}: ${item.rest}`;
+      return `${index + 1}. ${tr(exercise.en, exercise.ar)} — ${item.sets} ${t.sets} × ${item.reps} ${unit}; ${t.rest}: ${item.rest}`;
     });
   }
 
@@ -152,7 +152,7 @@ export default function WorkoutStudio() {
     if (!plan.length) { setFeedback(t.exportEmpty); return; }
     const draft = { title: name || t.printTitle, date: ammanDate(), exercises: plan.map((item) => {
       const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
-      return { name: exercise[lang], equipment: t[exercise.equipment], sets: item.sets, quantity: item.reps, unit: exercise.unit ?? "reps", restSeconds: item.rest };
+      return { name: tr(exercise.en, exercise.ar), equipment: t[exercise.equipment], sets: item.sets, quantity: item.reps, unit: exercise.unit ?? "reps", restSeconds: item.rest };
     }) };
     const content = format === "json" ? JSON.stringify(draft, null, 2) : [draft.title, draft.date, "", ...exerciseLines(), "", t.planningNote].join("\n");
     const url = URL.createObjectURL(new Blob([content], { type: format === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8" }));
@@ -185,15 +185,15 @@ export default function WorkoutStudio() {
       <section className="hp3-studio-library" aria-labelledby="studio-library"><div className="hp3-studio-panel-title"><span>01</span><div><h2 id="studio-library">{t.library}</h2><p>{t.libraryText}</p></div></div>
         <label className="hp3-studio-search"><Search size={17} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t.search} aria-label={t.search} /></label>
         <div className="hp3-studio-filters" aria-label={t.library}>{(["all", "upper", "lower", "core", "full", "cardio"] as Group[]).map((value) => <button key={value} type="button" aria-pressed={group === value} onClick={() => setGroup(value)}>{t[value]}</button>)}</div>
-        <div className="hp3-studio-exercise-list">{filtered.length ? filtered.map((exercise) => <article key={exercise.id}><div><h3>{exercise[lang]}</h3><span>{t[exercise.equipment]}</span></div><button type="button" onClick={() => addExercise(exercise)} disabled={plan.length >= 20} aria-label={`${t.add} ${exercise[lang]}`}><Plus size={18} /></button></article>) : <p className="hp3-studio-empty-search">{t.noResults}</p>}</div>
+        <div className="hp3-studio-exercise-list">{filtered.length ? filtered.map((exercise) => <article key={exercise.id}><div><h3>{tr(exercise.en, exercise.ar)}</h3><span>{t[exercise.equipment]}</span></div><button type="button" onClick={() => addExercise(exercise)} disabled={plan.length >= 20} aria-label={`${t.add} ${tr(exercise.en, exercise.ar)}`}><Plus size={18} /></button></article>) : <p className="hp3-studio-empty-search">{t.noResults}</p>}</div>
         {plan.length >= 20 && <p className="hp3-studio-limit" role="status">{t.maxExercises}</p>}
       </section>
 
       <div className="hp3-studio-workspace"><section className="hp3-studio-session" aria-labelledby="studio-session"><div className="hp3-studio-panel-title"><span>02</span><div><h2 id="studio-session">{t.session}</h2><p>{t.sessionText}</p></div><Dumbbell className="hp3-studio-title-icon" size={24} /></div>
         {!plan.length ? <div className="hp3-studio-blank"><div><Plus size={30} /></div><h3>{t.empty}</h3><p>{t.emptyText}</p></div> : <ol className="hp3-studio-plan">{plan.map((item, index) => {
           const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
-          return <li key={item.key}><div className="hp3-studio-movement-head"><b>{String(index + 1).padStart(2, "0")}</b><div><h3>{exercise[lang]}</h3><span>{t[exercise.equipment]}</span></div><div className="hp3-studio-row-controls"><button type="button" onClick={() => moveExercise(index, -1)} disabled={index === 0} aria-label={`${t.moveUp}: ${exercise[lang]}`}><ArrowUp size={15} /></button><button type="button" onClick={() => moveExercise(index, 1)} disabled={index === plan.length - 1} aria-label={`${t.moveDown}: ${exercise[lang]}`}><ArrowDown size={15} /></button><button type="button" onClick={() => setPlan((current) => current.filter((entry) => entry.key !== item.key))} aria-label={`${t.remove}: ${exercise[lang]}`}><Trash2 size={15} /></button></div></div>
-            <div className="hp3-studio-movement-inputs"><label>{t.sets}<input type="number" min={1} max={12} value={item.sets} onChange={(event) => updateExercise(item.key, "sets", event.target.value)} aria-label={`${exercise[lang]} ${t.sets}`} /></label><label>{exercise.unit ? t[exercise.unit] : t.reps}<input type="number" min={1} max={120} value={item.reps} onChange={(event) => updateExercise(item.key, "reps", event.target.value)} aria-label={`${exercise[lang]} ${exercise.unit ? t[exercise.unit] : t.reps}`} /></label><label>{t.rest}<input type="number" min={0} max={600} step={5} value={item.rest} onChange={(event) => updateExercise(item.key, "rest", event.target.value)} aria-label={`${exercise[lang]} ${t.rest}`} /></label><button type="button" className="hp3-studio-rest-row" onClick={() => startRest(item.rest)} disabled={item.rest === 0}><Timer size={15} />{t.restButton}</button></div>
+          return <li key={item.key}><div className="hp3-studio-movement-head"><b>{String(index + 1).padStart(2, "0")}</b><div><h3>{tr(exercise.en, exercise.ar)}</h3><span>{t[exercise.equipment]}</span></div><div className="hp3-studio-row-controls"><button type="button" onClick={() => moveExercise(index, -1)} disabled={index === 0} aria-label={`${t.moveUp}: ${tr(exercise.en, exercise.ar)}`}><ArrowUp size={15} /></button><button type="button" onClick={() => moveExercise(index, 1)} disabled={index === plan.length - 1} aria-label={`${t.moveDown}: ${tr(exercise.en, exercise.ar)}`}><ArrowDown size={15} /></button><button type="button" onClick={() => setPlan((current) => current.filter((entry) => entry.key !== item.key))} aria-label={`${t.remove}: ${tr(exercise.en, exercise.ar)}`}><Trash2 size={15} /></button></div></div>
+            <div className="hp3-studio-movement-inputs"><label>{t.sets}<input type="number" min={1} max={12} value={item.sets} onChange={(event) => updateExercise(item.key, "sets", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${t.sets}`} /></label><label>{exercise.unit ? t[exercise.unit] : t.reps}<input type="number" min={1} max={120} value={item.reps} onChange={(event) => updateExercise(item.key, "reps", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${exercise.unit ? t[exercise.unit] : t.reps}`} /></label><label>{t.rest}<input type="number" min={0} max={600} step={5} value={item.rest} onChange={(event) => updateExercise(item.key, "rest", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${t.rest}`} /></label><button type="button" className="hp3-studio-rest-row" onClick={() => startRest(item.rest)} disabled={item.rest === 0}><Timer size={15} />{t.restButton}</button></div>
           </li>;
         })}</ol>}
         <div className="hp3-studio-exports"><button type="button" onClick={() => window.print()} disabled={!plan.length}><Printer size={15} />{t.print}</button><button type="button" onClick={() => download("txt")} disabled={!plan.length}><Download size={15} />{t.download}</button><button type="button" onClick={() => download("json")} disabled={!plan.length}>{t.exportJson}<ArrowUpRight size={14} /></button></div>

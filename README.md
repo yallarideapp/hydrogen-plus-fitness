@@ -70,3 +70,12 @@ See `backend-notes.md` for API contracts, privacy inventory and integration-test
 The archive preserves full captions, all41slides from10Instagram carousels,125original Instagram image/poster files and11native video files, plus57Facebook assets. Historical offers remain dated archive content and are not current price quotes. Caption integrity was checked against all94official embeds;25appended Instagram comment-interface tails were removed.
 
 Main photography uses the actual2048×1365gym and pool carousel originals; the class poster is3277×4096. Display WebPs retain the same pixel dimensions. No images were upscaled or generated. `lib/site-media.ts` records the selected sources. `lib/social-posts.ts` combines/normalizes the imported metadata; no live Meta feed or scheduled synchronization is implied.
+
+## Admin panel (preview mode) — November 2026
+
+Open `/admin` (GitHub Pages: https://yallarideapp.github.io/hydrogen-plus-fitness/admin/).
+
+- **Edits everything:** website texts (every bilingual string, home banner first), service pages (headings, highlights, prices & details, FAQ, News & offers timeline, Hydro Rest menu), all prices in one tab, the class timetable, phones/WhatsApp/e-mail/address/social links/opening hours, site photos, brand colour and an announcement bar.
+- **Preview mode:** GitHub Pages has no server, so edits are stored in the browser (`localStorage` key `hp-admin-preview`, photos in IndexedDB `hp-admin`) and applied to the site in that browser only. Backup & settings → Export/Import JSON moves them between browsers. Live mode (Cloudflare Worker + D1, password, publish to every visitor) is the next step («الربط»); the overrides shape in `lib/admin/overrides.ts` is what the Worker will store.
+- **How it works:** `lib/admin/overrides.ts` holds the sparse overrides, validation (`sanitize`) and hooks (`useOverrides`, `useSiteInfo`, `useSchedule`, `useService`). `SiteShell`'s `t(en, ar)` and `useWords()` route every text through the overrides; `PhotoSwapper` swaps replaced photos.
+- **After changing site texts or photos in the code**, regenerate the admin catalogs: `node scripts/admin-catalog.mjs` (writes `lib/admin/text-catalog.json` and `photo-catalog.json`).

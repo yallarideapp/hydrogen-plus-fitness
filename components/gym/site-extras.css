@@ -83,3 +83,8 @@
 /* Phone: keep the call button out of the home banner until the visitor scrolls (the top bar already has the phone number). */
 .hx-float{transition:opacity .25s,transform .25s}
 @media(max-width:600px){.hx-float.is-top{opacity:0;transform:translateY(16px);pointer-events:none}}
+/* Announcement bar (set in the admin) */
+.hx-announce{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--hp3-red);color:#fff;font-size:13px;font-weight:600;line-height:1.4;padding:8px 16px;text-align:center}
+a.hx-announce:hover{filter:brightness(1.08)}
+@media(max-width:820px){.hp3:has(>.hx-announce) .hp3-mobile-menu{top:148px}}
+@media(max-width:600px){.hp3:has(>.hx-announce) .hp3-mobile-menu{top:139px}}

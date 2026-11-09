@@ -7,8 +7,7 @@ import {
 import { useGymLanguage } from './SiteShell';
 import type { Bi, Service, ServiceIcon, TimelineTag } from '@/lib/services';
 import type { ServiceCard, ServicePost, ServiceMedia } from '@/lib/service-data';
-import { contact } from '@/lib/site-info';
-import { schedule, scheduleDays } from '@/lib/schedule';
+import { useOverrides, useSchedule, useService, useSiteInfo } from '@/lib/admin/overrides';
 import './service-page.css';
 
 export const serviceIcons: Record<ServiceIcon, ComponentType<{ size?: number; strokeWidth?: number }>> = {
@@ -117,14 +116,15 @@ function PostCard({ post }: { post: ServicePost }) {
 function WeekSchedule() {
   const { t, lang } = useGymLanguage();
   const fmt = useDate();
+  const { days: scheduleDays, classes: schedule } = useSchedule();
   return (
     <div className="sp-week">
       {scheduleDays.map((d) => {
         const rows = schedule.filter((c) => c.day === d.en);
         return (
           <div key={d.en} className="sp-week-day">
-            <h4>{lang === 'ar' ? d.ar : d.en}<small>{fmt(d.date)}</small></h4>
-            <ul>{rows.map((c, k) => <li key={k}><b dir="ltr">{c.time} {c.period}</b><span>{lang === 'ar' ? c.ar : c.name}</span><em>{c.coach.charAt(0) + c.coach.slice(1).toLowerCase()}</em></li>)}</ul>
+            <h4>{t(d.en, d.ar)}<small>{fmt(d.date)}</small></h4>
+            <ul>{rows.map((c, k) => <li key={k}><b dir="ltr">{c.time} {c.period}</b><span>{t(c.name, c.ar)}</span><em>{c.coach.charAt(0) + c.coach.slice(1).toLowerCase()}</em></li>)}</ul>
           </div>
         );
       })}
@@ -133,10 +133,12 @@ function WeekSchedule() {
   );
 }
 
-export default function ServicePage({ service, posts, related }: { service: Service; posts: ServicePost[]; related: ServiceCard[] }) {
+export default function ServicePage({ service: published, posts, related }: { service: Service; posts: ServicePost[]; related: ServiceCard[] }) {
   const { t, lang } = useGymLanguage();
   const fmt = useDate();
-  const L = (b: Bi) => (lang === 'ar' ? b[1] : b[0]);
+  const service = useService(published);
+  const { contact } = useSiteInfo();
+  const L = (b: Bi) => t(b[0], b[1]);
   const Icon = serviceIcons[service.icon];
   const [box, setBox] = useState<number | null>(null);
   const [shown, setShown] = useState(6);
@@ -283,10 +285,12 @@ export default function ServicePage({ service, posts, related }: { service: Serv
   );
 }
 
-export function ServiceTile({ card, large = false }: { card: ServiceCard; large?: boolean }) {
-  const { t, lang } = useGymLanguage();
+export function ServiceTile({ card: published, large = false }: { card: ServiceCard; large?: boolean }) {
+  const { t } = useGymLanguage();
+  const patch = useOverrides().services?.[published.slug];
+  const card = patch ? { ...published, ...(patch.name ? { name: patch.name } : {}), ...(patch.kicker ? { kicker: patch.kicker } : {}), ...(patch.intro ? { intro: patch.intro } : {}) } : published;
   const Icon = serviceIcons[card.icon];
-  const L = (b: Bi) => (lang === 'ar' ? b[1] : b[0]);
+  const L = (b: Bi) => t(b[0], b[1]);
   return (
     <a href={card.path} className={`sp-tile${large ? ' is-large' : ''}`}>
       <img src={card.hero.src} alt="" loading="lazy" />

@@ -1,4 +1,5 @@
 "use client";
+import { useWords } from "./SiteShell";
 
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ArrowUpRight, Camera, ChevronLeft, ChevronRight, ExternalLink, Images, Play, Search, X } from "lucide-react";
@@ -35,13 +36,13 @@ function mediaStyle(media: SocialPost["media"][number]): CSSProperties { return 
 function PostMedia({ media, post, lang, full = false }: { media: SocialPost["media"][number]; post: SocialPost; lang: Lang; full?: boolean }) {
  const [failed, setFailed] = useState(false);
  useEffect(() => setFailed(false), [media.src]);
- const t = text[lang];
+ const t = useWords(text);
  if (failed) return <div className="hp-social-media-error"><Camera size={25} /><span>{t.unavailable}</span><ArrowUpRight size={16} /></div>;
  return media.kind === "video" ? <video controls preload="metadata" poster={media.poster} playsInline aria-label={t.videoLabel} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} style={mediaStyle(media)} onError={() => setFailed(true)}><source src={media.src} />{t.unavailable}</video> : <img src={media.src} alt={post.caption ? `${t.imageAlt}: ${post.caption.slice(0, 150)}` : t.imageAlt} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} loading={full ? "eager" : "lazy"} decoding="async" style={mediaStyle(media)} onError={() => setFailed(true)} />;
 }
 
 export default function SocialArchive({ posts, lang, compact = false }: Props) {
- const t = text[lang];
+ const t = useWords(text);
  const uid = useId();
  const [source, setSource] = useState("all");
  const [kind, setKind] = useState("all");
@@ -99,6 +100,6 @@ export function CommunityArchive({ posts }: { posts: SocialPost[] }) {
  useEffect(() => { try { if (localStorage.getItem("hp-language") === "ar") setLang("ar"); } catch { /* Browser preferences are optional. */ } }, []);
  useEffect(() => { document.title = lang === "ar" ? "من قلب النادي | Hydrogen Plus Fitness" : "From the club | Hydrogen Plus Fitness"; }, [lang]);
  function toggle() { const next = lang === "en" ? "ar" : "en"; setLang(next); try { localStorage.setItem("hp-language", next); } catch { /* Keep this visit usable without storage. */ } }
- const t = text[lang];
+ const t = useWords(text);
  return <main className="hp-community" lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}><div className="hp-community-shell"><nav className="hp-community-nav" aria-label={lang === "ar" ? "التنقل" : "Navigation"}><a className="hp-community-brand" href="/"><img src="/images/logo-large.jpg" alt="Hydrogen Plus Fitness" width="44" height="44" /><span>HYDROGEN<span>+</span><small>FITNESS & SPA</small></span></a><div><button type="button" onClick={toggle} lang={lang === "en" ? "ar" : "en"}>{lang === "en" ? "العربية" : "English"}</button><a className="hp-community-back" href="/"><ArrowLeft size={15} />{t.back}</a></div></nav><SocialArchive posts={posts} lang={lang} /><footer className="hp-community-footer"><div><a href={lang === "ar" ? "/ar/privacy" : "/privacy"}>{t.privacy}</a><a href={lang === "ar" ? "/ar/terms" : "/terms"}>{t.terms}</a><a href="tel:+962792151000" dir="ltr">+962 7 9215 1000</a></div><p>{trademarkNotice(lang)}</p></footer></div></main>;
 }

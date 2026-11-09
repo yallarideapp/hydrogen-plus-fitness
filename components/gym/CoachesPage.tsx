@@ -1,8 +1,7 @@
 'use client';
 import { ArrowUpRight, Briefcase, CalendarDays, MessageCircle, UserRound } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
-import { schedule } from '@/lib/schedule';
-import { contact } from '@/lib/site-info';
+import { useSchedule, useSiteInfo } from '@/lib/admin/overrides';
 import './service-page.css';
 import './feature-pages.css';
 
@@ -25,16 +24,18 @@ const guests: Coach[] = [
 
 export default function CoachesPage() {
   const { t, lang } = useGymLanguage();
+  const { contact } = useSiteInfo();
+  const { classes: schedule } = useSchedule();
   const card = (c: Coach) => {
     const classes = schedule.filter((s) => s.coach === c.key);
-    const names = Array.from(new Set(classes.map((s) => (lang === 'ar' ? s.ar : s.name))));
+    const names = Array.from(new Set(classes.map((s) => (t(s.name, s.ar)))));
     return (
       <li key={c.key} className="fc-coach">
-        <span className="sp-avatar">{(lang === 'ar' ? c.ar : c.en).replace(/^(Captain|Coach|الكابتن|الكوتش)\s+/, '').charAt(0)}</span>
+        <span className="sp-avatar">{(t(c.en, c.ar)).replace(/^(Captain|Coach|الكابتن|الكوتش)\s+/, '').charAt(0)}</span>
         <div>
-          <b>{lang === 'ar' ? c.ar : c.en}</b>
-          <small>{lang === 'ar' ? c.roleAr : c.roleEn}</small>
-          {(names.length > 0 || c.tags.length > 0) && <div className="fc-tags">{names.map((n) => <span key={n}>{n}</span>)}{c.tags.map(([en, ar]) => <span key={en} className="is-alt">{lang === 'ar' ? ar : en}</span>)}</div>}
+          <b>{t(c.en, c.ar)}</b>
+          <small>{t(c.roleEn, c.roleAr)}</small>
+          {(names.length > 0 || c.tags.length > 0) && <div className="fc-tags">{names.map((n) => <span key={n}>{n}</span>)}{c.tags.map(([en, ar]) => <span key={en} className="is-alt">{t(en, ar)}</span>)}</div>}
           {classes.length > 0 && <p className="fc-count"><CalendarDays size={13} />{classes.length} {t('classes this week', 'حصص هذا الأسبوع')}</p>}
           <div className="fc-coach-actions">
             {!c.guest && <a href={`/join?kind=training&interest=${encodeURIComponent('Coach ' + c.en)}`}>{t('Ask to train with', 'اطلب التدريب مع')} {lang === 'ar' ? c.ar.split(' ').slice(-2).join(' ') : c.en.split(' ').slice(-1)[0]}<ArrowUpRight size={13} /></a>}

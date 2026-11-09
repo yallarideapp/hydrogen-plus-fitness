@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { useNow } from './SiteExtras';
 import { ArrowUpRight, Camera, Clock, Mail, MapPin, MessageCircle, Navigation, Phone, Send } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
-import { contact, hours, sessionState, formatClock } from '@/lib/site-info';
+import { sessionState, formatClock } from '@/lib/site-info';
+import { useSiteInfo } from '@/lib/admin/overrides';
 import './service-page.css';
 import './feature-pages.css';
 
 export default function ContactPage() {
+  const { contact, hours } = useSiteInfo();
   const { t, lang } = useGymLanguage();
   const now = useNow();
   const [map, setMap] = useState(false);

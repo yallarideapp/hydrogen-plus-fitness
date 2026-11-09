@@ -43,3 +43,4 @@
 .hp3 .hp3-home-hero .hp3-hero-tour>span:first-child{display:none}
 .hp3 .hp3-home-hero .hp3-hero-tour>strong{margin-top:0;font-size:19px}
 }
+@media(max-width:600px){.hp3:has(>.hx-announce) .hp3-home-hero{height:calc(100svh - 164px - 37px - env(safe-area-inset-bottom))}}
