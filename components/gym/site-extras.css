@@ -116,7 +116,6 @@ a.hx-announce:hover{filter:brightness(1.08)}
 /* Interactive bottom bar: sliding highlight, press feedback, hides while scrolling down */
 @media(max-width:600px){
 .hp3 .hp3-mobile-dock{position:fixed;transition:transform .38s cubic-bezier(.22,1,.36,1)}
-.hp3 .hp3-mobile-dock.is-hidden{transform:translateY(calc(100% + 26px))}
 .hx-dock-ind{position:absolute;z-index:0;top:5px;bottom:max(5px,env(safe-area-inset-bottom));width:calc((100% - 8px)/5);inset-inline-start:calc(4px + var(--i,0)*(100% - 8px)/5);border-radius:14px;background:#ffffff14;opacity:1;transition:inset-inline-start .45s cubic-bezier(.34,1.35,.5,1),opacity .25s;pointer-events:none}
 .hp3-mobile-dock[data-i="-1"]>.hx-dock-ind,.hp3-mobile-dock[data-i="2"]>.hx-dock-ind{opacity:0}
 .hp3 .hp3-mobile-dock>a,.hp3 .hp3-mobile-dock>button{position:relative;z-index:1;transition:transform .16s ease,color .25s ease;-webkit-tap-highlight-color:transparent}
@@ -130,6 +129,6 @@ a.hx-announce:hover{filter:brightness(1.08)}
 .hx-dock-main-icon::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--hp3-red);opacity:0;animation:hx-ring 2.8s ease-out 1.2s infinite;pointer-events:none}
 @keyframes hx-ring{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(1.55);opacity:0}}
 .hx-admin{transition:transform .38s cubic-bezier(.22,1,.36,1),background .2s,color .2s}
-html.hx-dock-hidden .hx-admin{transform:translateY(68px)}
 }
 @media(max-width:600px) and (prefers-reduced-motion:reduce){.hx-dock-main-icon::after{animation:none}.hx-dock-ind{transition:none}}
+@media(max-width:600px){.hp3 .hp3-mobile-dock{height:calc(62px + env(safe-area-inset-bottom));min-height:0;box-sizing:border-box}.hp3 .hp3-mobile-dock>a,.hp3 .hp3-mobile-dock>button{min-height:0;height:100%}}
