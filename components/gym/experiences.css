@@ -41,13 +41,12 @@
    no tagline row / scroll hint, so the photos never have to shrink over the text. */
 @media(max-width:600px){
 html.hx-hero-tight .hp3 .hp3-home-hero{padding-top:12px}
-html.hx-hero-tight .hp3 section.hp3-home-hero{padding-bottom:72px}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-home-hero-grid{gap:12px}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-home-hero-copy h1{font-size:54px;margin-top:8px}
 html.hx-hero-tight .hp3[dir=rtl] .hp3-home-hero .hp3-home-hero-copy h1{font-size:42px;margin-top:4px}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-home-hero-copy>p{margin-top:8px;line-height:1.5}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-home-hero-copy .hp3-button-row{margin-top:10px}
-html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-foot,html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-scroll{display:none}
+html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-foot{display:none}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-tour>span:first-child{display:none}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-tour>strong{margin-top:0;font-size:19px}
 }
