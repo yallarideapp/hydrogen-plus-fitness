@@ -1,19 +1,186 @@
 'use client';
-import {useRef,useState,type FormEvent} from 'react';
-import {ArrowLeft,ArrowRight,ArrowUpRight,CalendarDays,Check,CheckCircle2,Dumbbell,MapPin,MessageCircle,Phone,ShieldCheck,UserRound} from 'lucide-react';
-import {useGymLanguage} from './SiteShell';
-import {legalConsent,legalError} from '@/lib/legal';
+// "Visit us" page: one short form to book a free club visit (or, from the contact page, send a message).
+// Subscriptions live on /prices, so this page no longer asks what you want.
+import { useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
+import { ArrowUpRight, CheckCircle2, Clock3, MapPin, MessageCircle, Phone, ShieldCheck, Tag, X } from 'lucide-react';
+import { useGymLanguage } from './SiteShell';
+import { useSiteInfo } from '@/lib/admin/overrides';
+import { legalConsent, legalError } from '@/lib/legal';
 import './experiences.css';
-type Kind='tour'|'membership'|'class'|'training'|'contact';
-function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Amman',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return ['year','month','day'].map(x=>p.find(v=>v.type===x)?.value).join('-')}
-export default function VisitForm({initialKind='tour',initialInterest='',initialDate='',initialMessage=''}:{initialKind?:string;initialInterest?:string;initialDate?:string;initialMessage?:string}){
- const {lang,t}=useGymLanguage();const [step,setStep]=useState(0);const [kind,setKind]=useState<Kind>(['tour','membership','class','training','contact'].includes(initialKind)?initialKind as Kind:'tour');const [interest,setInterest]=useState(initialInterest);const [date,setDate]=useState(initialDate);const [period,setPeriod]=useState('');const [section,setSection]=useState('');const [message,setMessage]=useState(initialMessage.slice(0,1700));const [name,setName]=useState('');const [phone,setPhone]=useState('');const [email,setEmail]=useState('');const [consent,setConsent]=useState(false);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [reference,setReference]=useState('');const id=useRef('');
- const kinds:[Kind,string,string][]=[['tour','Visit the club','زيارة النادي'],['membership','Membership enquiry','استفسار عن الاشتراك'],['class','Class enquiry','استفسار عن حصة'],['training','Personal training','تدريب شخصي'],['contact','Member support','خدمة الأعضاء']];
- const submit=async(e:FormEvent)=>{e.preventDefault();if(!consent){setError(legalError(lang));return}setBusy(true);setError('');if(!id.current)id.current=crypto.randomUUID();try{const res=await fetch('/api/requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,interest:interest.trim().slice(0,160)||undefined,preferredDate:date||undefined,name,phone,email:email||undefined,message:[period&&`Preferred time: ${period}`,section&&`Club section: ${section}`,message].filter(Boolean).join('\n').slice(0,2000)||undefined,consent:true,clientRequestId:id.current})});const result=await res.json() as {reference?:string;error?:string};if(!res.ok)throw new Error(result.error);setReference(result.reference??'')}catch(err){setError(lang==='en'&&err instanceof Error&&err.message?err.message:t('We couldn’t save your request. Try again or call the club.','تعذّر حفظ طلبك. حاول مجدداً أو اتصل بالنادي.'))}finally{setBusy(false)}};
- if(reference)return <div className="hp3-container hp3-booking-success"><CheckCircle2 size={60}/><span className="hp3-kicker">{t('YOUR NEXT STEP IS SAVED','حُفظت خطوتك القادمة')}</span><h1>{t('YOU’RE ON','أصبحت على')}<br/>{t('YOUR WAY.','طريقك.')}</h1><p>{t('Your request is awaiting the club’s confirmation. Keep your reference and call the team to confirm the details.','طلبك بانتظار تأكيد النادي. احتفظ بالرقم المرجعي واتصل بالفريق لتأكيد التفاصيل.')}</p><div className="hp3-booking-reference"><small>{t('REQUEST REFERENCE','رقم الطلب')}</small><strong>{reference}</strong><span>{t('Awaiting confirmation','بانتظار التأكيد')}</span></div><div className="hp3-button-row"><a href="tel:+962792151000" className="hp3-button hp3-red"><Phone size={17}/>{t('Call the club','اتصل بالنادي')}</a><a href="/member" className="hp3-button">{t('My requests','طلباتي')}<ArrowUpRight size={17}/></a></div><a className="hp3-text-link" href="/club">{t('Keep exploring the club','واصل استكشاف النادي')}<ArrowUpRight size={15}/></a></div>;
- return <div className="hp3-container hp3-booking"><div className="hp3-page-head"><span className="hp3-kicker">{t('LET’S MAKE YOUR NEXT STEP PERSONAL','لنجعل خطوتك القادمة تناسبك')}</span><h1>{kind==='contact'?t('HOW CAN WE','كيف يمكننا'):t('YOUR FIRST','خطوتك')} <em>{kind==='contact'?t('HELP?','مساعدتك؟'):t('STEP.','الأولى.')}</em></h1><p>{t('A club visit, a new routine or a little guidance. Tell us what you have in mind and choose when you’d like to come.','زيارة للنادي، أو روتين جديد، أو بعض الإرشاد. أخبرنا بما تفكر فيه واختر الوقت الذي يناسبك.')}</p></div><div className="hp3-booking-layout"><div><div className="hp3-stepper">{[[t('Your experience','تجربتك')],[t('Your preferences','تفضيلاتك')],[t('Your details','بياناتك')]].map((v,i)=><button key={i} type="button" onClick={()=>i<step&&setStep(i)} className={i===step?'is-current':i<step?'is-done':''}><span>{i<step?<Check size={13}/>:String(i+1).padStart(2,'0')}</span><b>{v[0]}</b></button>)}</div><form onSubmit={submit} className="hp3-visit-form">
- {step===0&&<><div className="hp3-step-heading"><small>01</small><h2>{t('WHAT BRINGS YOU IN?','ما الذي ترغب فيه؟')}</h2><p>{t('Choose a reason for your visit or enquiry.','اختر سبب الزيارة أو الاستفسار.')}</p></div><div className="hp3-purpose-grid">{kinds.map(([value,en,ar],i)=><button type="button" key={value} className={kind===value?'is-active':''} onClick={()=>setKind(value)}>{i===0?<MapPin size={21}/>:i===1?<UserRound size={21}/>:i===2?<CalendarDays size={21}/>:i===3?<Dumbbell size={21}/>:<MessageCircle size={21}/>}<strong>{t(en,ar)}</strong><span>{kind===value?<Check size={15}/>:<ArrowUpRight size={15}/>}</span></button>)}</div><label className="hp3-field">{t('What would you like to explore?','ما الذي ترغب في استكشافه؟')}<input className="hp3-input" value={interest} onChange={e=>setInterest(e.target.value)} maxLength={160} placeholder={t('e.g. gym access, Pilates, a day pass, membership renewal','مثال: صالة النادي، بيلاتس، دخول يومي، تجديد الاشتراك')}/></label><div className="hp3-visit-suggestions">{[['Gym membership','اشتراك النادي'],['Day pass availability','توفر الدخول اليومي'],['Pilates','البيلاتس'],['Pool & spa','المسبح والسبا'],['Personal training','التدريب الشخصي']].map(([en,ar])=><button type="button" key={en} className="hp3-chip" onClick={()=>setInterest(t(en,ar))}>{t(en,ar)}</button>)}</div></>}
- {step===1&&<><div className="hp3-step-heading"><small>02</small><h2>{t('MAKE IT FIT YOUR DAY.','اختر ما يناسب يومك.')}</h2><p>{t('All preferences are optional. The team will confirm availability.','جميع التفضيلات اختيارية. يؤكد الفريق التوفر.')}</p></div><div className="hp3-form-grid"><label className="hp3-field">{t('Preferred date','التاريخ المفضل')}<input className="hp3-input" type="date" min={today()} value={date} onChange={e=>setDate(e.target.value)}/></label><label className="hp3-field">{t('Preferred time of day','الفترة المفضلة')}<select className="hp3-input" value={period} onChange={e=>setPeriod(e.target.value)}><option value="">{t('No preference','لا أفضلية')}</option><option value="Morning">{t('Morning','الصباح')}</option><option value="Afternoon">{t('Afternoon','بعد الظهر')}</option><option value="Evening">{t('Evening','المساء')}</option></select></label></div><label className="hp3-field">{t('Club section','قسم النادي')}<select className="hp3-input" value={section} onChange={e=>setSection(e.target.value)}><option value="">{t('Help me choose','ساعدني في الاختيار')}</option><option value="Men">{t('Men','الرجال')}</option><option value="Women">{t('Women','السيدات')}</option></select></label><label className="hp3-field">{t('Your goals or questions (optional)','أهدافك أو أسئلتك (اختياري)')}<textarea className="hp3-input" rows={4} value={message} onChange={e=>setMessage(e.target.value)} maxLength={1700} placeholder={t('Tell us what matters to you. Please avoid medical details.','أخبرنا بما يهمك. يرجى تجنب التفاصيل الطبية.')}/></label></>}
- {step===2&&<><div className="hp3-step-heading"><small>03</small><h2>{t('LET’S KEEP IN TOUCH.','لنبقَ على تواصل.')}</h2><p>{t('Your request will be saved with a personal reference.','سيُحفظ طلبك مع رقم مرجعي خاص.')}</p></div><label className="hp3-field">{t('Full name','الاسم الكامل')}<input className="hp3-input" autoComplete="name" required minLength={2} maxLength={100} value={name} onChange={e=>setName(e.target.value)} placeholder={t('Your name','اسمك')}/></label><div className="hp3-form-grid"><label className="hp3-field">{t('Phone number','رقم الهاتف')}<input className="hp3-input" autoComplete="tel" type="tel" required minLength={7} maxLength={24} dir="ltr" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="079 000 0000"/></label><label className="hp3-field">{t('Email (optional)','البريد الإلكتروني (اختياري)')}<input className="hp3-input" autoComplete="email" type="email" maxLength={254} dir="ltr" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label></div><label className="hp3-consent"><input type="checkbox" required checked={consent} onChange={e=>setConsent(e.target.checked)}/><span>{legalConsent(lang)} <a href={lang==='ar'?'/ar/privacy':'/privacy'} target="_blank" rel="noopener noreferrer">{t('Privacy','الخصوصية')}</a> · <a href={lang==='ar'?'/ar/terms':'/terms'} target="_blank" rel="noopener noreferrer">{t('Terms','الشروط')}</a></span></label><div className="hp3-visit-disclaimer"><ShieldCheck size={17}/><p>{t('This is an enquiry, not a confirmed reservation or paid membership. No payment is collected. Call the gym for an immediate response.','هذا استفسار وليس حجزاً مؤكداً أو اشتراكاً مدفوعاً. لا تُحصّل أي مبالغ. اتصل بالنادي للاستجابة الفورية.')}</p></div></>}
- {error&&<p className="hp3-error" role="alert">{error}</p>}<div className="hp3-visit-navigation">{step>0&&<button className="hp3-text-link" type="button" onClick={()=>setStep(s=>s-1)}><ArrowLeft size={16}/>{t('Back','السابق')}</button>}{step<2?<button className="hp3-button hp3-red" type="button" onClick={()=>setStep(s=>s+1)}>{t('Continue','متابعة')}<ArrowRight size={17}/></button>:<button className="hp3-button hp3-red" disabled={busy} type="submit">{busy?t('Saving your request…','جارٍ حفظ الطلب…'):t('Send my request','أرسل طلبي')}<ArrowUpRight size={17}/></button>}</div></form></div><aside className="hp3-visit-aside"><img src="/images/display/gym-03.webp" alt={t('The actual Hydrogen training floor','صالة تدريب هايدروجين الحقيقية')}/><div><span className="hp3-kicker">HYDROGEN PLUS FITNESS</span><h3>{t('THE RIGHT PLACE','المكان المناسب')}<br/>{t('TO START.','للبداية.')}</h3><dl><div><dt>{t('Your next step','خطوتك القادمة')}</dt><dd>{t(...kinds.find(k=>k[0]===kind)!.slice(1) as [string,string])}</dd></div>{interest&&<div><dt>{t('Your interest','اهتمامك')}</dt><dd>{interest}</dd></div>}{date&&<div><dt>{t('Preferred date','التاريخ المفضل')}</dt><dd dir="ltr">{date}</dd></div>}</dl><p><MapPin size={15}/>{t('Al-Husn Street, opposite Granada College, Irbid','شارع الحصن مقابل كلية غرناطة، إربد')}</p><a href="tel:+962792151000"><Phone size={14}/>079 215 1000</a></div></aside></div></div>
+import './visit.css';
+
+type Kind = 'tour' | 'membership' | 'class' | 'training' | 'contact';
+const KINDS: Kind[] = ['tour', 'membership', 'class', 'training', 'contact'];
+const noSub = () => () => {};
+const readSearch = () => window.location.search;
+function ammanDay(offset = 0) {
+  const d = new Date(Date.now() + offset * 86400000);
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Amman', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+}
+
+function clock(hm: string, lang: 'en' | 'ar') {
+  const [h, m] = hm.split(':').map(Number);
+  const d = new Date(Date.UTC(2000, 0, 1, h, m));
+  return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-US', { hour: 'numeric', minute: m ? '2-digit' : undefined, timeZone: 'UTC' }).format(d);
+}
+
+export default function VisitForm({ initialKind = '', initialInterest = '', initialDate = '', initialMessage = '' }: { initialKind?: string; initialInterest?: string; initialDate?: string; initialMessage?: string }) {
+  const { lang, t } = useGymLanguage();
+  const { contact, hours } = useSiteInfo();
+  // Links like /join?kind=training&interest=… also work on the static preview, where the server can't read the query.
+  const search = useSyncExternalStore(noSub, readSearch, () => '');
+  const q = new URLSearchParams(search);
+  const rawKind = initialKind || q.get('kind') || 'tour';
+  const kind: Kind = KINDS.includes(rawKind as Kind) ? (rawKind as Kind) : 'tour';
+  const isMessage = kind === 'contact';
+  const topicFromLink = (initialInterest || q.get('interest') || '').slice(0, 160);
+  const [topicHidden, setTopicHidden] = useState(false);
+  const topic = topicHidden ? '' : topicFromLink;
+
+  const [dayChoice, setDayChoice] = useState<'today' | 'tomorrow' | 'other' | ''>('');
+  const [otherDate, setOtherDate] = useState(initialDate || q.get('date') || '');
+  const [period, setPeriod] = useState('');
+  const [section, setSection] = useState('');
+  const [message, setMessage] = useState((initialMessage || q.get('message') || '').slice(0, 1700));
+  const [showNote, setShowNote] = useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [reference, setReference] = useState('');
+  const id = useRef('');
+
+  const date = dayChoice === 'today' ? ammanDay(0) : dayChoice === 'tomorrow' ? ammanDay(1) : dayChoice === 'other' ? otherDate : (otherDate && !dayChoice ? otherDate : '');
+  const phoneMain = contact.phones[0];
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (isMessage && message.trim().length < 3) { setError(t('Please write your message.', 'اكتب رسالتك من فضلك.')); return; }
+    if (!consent) { setError(legalError(lang)); return; }
+    setBusy(true); setError('');
+    if (!id.current) id.current = crypto.randomUUID();
+    try {
+      const res = await fetch('/api/requests', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind,
+          interest: topic.trim() || (isMessage ? undefined : 'Club visit'),
+          preferredDate: isMessage ? undefined : date || undefined,
+          name, phone,
+          message: [!isMessage && period && `Preferred time: ${period}`, !isMessage && section && `Club section: ${section}`, message.trim()].filter(Boolean).join('\n').slice(0, 2000) || undefined,
+          consent: true, clientRequestId: id.current,
+        }),
+      });
+      const result = (await res.json()) as { reference?: string; error?: string };
+      if (!res.ok) throw new Error(result.error);
+      setReference(result.reference ?? '');
+    } catch (err) {
+      setError(lang === 'en' && err instanceof Error && err.message ? err.message : t('We couldn’t send your request. Try again or call the club.', 'تعذّر إرسال طلبك. حاول مجدداً أو اتصل بالنادي.'));
+    } finally { setBusy(false); }
+  };
+
+  if (reference) {
+    return (
+      <div className="hp3-container hp3-booking-success">
+        <CheckCircle2 size={60} />
+        <span className="hp3-kicker">{isMessage ? t('MESSAGE SENT', 'وصلت رسالتك') : t('VISIT REQUESTED', 'وصل طلب الزيارة')}</span>
+        <h1>{isMessage ? t('WE’LL GET', 'رح نرجع') : t('SEE YOU', 'نشوفك')}<br />{isMessage ? t('BACK TO YOU.', 'نتواصل معك.') : t('SOON.', 'قريباً.')}</h1>
+        <p>{isMessage ? t('The team will reply by phone. Keep your reference in case you call us.', 'الفريق رح يرد عليك بالهاتف. احتفظ برقم الطلب إذا اتصلت فينا.') : t('The team will call you to confirm the time. Keep your reference in case you call us.', 'الفريق رح يتصل فيك ليأكد الموعد. احتفظ برقم الطلب إذا اتصلت فينا.')}</p>
+        <div className="hp3-booking-reference"><small>{t('REQUEST REFERENCE', 'رقم الطلب')}</small><strong>{reference}</strong><span>{t('Waiting for the team to confirm', 'بانتظار تأكيد الفريق')}</span></div>
+        <div className="hp3-button-row">
+          <a href={`tel:${phoneMain.tel}`} className="hp3-button hp3-red"><Phone size={17} />{t('Call the club', 'اتصل بالنادي')}</a>
+          <a href="/prices" className="hp3-button">{t('Plans & prices', 'الأسعار والاشتراكات')}<ArrowUpRight size={17} /></a>
+        </div>
+      </div>
+    );
+  }
+
+  const chip = (on: boolean) => (on ? 'vv-chip is-on' : 'vv-chip');
+  return (
+    <div className="hp3-container vv">
+      <header className="vv-head">
+        <span className="hp3-kicker">{isMessage ? t('MESSAGE THE CLUB', 'راسل النادي') : t('FREE CLUB VISIT', 'زيارة مجانية للنادي')}</span>
+        <h1>{isMessage ? <>{t('SEND US A', 'أرسل لنا')} <em>{t('MESSAGE.', 'رسالة.')}</em></> : <>{t('BOOK A', 'احجز')} <em>{t('FREE VISIT.', 'زيارة مجانية.')}</em></>}</h1>
+        <p>{isMessage
+          ? t('Write your question and leave your number. The team calls you back.', 'اكتب سؤالك واترك رقمك، والفريق بيتصل فيك.')
+          : t('Come and see the club, the equipment and the pool, and meet the team before you pay anything. Pick a day, leave your number and we call you to confirm.', 'تعال شوف النادي والأجهزة والمسبح وتعرّف على الفريق قبل ما تدفع أي شي. اختر اليوم واترك رقمك ونتصل فيك للتأكيد.')}</p>
+        <div className="vv-links">
+          <a href="/prices"><Tag size={17} /><span><b>{t('Want to subscribe?', 'بدك تشترك؟')}</b> {t('See plans & prices', 'شوف الأسعار والاشتراكات')}</span><ArrowUpRight size={15} /></a>
+          {isMessage
+            ? <a href="/join"><MapPin size={17} /><span><b>{t('Want to visit?', 'بدك تزورنا؟')}</b> {t('Book a free visit', 'احجز زيارة مجانية')}</span><ArrowUpRight size={15} /></a>
+            : <a href="/contact"><MessageCircle size={17} /><span><b>{t('Already a member?', 'مشترك عنا؟')}</b> {t('Contact us for help', 'تواصل معنا للمساعدة')}</span><ArrowUpRight size={15} /></a>}
+        </div>
+      </header>
+
+      <div className="vv-layout">
+        <form className="vv-form" onSubmit={submit} noValidate={false}>
+          {topic && (
+            <div className="vv-topic"><span>{t('About', 'بخصوص')}</span><b>{topic}</b>
+              <button type="button" onClick={() => setTopicHidden(true)} aria-label={t('Remove', 'إزالة')}><X size={15} /></button>
+            </div>
+          )}
+
+          {!isMessage && (
+            <>
+              <fieldset className="vv-group">
+                <legend>{t('Which day?', 'أي يوم؟')} <small>{t('optional', 'اختياري')}</small></legend>
+                <div className="vv-chips">
+                  <button type="button" className={chip(dayChoice === 'today')} aria-pressed={dayChoice === 'today'} onClick={() => setDayChoice(dayChoice === 'today' ? '' : 'today')}>{t('Today', 'اليوم')}</button>
+                  <button type="button" className={chip(dayChoice === 'tomorrow')} aria-pressed={dayChoice === 'tomorrow'} onClick={() => setDayChoice(dayChoice === 'tomorrow' ? '' : 'tomorrow')}>{t('Tomorrow', 'بكرا')}</button>
+                  <button type="button" className={chip(dayChoice === 'other')} aria-pressed={dayChoice === 'other'} onClick={() => setDayChoice(dayChoice === 'other' ? '' : 'other')}>{t('Another day', 'يوم ثاني')}</button>
+                </div>
+                {dayChoice === 'other' && <input className="vv-input" type="date" min={ammanDay(0)} value={otherDate} onChange={(e) => setOtherDate(e.target.value)} aria-label={t('Choose a day', 'اختر اليوم')} />}
+              </fieldset>
+
+              <fieldset className="vv-group">
+                <legend>{t('What time?', 'أي وقت؟')} <small>{t('optional', 'اختياري')}</small></legend>
+                <div className="vv-chips">
+                  {([['Morning', 'Morning', 'الصبح'], ['Afternoon', 'Afternoon', 'العصر'], ['Evening', 'Evening', 'المسا']] as const).map(([v, en, ar]) => (
+                    <button key={v} type="button" className={chip(period === v)} aria-pressed={period === v} onClick={() => setPeriod(period === v ? '' : v)}>{t(en, ar)}</button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="vv-group">
+                <legend>{t('Which side of the club?', 'أي قسم؟')} <small>{t('optional', 'اختياري')}</small></legend>
+                <div className="vv-chips">
+                  {([['Men', 'Men’s gym', 'جيم الرجال'], ['Women', 'Ladies’ club', 'نادي السيدات']] as const).map(([v, en, ar]) => (
+                    <button key={v} type="button" className={chip(section === v)} aria-pressed={section === v} onClick={() => setSection(section === v ? '' : v)}>{t(en, ar)}</button>
+                  ))}
+                </div>
+              </fieldset>
+            </>
+          )}
+
+          <div className="vv-row">
+            <label className="vv-field">{t('Your name', 'اسمك')}<input className="vv-input" autoComplete="name" required minLength={2} maxLength={100} value={name} onChange={(e) => setName(e.target.value)} placeholder={t('Full name', 'الاسم الكامل')} /></label>
+            <label className="vv-field">{t('Phone', 'رقم الهاتف')}<input className="vv-input" autoComplete="tel" type="tel" inputMode="tel" required minLength={7} maxLength={24} dir="ltr" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="079 000 0000" /></label>
+          </div>
+
+          {isMessage || showNote || message
+            ? <label className="vv-field">{isMessage ? t('Your message', 'رسالتك') : t('Note (optional)', 'ملاحظة (اختياري)')}<textarea className="vv-input" rows={isMessage ? 5 : 3} maxLength={1700} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t('Please avoid medical details.', 'يرجى تجنب التفاصيل الطبية.')} /></label>
+            : <button type="button" className="vv-addnote" onClick={() => setShowNote(true)}>+ {t('Add a note', 'أضف ملاحظة')}</button>}
+
+          <label className="vv-consent"><input type="checkbox" required checked={consent} onChange={(e) => setConsent(e.target.checked)} /><span>{legalConsent(lang)} <a href={lang === 'ar' ? '/ar/privacy' : '/privacy'} target="_blank" rel="noopener noreferrer">{t('Privacy', 'الخصوصية')}</a> · <a href={lang === 'ar' ? '/ar/terms' : '/terms'} target="_blank" rel="noopener noreferrer">{t('Terms', 'الشروط')}</a></span></label>
+
+          {error && <p className="vv-error" role="alert">{error}</p>}
+          <button className="hp3-button hp3-red vv-send" disabled={busy} type="submit">
+            {busy ? t('Sending…', 'جارٍ الإرسال…') : isMessage ? t('Send message', 'أرسل الرسالة') : t('Book my free visit', 'احجز زيارتي')}<ArrowUpRight size={17} />
+          </button>
+          <p className="vv-small"><ShieldCheck size={15} />{isMessage ? t('No payment. The team replies by phone.', 'بدون دفع. الفريق بيرد عليك بالهاتف.') : t('Free, no payment. The team calls you to confirm the time.', 'مجانية وبدون دفع. الفريق بيتصل فيك ليأكد الموعد.')}</p>
+        </form>
+
+        <aside className="vv-aside">
+          <img src="/images/display/gym-03.webp" alt={t('The Hydrogen Plus training floor', 'صالة التدريب في هايدروجين بلس')} />
+          <div>
+            <p><MapPin size={16} />{t(contact.address.en, contact.address.ar)}</p>
+            {hours.filter((h) => h.id === 'men' || h.id === 'women').map((h) => <p key={h.id}><Clock3 size={16} /><span>{t(h.en, h.ar)} · <span dir="ltr">{clock(h.open, lang)} – {clock(h.close, lang)}</span></span></p>)}
+            <a href={`tel:${phoneMain.tel}`}><Phone size={16} /><span dir="ltr">{phoneMain.display}</span></a>
+            <a href={contact.directionsUrl} target="_blank" rel="noopener noreferrer"><MapPin size={16} />{t('Directions', 'الاتجاهات')}<ArrowUpRight size={14} /></a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
 }
