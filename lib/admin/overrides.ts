@@ -5,6 +5,7 @@ import { useMemo, useSyncExternalStore } from 'react';
 import { contact as baseContact, hours as baseHours, type HoursRow } from '@/lib/site-info';
 import { schedule as baseClasses, scheduleDays as baseDays, type ScheduledClass, type ScheduleDay } from '@/lib/schedule';
 import type { Bi, MenuSection, Service, ServiceFact, ServiceFaq, TimelineItem } from '@/lib/services';
+import { planCategories, type Plan, type PlanCategory } from '@/lib/plans';
 
 export type Contact = typeof baseContact;
 export type ServicePatch = Partial<{
@@ -22,6 +23,7 @@ export type Overrides = {
   photos?: Record<string, string>;
   accent?: string;
   announcement?: Announcement;
+  plans?: PlanCategory[];
   savedAt?: string;
 };
 
@@ -82,6 +84,23 @@ function cleanService(v: unknown): ServicePatch | undefined {
   return Object.keys(out).length ? out : undefined;
 }
 
+function cleanPlans(v: unknown): PlanCategory[] | undefined {
+  if (!Array.isArray(v)) return undefined;
+  const cats = v.slice(0, 30).flatMap((c: Record<string, unknown>) => {
+    const name = bi(c?.name, 120), audience = bi(c?.audience, 200);
+    if (!name || !audience || !isStr(c.id, 40) || !/^[a-z0-9-]{1,40}$/.test(c.id)) return [];
+    const plans: Plan[] = Array.isArray(c.plans) ? c.plans.slice(0, 20).flatMap((p: Record<string, unknown>) => {
+      const label = bi(p?.label, 120); const price = Number(p?.price);
+      if (!label || !isStr(p.id, 40) || !/^[a-z0-9-]{1,40}$/.test(p.id) || !Number.isFinite(price) || price < 0 || price > 100000) return [];
+      const months = Number(p.months);
+      const unit = bi(p.unit, 60), note = bi(p.note, 200);
+      return [{ id: p.id, label, price: Math.round(price * 100) / 100, ...(unit && (unit[0] || unit[1]) ? { unit } : {}), ...(Number.isInteger(months) && months >= 1 && months <= 24 ? { months } : {}), ...(note && (note[0] || note[1]) ? { note } : {}), ...(p.example ? { example: true } : {}), ...(p.popular ? { popular: true } : {}) }];
+    }) : [];
+    return [{ id: c.id, name, audience, ...(isStr(c.service, 40) && c.service ? { service: c.service } : {}), includes: biList(c.includes, 12) ?? [], plans }];
+  });
+  return cats.length ? cats : undefined;
+}
+
 export function sanitize(input: unknown): Overrides {
   if (!input || typeof input !== 'object') return EMPTY;
   const o = input as Record<string, unknown>; const out: Overrides = {};
@@ -127,6 +146,7 @@ export function sanitize(input: unknown): Overrides {
   if (isStr(o.accent, 7) && /^#[0-9a-fA-F]{6}$/.test(o.accent)) out.accent = o.accent;
   const an = o.announcement as Record<string, unknown> | undefined;
   if (an && typeof an === 'object') { const text = bi(an.text, 200); if (text) out.announcement = { on: !!an.on, text, href: url(an.href) ?? '' }; }
+  const plans = cleanPlans(o.plans); if (plans) out.plans = plans;
   if (isStr(o.savedAt, 40)) out.savedAt = o.savedAt;
   return out;
 }
@@ -174,3 +194,6 @@ export function applyService<T extends Service>(s: T, o: Overrides): T {
 export const useSiteInfo = () => { const o = useOverrides(); return useMemo(() => siteInfoOf(o), [o]); };
 export const useSchedule = () => { const o = useOverrides(); return useMemo(() => scheduleOf(o), [o]); };
 export const useService = <T extends Service>(s: T) => { const o = useOverrides(); return useMemo(() => applyService(s, o), [s, o]); };
+
+export const plansOf = (o: Overrides): PlanCategory[] => o.plans ?? planCategories;
+export const usePlans = () => { const o = useOverrides(); return useMemo(() => plansOf(o), [o]); };

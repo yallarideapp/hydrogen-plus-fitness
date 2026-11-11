@@ -13,7 +13,7 @@ const AREAS = {
   TrainingExperience: 'Training', TrainingJourney: 'Training', CoachesPage: 'Coaches', ContactPage: 'Contact',
   CareersPage: 'Careers', HelpCentre: 'Help centre', Calculators: 'Tools & calculators', VisitForm: 'Visit & join form',
   ServicePage: 'Service pages (shared)', ServicesIndex: 'All services', MemberExperience: 'Member area',
-  WorkoutStudio: 'Workout studio', SocialArchive: 'Community',
+  WorkoutStudio: 'Workout studio', SocialArchive: 'Community', Plans: 'Plans & prices',
 };
 const SKIP_FILES = new Set(['StaffArea', 'MemberArea', 'LegalPage', 'PhotoSwapper']);
 

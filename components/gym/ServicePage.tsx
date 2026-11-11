@@ -7,7 +7,7 @@ import {
 import { useGymLanguage } from './SiteShell';
 import type { Bi, Service, ServiceIcon, TimelineTag } from '@/lib/services';
 import type { ServiceCard, ServicePost, ServiceMedia } from '@/lib/service-data';
-import { useOverrides, useSchedule, useService, useSiteInfo } from '@/lib/admin/overrides';
+import { usePlans, useOverrides, useSchedule, useService, useSiteInfo } from '@/lib/admin/overrides';
 import './service-page.css';
 
 export const serviceIcons: Record<ServiceIcon, ComponentType<{ size?: number; strokeWidth?: number }>> = {
@@ -139,6 +139,7 @@ export default function ServicePage({ service: published, posts, related }: { se
   const service = useService(published);
   const { contact } = useSiteInfo();
   const L = (b: Bi) => t(b[0], b[1]);
+  const priceCat = usePlans().find((c) => c.service === published.slug);
   const Icon = serviceIcons[service.icon];
   const [box, setBox] = useState<number | null>(null);
   const [shown, setShown] = useState(6);
@@ -164,7 +165,8 @@ export default function ServicePage({ service: published, posts, related }: { se
           <p className="sp-headline">{L(service.headline)}</p>
           <p className="sp-intro">{L(service.intro)}</p>
           <div className="sp-actions">
-            <a className="sp-btn sp-btn-red" href={enquire}>{L(service.cta.label)}<ArrowUpRight size={17} /></a>
+            {priceCat && <a className="sp-btn sp-btn-red" href={`/prices#${priceCat.id}`}>{t('Prices & plans', 'الأسعار والاشتراكات')}<ArrowUpRight size={17} /></a>}
+            <a className={priceCat ? 'sp-btn' : 'sp-btn sp-btn-red'} href={enquire}>{L(service.cta.label)}<ArrowUpRight size={17} /></a>
             <a className="sp-btn" href={`tel:${phone.tel}`} title={L(phone.label)}><Phone size={15} /><span dir="ltr">{phone.display}</span></a>
             <a className="sp-btn sp-btn-ghost" href={wa} target="_blank" rel="noopener noreferrer"><MessageCircle size={15} />WhatsApp</a>
           </div>

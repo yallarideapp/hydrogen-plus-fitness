@@ -11,6 +11,7 @@ import { blobToDataUrl, dataUrlToBlob, deletePhoto, getPhoto, newPhotoId, photoI
 import { services as baseServices, newsPage, type Bi, type MenuSection, type Service, type ServiceFact, type ServiceFaq, type TimelineItem, type TimelineTag } from '@/lib/services';
 import { contact as baseContact, hours as baseHours, type HoursRow } from '@/lib/site-info';
 import { schedule as baseClasses, scheduleDays as baseDays, type ClassCategory, type ScheduledClass, type ScheduleDay } from '@/lib/schedule';
+import { planCategories, type Plan, type PlanCategory } from '@/lib/plans';
 import textCatalog from '@/lib/admin/text-catalog.json';
 import photoCatalog from '@/lib/admin/photo-catalog.json';
 import './admin.css';
@@ -31,7 +32,7 @@ const AREA_AR: Record<string, string> = {
   Home: 'الرئيسية', 'Header, menu & footer': 'الترويسة والقائمة والتذييل', 'The club': 'النادي', Classes: 'الحصص', Memberships: 'الاشتراكات',
   Training: 'التدريب', Coaches: 'المدربون', Contact: 'التواصل', Careers: 'الوظائف', 'Help centre': 'مركز المساعدة', 'Tools & calculators': 'الأدوات والحاسبات',
   'Visit & join form': 'نموذج الزيارة والاشتراك', 'Service pages (shared)': 'صفحات الخدمات (مشترك)', 'All services': 'كل الخدمات', 'Member area': 'منطقة الأعضاء',
-  'Workout studio': 'استوديو التمارين', Community: 'المجتمع',
+  'Workout studio': 'استوديو التمارين', Community: 'المجتمع', 'Plans & prices': 'الأسعار والاشتراكات',
 };
 const GROUP_AR: Record<string, string> = { 'Service banners': 'صور واجهات الخدمات', 'Site photos': 'صور الموقع', 'Hydro Rest menu': 'منيو هايدرو ريست', Logo: 'الشعار' };
 const TAGS: [TimelineTag, string, string][] = [['offer', 'Offer', 'عرض'], ['news', 'News', 'خبر'], ['hours', 'Hours', 'دوام'], ['event', 'Event', 'فعالية'], ['closure', 'Closure', 'إغلاق'], ['opening', 'Opening', 'افتتاح']];
@@ -213,7 +214,7 @@ export default function AdminPanel() {
             {tab === 'overview' && <Overview d={d} go={setTab} counts={{ editedTexts, editedPages, replacedPhotos }} />}
             {tab === 'texts' && <TextsTab d={d} setText={setText} />}
             {tab === 'services' && <ServicesTab svcOf={svcOf} setSvc={setSvc} d={d} setPhoto={setPhoto} base={base} />}
-            {tab === 'prices' && <PricesTab svcOf={svcOf} setSvc={setSvc} />}
+            {tab === 'prices' && <><PlansEditor plans={d.plans ?? planCategories} setPlans={(v) => update((o) => ({ ...o, plans: same(v, planCategories) ? undefined : v }))} /><PricesTab svcOf={svcOf} setSvc={setSvc} /></>}
             {tab === 'schedule' && <ScheduleTab sched={sched} setSched={setSched} />}
             {tab === 'contact' && <ContactTab contact={contact} setContact={setContact} hours={hours} setHours={setHours} />}
             {tab === 'photos' && <PhotosTab d={d} setPhoto={setPhoto} flash={flash} />}
@@ -361,6 +362,43 @@ function BannerPhoto({ path, d, setPhoto }: { path: string; d: Overrides; setPho
   const urls = usePhotoUrls(d.photos);
   const id = d.photos?.[path];
   return <div className="adm-banner"><PhotoCard entry={{ path, group: '', label: ['Page banner photo', 'صورة واجهة الصفحة'] }} src={id ? urls[id] : undefined} replaced={!!id} setPhoto={setPhoto} /></div>;
+}
+
+// ---------- Plans & prices (the /prices page) ----------
+function PlansEditor({ plans, setPlans }: { plans: PlanCategory[]; setPlans: (v: PlanCategory[]) => void }) {
+  const { A } = useA();
+  const [cid, setCid] = useState(plans[0]?.id ?? '');
+  const ci = Math.max(0, plans.findIndex((c) => c.id === cid));
+  const cat = plans[ci];
+  const setCat = (c: PlanCategory) => setPlans(plans.map((x, i) => (i === ci ? c : x)));
+  const examples = plans.reduce((n, c) => n + c.plans.filter((p) => p.example).length, 0);
+  const edited = !same(plans, planCategories);
+  return (
+    <Section title={A('Plans & prices page', 'صفحة الأسعار والاشتراكات')} icon={<Tag size={18} />}
+      intro={A('The prices visitors see on Plans & prices, the home page and in My membership. Prices marked Example show a * on the site and a note that the team confirms the price.', 'الأسعار اللي بيشوفها الزوار بصفحة الأسعار والرئيسية و«اشتراكي». الأسعار المعلّمة «تقريبي» بتظهر مع * وملاحظة إن الفريق بيأكد السعر.')}
+      actions={<div className="adm-inline">{examples > 0 && <span className="adm-chip">{examples} {A('example prices', 'أسعار تقريبية')}</span>}{edited && <button type="button" className="adm-link" onClick={() => setPlans(planCategories)}><RotateCcw size={13} />{A('Restore all', 'استرجاع الكل')}</button>}</div>}>
+      <div className="adm-svc-pick">{plans.map((c) => <button type="button" key={c.id} className={c.id === cat?.id ? 'is-active' : ''} onClick={() => setCid(c.id)}>{A(c.name[0], c.name[1])}{c.plans.some((p) => p.example) ? ' *' : ''}</button>)}</div>
+      {cat && <>
+        <BiInput label={A('Category name', 'اسم القسم')} value={cat.name} onChange={(v) => setCat({ ...cat, name: v })} />
+        <BiInput label={A('Who it is for', 'لمين')} value={cat.audience} onChange={(v) => setCat({ ...cat, audience: v })} />
+        <h3 className="adm-sub">{A('What’s included', 'شو بيشمل')}</h3>
+        <Rows items={cat.includes} onChange={(v) => setCat({ ...cat, includes: v })} make={(): Bi => ['', '']} addLabel={A('Add line', 'إضافة سطر')} render={(it, put) => <BiInput value={it} onChange={put} />} />
+        <h3 className="adm-sub">{A('Plans', 'الاشتراكات')}</h3>
+        <Rows items={cat.plans} onChange={(v) => setCat({ ...cat, plans: v })} make={(): Plan => ({ id: `${cat.id}-${Date.now().toString(36)}`, label: ['', ''], price: 0 })} addLabel={A('Add plan', 'إضافة اشتراك')}
+          title={(p) => `${A(p.label[0] || 'New plan', p.label[1] || 'اشتراك جديد')} · ${p.price} JD${p.example ? ' *' : ''}`}
+          render={(p, put) => <>
+            <BiInput label={A('Name', 'الاسم')} value={p.label} placeholder={['3 months', '٣ أشهر']} onChange={(v) => put({ ...p, label: v })} />
+            <div className="adm-grid3">
+              <Field type="number" label={A('Price (JD)', 'السعر (دينار)')} value={String(p.price)} onChange={(v) => put({ ...p, price: Math.max(0, Number(v) || 0) })} />
+              <Field type="number" label={A('Length in months (optional)', 'المدة بالأشهر (اختياري)')} value={p.months ? String(p.months) : ''} hint={A('Used for the end date and “per month”', 'لحساب تاريخ الانتهاء و«بالشهر»')} onChange={(v) => { const n = parseInt(v, 10); put({ ...p, months: n >= 1 && n <= 24 ? n : undefined }); }} />
+              <div className="adm-checks-col"><label className="adm-check"><input type="checkbox" checked={!!p.example} onChange={(e) => put({ ...p, example: e.target.checked || undefined })} />{A('Example price (not confirmed)', 'سعر تقريبي (غير مؤكد)')}</label><label className="adm-check"><input type="checkbox" checked={!!p.popular} onChange={(e) => put({ ...p, popular: e.target.checked || undefined })} />{A('Most popular', 'الأكثر طلباً')}</label></div>
+            </div>
+            <BiInput label={A('Unit (optional)', 'الوحدة (اختياري)')} value={p.unit ?? ['', '']} placeholder={['per session', 'للحصة']} onChange={(v) => put({ ...p, unit: v[0] || v[1] ? v : undefined })} />
+            <BiInput label={A('Note (optional)', 'ملاحظة (اختياري)')} value={p.note ?? ['', '']} onChange={(v) => put({ ...p, note: v[0] || v[1] ? v : undefined })} />
+          </>} />
+      </>}
+    </Section>
+  );
 }
 
 // ---------- Prices ----------

@@ -216,3 +216,5 @@
 .adm-photos{grid-template-columns:repeat(2,minmax(0,1fr))}
 .adm-filters select{flex:1 1 100%}
 }
+.adm-sub{font-size:15px;font-weight:800;margin:6px 0 0}
+.adm-checks-col{display:flex;flex-direction:column;gap:0}

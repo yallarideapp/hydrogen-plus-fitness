@@ -4,8 +4,8 @@
 // staff inbox can all be tried. On the live server (Cloudflare / ChatGPT Sites) this never runs.
 const KEY = 'hp-preview-data';
 type Rec = Record<string, unknown> & { id: string };
-type Data = { requests: Rec[]; workouts: Rec[]; measurements: Rec[]; sessions: Rec[]; goal: Record<string, unknown> | null };
-const empty = (): Data => ({ requests: [], workouts: [], measurements: [], sessions: [], goal: null });
+type Data = { requests: Rec[]; workouts: Rec[]; measurements: Rec[]; sessions: Rec[]; goal: Record<string, unknown> | null; subscriptions: Rec[] };
+const empty = (): Data => ({ requests: [], workouts: [], measurements: [], sessions: [], goal: null, subscriptions: [] });
 
 export function isPreviewHost() {
   if (typeof window === 'undefined') return false;
@@ -37,6 +37,14 @@ function futureDateError(v: unknown) {
   return v >= t && v <= upper.toISOString().slice(0, 10) ? '' : 'Choose a date within the next year.';
 }
 const sessionView = ({ consentedAt: _c, ...s }: Rec) => s;
+const addMonths = (date: string, months: number) => { const d = new Date(`${date}T12:00:00Z`); d.setUTCMonth(d.getUTCMonth() + months); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
+function activate(sub: Rec) {
+  const today = ammanToday();
+  const start = typeof sub.startDate === 'string' && sub.startDate > today ? sub.startDate : today;
+  sub.status = 'active'; sub.startDate = start; sub.activatedAt = now();
+  sub.endDate = typeof sub.months === 'number' && sub.months > 0 ? addMonths(start, sub.months) : null;
+}
+const currentSub = (d: Data) => [...d.subscriptions].reverse().find((x) => x.status === 'pending' || (x.status === 'active' && (!x.endDate || String(x.endDate) >= ammanToday()))) ?? null;
 
 async function handle(method: string, url: URL, body: Record<string, unknown>): Promise<Response> {
   const d = read();
@@ -107,9 +115,29 @@ async function handle(method: string, url: URL, body: Record<string, unknown>): 
         write(d); return json({ reference, status: 'pending', request: { id: rid, reference, status: 'pending', kind: body.kind, createdAt: at } }, 201);
       }
       break;
+    case 'subscription':
+      if (method === 'GET') return json({ subscription: currentSub(d), history: [...d.subscriptions].reverse() });
+      if (method === 'POST') {
+        if (body.consent !== true) return fail(CONSENT);
+        if (!str(body.planId) || !str(body.planName)) return fail('Choose a plan first.');
+        const price = Number(body.price); if (!Number.isFinite(price) || price < 0) return fail('This plan has no valid price.');
+        if (str(body.name).length < 2) return fail('Please enter your full name.');
+        const phone = str(body.phone); if (!/^[+()\d\s-]+$/.test(phone) || phone.replace(/\D/g, '').length < 7) return fail('Please enter a valid phone number.');
+        const e = futureDateError(body.startDate); if (e) return fail(e);
+        const open = d.subscriptions.find((x) => x.status === 'pending'); if (open) open.status = 'replaced';
+        const rid = uuid(); const reference = `HP-${rid.slice(0, 8).toUpperCase()}${rid.slice(-4).toUpperCase()}`; const at = now();
+        const months = Number(body.months);
+        const sub: Rec = { id: uuid(), reference, planId: str(body.planId), planName: str(body.planName).slice(0, 160), categoryName: str(body.categoryName).slice(0, 120), price, months: Number.isInteger(months) && months > 0 ? months : null, startDate: body.startDate, endDate: null, status: 'pending', example: !!body.example, createdAt: at };
+        d.subscriptions.push(sub);
+        d.requests.push({ id: rid, reference, userId: 'preview', subscriptionId: sub.id, kind: 'membership', name: str(body.name).slice(0, 100), phone: phone.replace(/[^\d+]/g, ''), email: null, interest: `${sub.planName} · ${price} JD`.slice(0, 160), preferredDate: body.startDate, message: opt(body.message, 2000), status: 'pending', consentedAt: at, createdAt: at });
+        write(d); return json({ subscription: sub, reference }, 201);
+      }
+      if (method === 'PATCH') { const sub = d.subscriptions.find((x) => x.id === body.id); if (!sub) return fail('Subscription not found.', 404); if (body.action === 'activate-demo' && sub.status === 'pending') { activate(sub); const r = d.requests.find((x) => x.subscriptionId === sub.id); if (r) r.status = 'confirmed'; } write(d); return json({ subscription: sub }); }
+      if (method === 'DELETE') { const sub = d.subscriptions.find((x) => x.id === id); if (!sub) return fail('Subscription not found.', 404); if (sub.status !== 'pending') return fail('Only a request that is still waiting can be cancelled.'); sub.status = 'cancelled'; const r = d.requests.find((x) => x.subscriptionId === sub.id); if (r) r.status = 'cancelled'; write(d); return json({ cancelled: true }); }
+      break;
     case 'staff':
-      if (method === 'GET') { const list = [...d.requests].reverse().map(({ userId: _u, clientRequestId: _c, consentedAt: _k, ...r }) => r); return json({ requests: list, stats: { pending: list.filter((r) => r.status === 'pending').length, total: list.length } }); }
-      if (method === 'PATCH') { const r = d.requests.find((x) => x.id === body.id); if (!r) return fail('Request not found.', 404); if (!['pending', 'contacted', 'confirmed', 'cancelled'].includes(String(body.status))) return fail('Choose a valid status.'); r.status = body.status; write(d); return json({ request: r }); }
+      if (method === 'GET') { const list = [...d.requests].reverse().map(({ userId: _u, clientRequestId: _c, consentedAt: _k, subscriptionId: _s, ...r }) => r); return json({ requests: list, stats: { pending: list.filter((r) => r.status === 'pending').length, total: list.length } }); }
+      if (method === 'PATCH') { const r = d.requests.find((x) => x.id === body.id); if (!r) return fail('Request not found.', 404); if (!['pending', 'contacted', 'confirmed', 'cancelled'].includes(String(body.status))) return fail('Choose a valid status.'); r.status = body.status; const sub = r.subscriptionId ? d.subscriptions.find((x) => x.id === r.subscriptionId) : undefined; if (sub && body.status === 'confirmed' && sub.status === 'pending') activate(sub); if (sub && body.status === 'cancelled' && sub.status === 'pending') sub.status = 'cancelled'; write(d); return json({ request: r }); }
       break;
   }
   return fail('This action is not available in the preview.', 404);
@@ -130,7 +158,7 @@ export function installPreviewApi() {
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     const raw = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
     const url = new URL(raw, location.href);
-    if (url.origin !== location.origin || !/\/api\/(member|planner|goals|measurements|workouts|requests|staff)$/.test(url.pathname)) return real(input, init);
+    if (url.origin !== location.origin || !/\/api\/(member|planner|goals|measurements|workouts|requests|staff|subscription)$/.test(url.pathname)) return real(input, init);
     const method = (init?.method ?? (input instanceof Request ? input.method : 'GET')).toUpperCase();
     let body: Record<string, unknown> = {};
     try { const text = typeof init?.body === 'string' ? init.body : input instanceof Request ? await input.clone().text() : ''; body = text ? JSON.parse(text) : {}; } catch { return fail('Please send valid JSON.'); }
