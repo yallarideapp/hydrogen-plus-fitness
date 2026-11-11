@@ -92,9 +92,9 @@ function cleanPlans(v: unknown): PlanCategory[] | undefined {
     const plans: Plan[] = Array.isArray(c.plans) ? c.plans.slice(0, 20).flatMap((p: Record<string, unknown>) => {
       const label = bi(p?.label, 120); const price = Number(p?.price);
       if (!label || !isStr(p.id, 40) || !/^[a-z0-9-]{1,40}$/.test(p.id) || !Number.isFinite(price) || price < 0 || price > 100000) return [];
-      const months = Number(p.months);
+      const months = Number(p.months); const days = Number(p.days);
       const unit = bi(p.unit, 60), note = bi(p.note, 200);
-      return [{ id: p.id, label, price: Math.round(price * 100) / 100, ...(unit && (unit[0] || unit[1]) ? { unit } : {}), ...(Number.isInteger(months) && months >= 1 && months <= 24 ? { months } : {}), ...(note && (note[0] || note[1]) ? { note } : {}), ...(p.example ? { example: true } : {}), ...(p.popular ? { popular: true } : {}) }];
+      return [{ id: p.id, label, price: Math.round(price * 100) / 100, ...(unit && (unit[0] || unit[1]) ? { unit } : {}), ...(Number.isInteger(months) && months >= 1 && months <= 24 ? { months } : {}), ...(Number.isInteger(days) && days >= 1 && days <= 60 ? { days } : {}), ...(note && (note[0] || note[1]) ? { note } : {}), ...(p.example ? { example: true } : {}), ...(p.popular ? { popular: true } : {}) }];
     }) : [];
     return [{ id: c.id, name, audience, ...(isStr(c.service, 40) && c.service ? { service: c.service } : {}), includes: biList(c.includes, 12) ?? [], plans }];
   });

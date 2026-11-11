@@ -9,6 +9,7 @@ export type Plan = {
   price: number;        // JD
   unit?: Bi;            // shown after the price, e.g. "per course"
   months?: number;      // length of a subscription; used for "per month" and the end date
+  days?: number;        // for short passes (e.g. a 1-day pass): the end date is start + days − 1
   note?: Bi;
   example?: boolean;
   popular?: boolean;
@@ -34,6 +35,7 @@ export const planCategories: PlanCategory[] = [
       { id: 'gym-men-3', label: month(3), price: 120, months: 3, popular: true },
       { id: 'gym-men-6', label: month(6), price: 210, months: 6, example: true },
       { id: 'gym-men-12', label: month(12), price: 380, months: 12, example: true },
+      { id: 'gym-men-day', label: ['Day pass', 'دخول يومي'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, note: ['Train for a day without subscribing', 'تمرّن يوم بدون اشتراك'], example: true },
     ],
   },
   {
@@ -44,6 +46,7 @@ export const planCategories: PlanCategory[] = [
       { id: 'ladies-2', label: month(2), price: 80, months: 2, example: true },
       { id: 'ladies-3', label: month(3), price: 110, months: 3, popular: true, example: true },
       { id: 'ladies-6', label: month(6), price: 195, months: 6, example: true },
+      { id: 'ladies-day', label: ['Day pass', 'دخول يومي'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, note: ['Train for a day without subscribing', 'تمرّني يوم بدون اشتراك'], example: true },
     ],
   },
   {

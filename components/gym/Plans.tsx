@@ -45,7 +45,7 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
     if (!form.consent) { setState({ error: t('Please agree to the Privacy Policy and Terms to continue.', 'يُرجى الموافقة على سياسة الخصوصية والشروط للمتابعة.') }); return; }
     setState({ busy: true });
     try {
-      const r = await fetch('/api/subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: plan.id, planName, categoryName: cat.name[0], price: plan.price, months: plan.months ?? null, startDate: start, name: form.name, phone: form.phone, example: !!plan.example, consent: true }) });
+      const r = await fetch('/api/subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: plan.id, planName, categoryName: cat.name[0], price: plan.price, months: plan.months ?? null, days: plan.days ?? null, startDate: start, name: form.name, phone: form.phone, example: !!plan.example, consent: true }) });
       if (r.status === 404 || r.status === 405) { setState({ offline: true }); return; }
       const data = (await r.json().catch(() => ({}))) as { error?: string; reference?: string };
       if (!r.ok) { setState({ error: data.error ?? t('We couldn’t send your request. Please try again.', 'تعذّر إرسال طلبك. حاول مجدداً.') }); return; }
@@ -205,7 +205,7 @@ export function PricesTeaser() {
 }
 
 // ---------------------------------------------------------------- My membership
-type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
+type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; days?: number | null; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86400000);
 
 async function fetchSubscription(): Promise<{ kind: 'ok'; data: { subscription: Sub | null; history: Sub[] } } | { kind: 'offline' | 'load' }> {
@@ -256,7 +256,7 @@ export function MyMembership() {
           <div className="pl-me-top"><span className="pl-status is-pending"><Clock3 size={14} />{t('Waiting for payment', 'بانتظار الدفع')}</span><span className="pl-ref" dir="ltr">{s.reference}</span></div>
           <h3>{planLabel(s)}</h3>
           <p className="pl-me-price">{fmtJD(s.price, lang)}{s.example && <sup>*</sup>}</p>
-          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}</dl>
+          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}{!s.months && s.days && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.days === 1 ? t('1 day', 'يوم واحد') : `${s.days} ${t('days', 'أيام')}`}</dd></div>}</dl>
           <p className="pl-me-hint"><BadgeCheck size={16} />{t('Pay at reception to activate it — the countdown starts on your first day.', 'ادفع في الاستقبال لتفعيله — العدّ يبدأ من أول يوم.')}</p>
           <div className="pl-actions">
             {preview && <button type="button" className="hp3-button hp3-red" disabled={busy} onClick={() => act('activate')}>{t('Mark as paid (demo)', 'تأكيد الدفع (تجريبي)')}</button>}
@@ -268,7 +268,7 @@ export function MyMembership() {
         const total = s.endDate ? daysBetween(s.startDate, s.endDate) + 1 : 0;
         const left = s.endDate ? Math.max(0, daysBetween(today, s.endDate) + 1) : 0;
         const used = total ? Math.min(100, Math.max(0, Math.round(((total - left) / total) * 100))) : 0;
-        const soon = s.endDate && left <= 7;
+        const soon = s.endDate && left <= 7 && !(s.days && !s.months);
         const cat = cats.find((c) => c.name[0] === s.categoryName);
         return (
           <div className={`pl-me-card is-active${soon ? ' is-soon' : ''}`}>

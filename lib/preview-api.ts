@@ -37,12 +37,13 @@ function futureDateError(v: unknown) {
   return v >= t && v <= upper.toISOString().slice(0, 10) ? '' : 'Choose a date within the next year.';
 }
 const sessionView = ({ consentedAt: _c, ...s }: Rec) => s;
+const addDays = (date: string, n: number) => { const d = new Date(`${date}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 const addMonths = (date: string, months: number) => { const d = new Date(`${date}T12:00:00Z`); d.setUTCMonth(d.getUTCMonth() + months); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
 function activate(sub: Rec) {
   const today = ammanToday();
   const start = typeof sub.startDate === 'string' && sub.startDate > today ? sub.startDate : today;
   sub.status = 'active'; sub.startDate = start; sub.activatedAt = now();
-  sub.endDate = typeof sub.months === 'number' && sub.months > 0 ? addMonths(start, sub.months) : null;
+  sub.endDate = typeof sub.months === 'number' && sub.months > 0 ? addMonths(start, sub.months) : typeof sub.days === 'number' && sub.days > 0 ? addDays(start, sub.days - 1) : null;
 }
 const currentSub = (d: Data) => [...d.subscriptions].reverse().find((x) => x.status === 'pending' || (x.status === 'active' && (!x.endDate || String(x.endDate) >= ammanToday()))) ?? null;
 
@@ -126,8 +127,8 @@ async function handle(method: string, url: URL, body: Record<string, unknown>): 
         const e = futureDateError(body.startDate); if (e) return fail(e);
         const open = d.subscriptions.find((x) => x.status === 'pending'); if (open) open.status = 'replaced';
         const rid = uuid(); const reference = `HP-${rid.slice(0, 8).toUpperCase()}${rid.slice(-4).toUpperCase()}`; const at = now();
-        const months = Number(body.months);
-        const sub: Rec = { id: uuid(), reference, planId: str(body.planId), planName: str(body.planName).slice(0, 160), categoryName: str(body.categoryName).slice(0, 120), price, months: Number.isInteger(months) && months > 0 ? months : null, startDate: body.startDate, endDate: null, status: 'pending', example: !!body.example, createdAt: at };
+        const months = Number(body.months); const days = Number(body.days);
+        const sub: Rec = { id: uuid(), reference, planId: str(body.planId), planName: str(body.planName).slice(0, 160), categoryName: str(body.categoryName).slice(0, 120), price, months: Number.isInteger(months) && months > 0 ? months : null, days: Number.isInteger(days) && days > 0 ? days : null, startDate: body.startDate, endDate: null, status: 'pending', example: !!body.example, createdAt: at };
         d.subscriptions.push(sub);
         d.requests.push({ id: rid, reference, userId: 'preview', subscriptionId: sub.id, kind: 'membership', name: str(body.name).slice(0, 100), phone: phone.replace(/[^\d+]/g, ''), email: null, interest: `${sub.planName} · ${price} JD`.slice(0, 160), preferredDate: body.startDate, message: opt(body.message, 2000), status: 'pending', consentedAt: at, createdAt: at });
         write(d); return json({ subscription: sub, reference }, 201);
