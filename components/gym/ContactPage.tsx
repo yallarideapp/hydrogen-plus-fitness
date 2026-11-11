@@ -73,9 +73,9 @@ export default function ContactPage() {
         <ol>
           <li><Clock size={18} /><span><b>{t('Pick a time', 'اختر الوقت')}</b>{t('Check the men’s or ladies’ hours above.', 'تحقق من دوام الرجال أو السيدات أعلاه.')}</span></li>
           <li><MapPin size={18} /><span><b>{t('Head to Al-Husn Road', 'توجّه إلى طريق الحصن')}</b>{t('The glass building opposite Granada College, Irbid.', 'المبنى الزجاجي مقابل كلية غرناطة في إربد.')}</span></li>
-          <li><Phone size={18} /><span><b>{t('Say hello at reception', 'عرّف بنفسك في الاستقبال')}</b>{t('Or send a visit request first so the team expects you.', 'أو أرسل طلب زيارة مسبقاً ليكون الفريق بانتظارك.')}</span></li>
+          <li><Phone size={18} /><span><b>{t('Say hello at reception', 'عرّف بنفسك في الاستقبال')}</b>{t('No booking needed — the team will show you around.', 'ما في داعي تحجز — الفريق بيفرجيك النادي.')}</span></li>
         </ol>
-        <a className="sp-btn sp-btn-red" href="/join?kind=tour">{t('Request a visit', 'اطلب زيارة')}<ArrowUpRight size={17} /></a>
+        <a className="sp-btn sp-btn-red" href="/prices">{t('See plans & prices', 'شوف الأسعار والاشتراكات')}<ArrowUpRight size={17} /></a>
       </div></section>
     </div>
   );

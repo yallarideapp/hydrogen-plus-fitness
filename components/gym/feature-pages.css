@@ -96,3 +96,29 @@
   .fp-hours li{grid-template-columns:1fr auto}
   .fp-hours .fp-state{grid-column:2}
 }
+
+/* Nutritionist card on the calculators page */
+.fc-nutri{padding-top:24px;scroll-margin-top:16px}
+.fc-nutri-card{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;padding:26px;border:1px solid #2f4a2c;border-radius:18px;background:linear-gradient(135deg,#152016,#121512)}
+.fc-nutri-icon{display:grid;place-items:center;width:56px;height:56px;border-radius:16px;background:#1f3a1d;color:#9be38f}
+.fc-nutri-kicker{font-size:12px;font-weight:700;letter-spacing:.1em;color:#9be38f}
+[dir=rtl] .fc-nutri-kicker{letter-spacing:0}
+.fc-nutri-text h2{margin:6px 0 0;font-size:26px;line-height:1.25}
+.fc-nutri-text p{margin:8px 0 0;color:#b4bab1;font-size:14.5px;line-height:1.7;max-width:620px}
+.fc-nutri-hours{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;font-size:15px;color:#e6eae2}
+.fc-nutri-hours svg{color:#9be38f}
+.fc-nutri-hours em{font-style:normal;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:#3a2422;color:#f0a39a}
+.fc-nutri-hours em.is-open{background:#1f3a1d;color:#9be38f}
+.fc-nutri-actions{display:flex;flex-direction:column;gap:10px}
+.fc-nutri-actions .sp-btn{justify-content:center;gap:8px;white-space:nowrap}
+@media (max-width:820px){
+  .fc-nutri-card{grid-template-columns:auto 1fr;padding:20px;gap:16px}
+  .fc-nutri-actions{grid-column:1/-1;flex-direction:row}
+  .fc-nutri-actions .sp-btn{flex:1}
+}
+@media (max-width:480px){
+  .fc-nutri-card{grid-template-columns:1fr}
+  .fc-nutri-icon{width:46px;height:46px}
+  .fc-nutri-text h2{font-size:22px}
+  .fc-nutri-actions{flex-direction:column}
+}

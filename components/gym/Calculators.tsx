@@ -1,6 +1,9 @@
 'use client';
 import { useMemo, useState, type ReactNode } from 'react';
-import { Activity, ArrowUpRight, Droplets, Dumbbell, Flame, HeartPulse, Percent, Scale } from 'lucide-react';
+import { Activity, Apple, ArrowUpRight, Clock, Droplets, Dumbbell, Flame, HeartPulse, MessageCircle, Percent, Phone, Scale } from 'lucide-react';
+import { useSiteInfo } from '@/lib/admin/overrides';
+import { formatClock, sessionState } from '@/lib/site-info';
+import { useNow } from './SiteExtras';
 import { useGymLanguage } from './SiteShell';
 import './service-page.css';
 import './feature-pages.css';
@@ -59,7 +62,7 @@ export default function Calculators() {
     <div className="sp">
       <section className="sv-hero">
         <div><span className="sp-kicker"><Activity size={14} />{t('FITNESS CALCULATORS', 'حاسبات اللياقة')}</span><h1>{t('Know your numbers.', 'اعرف أرقامك.')}</h1></div>
-        <div><p>{t('Quick estimates to start a conversation with your coach or the Hydro Rest nutritionist. Enter your details once — every calculator uses them.', 'تقديرات سريعة لتبدأ بها الحديث مع مدربك أو أخصائية التغذية في هايدرو ريست. أدخل بياناتك مرة واحدة وتستخدمها كل الحاسبات.')}</p></div>
+        <div><p>{t('Quick estimates to start a conversation with your coach or the club’s nutritionist. Enter your details once — every calculator uses them.', 'تقديرات سريعة لتبدأ بها الحديث مع مدربك أو أخصائية التغذية في هايدرو ريست. أدخل بياناتك مرة واحدة وتستخدمها كل الحاسبات.')}</p></div>
       </section>
       <section className="sp-container fc-profile" aria-label={t('Your details', 'بياناتك')}>
         <Seg label={t('Sex', 'الجنس')} value={sex} onChange={setSex} options={[['f', t('Female', 'أنثى')], ['m', t('Male', 'ذكر')]]} />
@@ -96,10 +99,45 @@ export default function Calculators() {
           {sex === 'f' && <Field label={t('Hips (widest point)', 'الورك (أعرض نقطة)')} value={hip} onChange={setHip} unit="cm" min={50} max={200} step={0.5} />}
         </Card>
       </section>
+      <Nutritionist />
       <section className="sp-container fc-foot">
         <p>{t('These are general estimates for healthy adults, not medical advice. If you are pregnant, under 18, or managing a health condition, speak with your doctor first.', 'هذه تقديرات عامة للبالغين الأصحاء وليست نصيحة طبية. إن كنتِ حاملاً أو كان عمرك أقل من ١٨ عاماً أو لديك حالة صحية، استشر طبيبك أولاً.')}</p>
-        <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/services/personal-training">{t('Plan it with a coach', 'خطط مع مدرب')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="/services/hydro-rest">{t('Talk to the nutritionist', 'تحدث مع أخصائية التغذية')}</a><a className="sp-btn sp-btn-ghost" href="/tools">{t('Workout studio', 'استوديو التمارين')}<ArrowUpRight size={15} /></a></div>
+        <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/services/personal-training">{t('Plan it with a coach', 'خطط مع مدرب')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="#nutritionist">{t('Talk to the nutritionist', 'تحدث مع أخصائية التغذية')}</a><a className="sp-btn sp-btn-ghost" href="/tools">{t('Workout studio', 'استوديو التمارين')}<ArrowUpRight size={15} /></a></div>
       </section>
     </div>
+  );
+}
+
+// The club's nutritionist: when she is in and how to reach her (hours come from the admin-editable hours list).
+function Nutritionist() {
+  const { t, lang } = useGymLanguage();
+  const { contact, hours } = useSiteInfo();
+  const now = useNow();
+  const row = hours.find((h) => h.id === 'nutrition');
+  const st = row && now ? sessionState(row, now) : null;
+  const phone = contact.phones[0];
+  const msg = lang === 'ar' ? 'مرحباً، بدي أحجز استشارة مع أخصائية التغذية بالنادي.' : 'Hello, I would like to book a consultation with the club’s nutritionist.';
+  return (
+    <section className="sp-container fc-nutri" id="nutritionist">
+      <div className="fc-nutri-card">
+        <span className="fc-nutri-icon"><Apple size={26} /></span>
+        <div className="fc-nutri-text">
+          <span className="fc-nutri-kicker">{t('NUTRITIONIST AT THE CLUB', 'أخصائية التغذية بالنادي')}</span>
+          <h2>{t('Turn these numbers into a meal plan.', 'حوّل هالأرقام لخطة أكل.')}</h2>
+          <p>{t('The club’s nutritionist is in every day. Drop by during her hours and ask at reception, or message us to book a consultation.', 'أخصائية التغذية موجودة بالنادي كل يوم. مرّ عليها بوقت دوامها واسأل عنها بالاستقبال، أو راسلنا لتحجز استشارة.')}</p>
+          {row && (
+            <div className="fc-nutri-hours">
+              <Clock size={17} />
+              <span>{t('Daily', 'يومياً')} <b dir={lang === 'ar' ? 'rtl' : 'ltr'}>{formatClock(row.open, lang)} – {formatClock(row.close, lang)}</b></span>
+              {st && <em className={st.isOpen ? 'is-open' : ''}>{st.isOpen ? t('In now', 'موجودة الآن') : t('Not in now', 'مش موجودة الآن')}</em>}
+            </div>
+          )}
+        </div>
+        <div className="fc-nutri-actions">
+          <a className="sp-btn sp-btn-red" href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} />{t('Message to book', 'راسلنا لتحجز')}</a>
+          <a className="sp-btn" href={`tel:${phone.tel}`}><Phone size={17} /><span dir="ltr">{phone.display}</span></a>
+        </div>
+      </div>
+    </section>
   );
 }

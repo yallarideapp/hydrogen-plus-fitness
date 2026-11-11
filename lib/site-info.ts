@@ -37,7 +37,7 @@ export const hours: HoursRow[] = [
   { id: 'men', en: 'Men’s gym', ar: 'جيم الرجال', open: '06:00', close: '00:00', source: 'https://www.instagram.com/hydrogenplusfitness/', published: '2026-11-08' },
   { id: 'women', en: 'Ladies’ gym', ar: 'جيم السيدات', open: '08:00', close: '23:00', source: 'https://www.instagram.com/hydrogenplusfitness/p/DbYWJMxFVaA/', published: '2026-07-29' },
   { id: 'lounge', en: 'Hydrogen Lounge', ar: 'هايدروجين لاونج', open: '18:00', close: '02:00', source: 'https://www.instagram.com/hydrogenplusfitness/reel/DbY_mTJIkc2/', published: '2026-07-29' },
-  { id: 'nutrition', en: 'Nutritionist (Hydro Rest)', ar: 'أخصائية التغذية', open: '09:00', close: '17:00', source: 'https://www.instagram.com/hydrogenplusfitness/p/DeTpgyPI2-9/', published: '2026-10-10' },
+  { id: 'nutrition', en: 'Nutritionist', ar: 'أخصائية التغذية', open: '09:00', close: '17:00', source: 'https://www.instagram.com/hydrogenplusfitness/p/DeTpgyPI2-9/', published: '2026-10-10' },
 ];
 
 /** Minutes since midnight in Asia/Amman, plus weekday (0 = Sunday). */
