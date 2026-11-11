@@ -37,7 +37,7 @@ export default function ContactPage() {
       <section className="sp-section sp-paper"><div className="sp-container fp-two">
         <div>
           <span className="sp-eyebrow">{t('OPENING HOURS', 'أوقات الدوام')}</span>
-          <h2 className="fp-h2">{t('When we’re open', 'متى نكون مفتوحين')}</h2>
+          <h2 className="fp-h2">{t('When we’re open', 'ساعات العمل')}</h2>
           <ul className="fp-hours">{hours.map((h) => {
             const st = now ? sessionState(h, now) : null;
             return (
@@ -73,9 +73,9 @@ export default function ContactPage() {
         <ol>
           <li><Clock size={18} /><span><b>{t('Pick a time', 'اختر الوقت')}</b>{t('Check the men’s or ladies’ hours above.', 'تحقق من دوام الرجال أو السيدات أعلاه.')}</span></li>
           <li><MapPin size={18} /><span><b>{t('Head to Al-Husn Road', 'توجّه إلى طريق الحصن')}</b>{t('The glass building opposite Granada College, Irbid.', 'المبنى الزجاجي مقابل كلية غرناطة في إربد.')}</span></li>
-          <li><Phone size={18} /><span><b>{t('Say hello at reception', 'عرّف بنفسك في الاستقبال')}</b>{t('No booking needed — the team will show you around.', 'ما في داعي تحجز — الفريق بيفرجيك النادي.')}</span></li>
+          <li><Phone size={18} /><span><b>{t('Say hello at reception', 'عرّف بنفسك في الاستقبال')}</b>{t('No booking needed — the team will show you around.', 'لا حاجة إلى حجز مسبق — سيرافقك الفريق في جولة داخل النادي.')}</span></li>
         </ol>
-        <a className="sp-btn sp-btn-red" href="/prices">{t('See plans & prices', 'شوف الأسعار والاشتراكات')}<ArrowUpRight size={17} /></a>
+        <a className="sp-btn sp-btn-red" href="/prices">{t('See plans & prices', 'اطّلع على الأسعار والاشتراكات')}<ArrowUpRight size={17} /></a>
       </div></section>
     </div>
   );

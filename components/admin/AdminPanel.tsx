@@ -376,13 +376,13 @@ function PlansEditor({ plans, setPlans }: { plans: PlanCategory[]; setPlans: (v:
   const edited = !same(plans, planCategories);
   return (
     <Section title={A('Plans & prices page', 'صفحة الأسعار والاشتراكات')} icon={<Tag size={18} />}
-      intro={A('The prices visitors see on Plans & prices, the home page and in My membership. Prices marked Example show a * on the site and a note that the team confirms the price.', 'الأسعار اللي بيشوفها الزوار بصفحة الأسعار والرئيسية و«اشتراكي». الأسعار المعلّمة «تقريبي» بتظهر مع * وملاحظة إن الفريق بيأكد السعر.')}
+      intro={A('The prices visitors see on Plans & prices, the home page and in My membership. Prices marked Example show a * on the site and a note that the team confirms the price.', 'الأسعار التي يراها الزوار في صفحة الأسعار والصفحة الرئيسية و«اشتراكي». تظهر الأسعار المعلّمة «تقريبي» مع * وملاحظة بأن الفريق سيؤكد السعر.')}
       actions={<div className="adm-inline">{examples > 0 && <span className="adm-chip">{examples} {A('example prices', 'أسعار تقريبية')}</span>}{edited && <button type="button" className="adm-link" onClick={() => setPlans(planCategories)}><RotateCcw size={13} />{A('Restore all', 'استرجاع الكل')}</button>}</div>}>
       <div className="adm-svc-pick">{plans.map((c) => <button type="button" key={c.id} className={c.id === cat?.id ? 'is-active' : ''} onClick={() => setCid(c.id)}>{A(c.name[0], c.name[1])}{c.plans.some((p) => p.example) ? ' *' : ''}</button>)}</div>
       {cat && <>
         <BiInput label={A('Category name', 'اسم القسم')} value={cat.name} onChange={(v) => setCat({ ...cat, name: v })} />
         <BiInput label={A('Who it is for', 'لمين')} value={cat.audience} onChange={(v) => setCat({ ...cat, audience: v })} />
-        <h3 className="adm-sub">{A('What’s included', 'شو بيشمل')}</h3>
+        <h3 className="adm-sub">{A('What’s included', 'ماذا يشمل')}</h3>
         <Rows items={cat.includes} onChange={(v) => setCat({ ...cat, includes: v })} make={(): Bi => ['', '']} addLabel={A('Add line', 'إضافة سطر')} render={(it, put) => <BiInput value={it} onChange={put} />} />
         <h3 className="adm-sub">{A('Plans', 'الاشتراكات')}</h3>
         <Rows items={cat.plans} onChange={(v) => setCat({ ...cat, plans: v })} make={(): Plan => ({ id: `${cat.id}-${Date.now().toString(36)}`, label: ['', ''], price: 0 })} addLabel={A('Add plan', 'إضافة اشتراك')}
@@ -494,7 +494,7 @@ function ContactTab({ contact, setContact, hours, setHours }: { contact: Contact
           <Field label={<>{A('E-mail', 'البريد الإلكتروني')} {r('email')}</>} dir="ltr" type="email" value={contact.email} onChange={(v) => setContact('email', v)} />
         </div>
         <div className="adm-grid3">
-          <Field label={<>{A('CliQ alias or number', 'اسم أو رقم CliQ')} {r('cliq')}</>} dir="ltr" value={contact.cliq.alias} hint={A('Shown to members who choose to pay by CliQ', 'يظهر للي بيختار يدفع بـ CliQ')} onChange={(v) => setContact('cliq', { ...contact.cliq, alias: v.replace(/\s+/g, '').toUpperCase() })} />
+          <Field label={<>{A('CliQ alias or number', 'اسم أو رقم CliQ')} {r('cliq')}</>} dir="ltr" value={contact.cliq.alias} hint={A('Shown to members who choose to pay by CliQ', 'يظهر لمن يختار الدفع عبر CliQ')} onChange={(v) => setContact('cliq', { ...contact.cliq, alias: v.replace(/\s+/g, '').toUpperCase() })} />
           <Field label={A('CliQ account name', 'اسم الحساب على CliQ')} value={contact.cliq.name} onChange={(v) => setContact('cliq', { ...contact.cliq, name: v })} />
           <div className="adm-checks-col"><label className="adm-check"><input type="checkbox" checked={!!contact.cliq.example} onChange={(e) => setContact('cliq', { ...contact.cliq, example: e.target.checked })} />{A('Example alias (not confirmed)', 'اسم تجريبي (غير مؤكد)')}</label></div>
         </div>

@@ -116,25 +116,25 @@ function Nutritionist() {
   const row = hours.find((h) => h.id === 'nutrition');
   const st = row && now ? sessionState(row, now) : null;
   const phone = contact.phones[0];
-  const msg = lang === 'ar' ? 'مرحباً، بدي أحجز استشارة مع أخصائية التغذية بالنادي.' : 'Hello, I would like to book a consultation with the club’s nutritionist.';
+  const msg = lang === 'ar' ? 'مرحباً، أودّ حجز استشارة مع أخصائية التغذية في النادي.' : 'Hello, I would like to book a consultation with the club’s nutritionist.';
   return (
     <section className="sp-container fc-nutri" id="nutritionist">
       <div className="fc-nutri-card">
         <span className="fc-nutri-icon"><Apple size={26} /></span>
         <div className="fc-nutri-text">
-          <span className="fc-nutri-kicker">{t('NUTRITIONIST AT THE CLUB', 'أخصائية التغذية بالنادي')}</span>
-          <h2>{t('Turn these numbers into a meal plan.', 'حوّل هالأرقام لخطة أكل.')}</h2>
-          <p>{t('The club’s nutritionist is in every day. Drop by during her hours and ask at reception, or message us to book a consultation.', 'أخصائية التغذية موجودة بالنادي كل يوم. مرّ عليها بوقت دوامها واسأل عنها بالاستقبال، أو راسلنا لتحجز استشارة.')}</p>
+          <span className="fc-nutri-kicker">{t('NUTRITIONIST AT THE CLUB', 'أخصائية التغذية في النادي')}</span>
+          <h2>{t('Turn these numbers into a meal plan.', 'حوّل هذه الأرقام إلى خطة غذائية.')}</h2>
+          <p>{t('The club’s nutritionist is in every day. Drop by during her hours and ask at reception, or message us to book a consultation.', 'أخصائية التغذية موجودة في النادي يومياً. يمكنك زيارتها خلال ساعات عملها والسؤال عنها في الاستقبال، أو مراسلتنا لحجز استشارة.')}</p>
           {row && (
             <div className="fc-nutri-hours">
               <Clock size={17} />
               <span>{t('Daily', 'يومياً')} <b dir={lang === 'ar' ? 'rtl' : 'ltr'}>{formatClock(row.open, lang)} – {formatClock(row.close, lang)}</b></span>
-              {st && <em className={st.isOpen ? 'is-open' : ''}>{st.isOpen ? t('In now', 'موجودة الآن') : t('Not in now', 'مش موجودة الآن')}</em>}
+              {st && <em className={st.isOpen ? 'is-open' : ''}>{st.isOpen ? t('In now', 'موجودة الآن') : t('Not in now', 'غير موجودة الآن')}</em>}
             </div>
           )}
         </div>
         <div className="fc-nutri-actions">
-          <a className="sp-btn sp-btn-red" href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} />{t('Message to book', 'راسلنا لتحجز')}</a>
+          <a className="sp-btn sp-btn-red" href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} />{t('Message to book', 'راسلنا للحجز')}</a>
           <a className="sp-btn" href={`tel:${phone.tel}`}><Phone size={17} /><span dir="ltr">{phone.display}</span></a>
         </div>
       </div>

@@ -49,7 +49,7 @@ export const planCategories: PlanCategory[] = [
   },
   {
     id: 'day-pass', name: ['Day pass', 'دخول يومي'], audience: ['One day of training, no subscription', 'يوم تمرين واحد بدون اشتراك'], service: 'gym',
-    includes: [['Full gym floor for the day', 'صالة الجيم كاملة لليوم'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Pay by CliQ or cash at reception', 'بتدفع CliQ أو كاش بالاستقبال']],
+    includes: [['Full gym floor for the day', 'صالة الجيم كاملة لليوم'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Pay by CliQ or cash at reception', 'الدفع عبر CliQ أو نقداً في الاستقبال']],
     plans: [
       { id: 'gym-men-day', label: ['Men’s gym · 1 day', 'جيم الرجال · يوم'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, example: true },
       { id: 'ladies-day', label: ['Ladies’ club · 1 day', 'نادي السيدات · يوم'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, example: true },

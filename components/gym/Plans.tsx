@@ -31,10 +31,10 @@ function CliqBox({ price, reference }: { price: number; reference?: string }) {
   const copy = async () => { try { await navigator.clipboard.writeText(contact.cliq.alias); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch { /* clipboard blocked */ } };
   return (
     <div className="pl-cliq">
-      <p className="pl-cliq-lead"><Smartphone size={17} />{t('After our call, send', 'بعد ما نتصل فيك، حوّل')} <b>{fmtJD(price, lang)}</b> {t('by CliQ to:', 'عن طريق CliQ على:')}</p>
+      <p className="pl-cliq-lead"><Smartphone size={17} />{t('After our call, send', 'بعد اتصالنا بك، حوِّل')} <b>{fmtJD(price, lang)}</b> {t('by CliQ to:', 'عن طريق CliQ على:')}</p>
       <div className="pl-cliq-alias"><span dir="ltr">{contact.cliq.alias}</span><button type="button" onClick={() => void copy()}><Copy size={15} />{copied ? t('Copied', 'تم النسخ') : t('Copy', 'نسخ')}</button></div>
-      <p className="pl-cliq-name">{contact.cliq.name}{contact.cliq.example && <em>{t('Example alias — the team gives you the exact one', 'اسم تجريبي — الفريق بعطيك الاسم الصح')}</em>}</p>
-      {reference && <p className="pl-cliq-ref">{t('Write your reference in the transfer note:', 'اكتب رقم طلبك بملاحظة التحويل:')} <b dir="ltr">{reference}</b></p>}
+      <p className="pl-cliq-name">{contact.cliq.name}{contact.cliq.example && <em>{t('Example alias — the team gives you the exact one', 'اسم تجريبي — سيزوّدك الفريق بالاسم الصحيح')}</em>}</p>
+      {reference && <p className="pl-cliq-ref">{t('Write your reference in the transfer note:', 'اكتب رقم طلبك في ملاحظة التحويل:')} <b dir="ltr">{reference}</b></p>}
     </div>
   );
 }
@@ -81,7 +81,7 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
           <div className="pl-done">
             <BadgeCheck size={34} />
             <h3>{t('Request sent', 'تم إرسال الطلب')}</h3>
-            <p>{t('Your reference is', 'رقم طلبك')} <b dir="ltr">{state.done}</b>. {t('The team will call you to confirm.', 'الفريق رح يتصل فيك ليأكد.')} {form.pay === 'cash' ? t('Then pay cash at reception and your plan starts.', 'بعدها ادفع كاش بالاستقبال وبيبدأ اشتراكك.') : t('Your plan starts once the CliQ transfer arrives.', 'وبيبدأ اشتراكك لما يوصل تحويل CliQ.')} {t('Follow it any time in My training → My membership.', 'تابعه أي وقت من «تدريبي ← اشتراكي».')}</p>
+            <p>{t('Your reference is', 'رقم طلبك')} <b dir="ltr">{state.done}</b>. {t('The team will call you to confirm.', 'سيتصل بك الفريق للتأكيد.')} {form.pay === 'cash' ? t('Then pay cash at reception and your plan starts.', 'بعد ذلك ادفع نقداً في الاستقبال ليبدأ اشتراكك.') : t('Your plan starts once the CliQ transfer arrives.', 'ويبدأ اشتراكك عند وصول تحويل CliQ.')} {t('Follow it any time in My training → My membership.', 'تابعه في أي وقت من «تدريبي ← اشتراكي».')}</p>
             {form.pay === 'cliq' && <CliqBox price={plan.price} reference={state.done} />}
             <div className="pl-actions"><a className="hp3-button hp3-red" href="/member?tab=membership">{t('See my membership', 'شاهد اشتراكي')}<ArrowUpRight size={17} /></a><a className="hp3-button hp3-outline" href={`https://wa.me/${contact.whatsapp}?text=${waText}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} />WhatsApp</a></div>
           </div>
@@ -94,13 +94,13 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
           </div>
         ) : (
           <form className="pl-form" onSubmit={submit}>
-            <ol className="pl-mini-steps"><li>{t('Send this request', 'أرسل الطلب')}</li><li>{t('We call to confirm', 'نتصل بك للتأكيد')}</li><li>{t('Pay by CliQ or cash — your plan starts', 'ادفع CliQ أو كاش — يبدأ اشتراكك')}</li></ol>
+            <ol className="pl-mini-steps"><li>{t('Send this request', 'أرسل الطلب')}</li><li>{t('We call to confirm', 'نتصل بك للتأكيد')}</li><li>{t('Pay by CliQ or cash — your plan starts', 'ادفع عبر CliQ أو نقداً — يبدأ اشتراكك')}</li></ol>
             <label><span>{t('Full name', 'الاسم الكامل')}</span><input required minLength={2} autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></label>
             <label><span>{t('Phone', 'رقم الهاتف')}</span><input required type="tel" inputMode="tel" autoComplete="tel" dir="ltr" placeholder="07X XXX XXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></label>
             {plan.months ? <label><span>{t('Start date', 'تاريخ البدء')}</span><input type="date" min={todayAmman()} value={start} onChange={(e) => setForm({ ...form, startDate: e.target.value })} /></label> : null}
             <fieldset className="pl-pay">
-              <legend>{t('How will you pay?', 'كيف بدك تدفع؟')}</legend>
-              {([['cliq', Smartphone, 'CliQ', 'CliQ', 'Instant transfer from your bank app', 'تحويل فوري من تطبيق البنك'], ['cash', Banknote, 'Cash at the club', 'كاش بالنادي', 'Pay at reception', 'بتدفع بالاستقبال']] as const).map(([v, Icon, en, ar, den, dar]) => (
+              <legend>{t('How will you pay?', 'كيف تفضّل الدفع؟')}</legend>
+              {([['cliq', Smartphone, 'CliQ', 'CliQ', 'Instant transfer from your bank app', 'تحويل فوري من تطبيق البنك'], ['cash', Banknote, 'Cash at the club', 'نقداً في النادي', 'Pay at reception', 'الدفع في الاستقبال']] as const).map(([v, Icon, en, ar, den, dar]) => (
                 <label key={v} className={form.pay === v ? 'is-on' : ''}>
                   <input type="radio" name="pl-pay" value={v} checked={form.pay === v} onChange={() => setForm({ ...form, pay: v })} />
                   <Icon size={20} /><span><b>{t(en, ar)}</b><small>{t(den, dar)}</small></span>
@@ -176,11 +176,11 @@ export function PricesPage() {
       <header className="hp3-container pl-head">
         <span className="hp3-kicker">{t('PLANS & PRICES', 'الأسعار والاشتراكات')}</span>
         <h1>{t('CLEAR PRICES.', 'أسعار واضحة.')}<br /><em>{t('NO SURPRISES.', 'بدون مفاجآت.')}</em></h1>
-        <p>{t('Pick a section to see only its plans. Prices are in Jordanian dinars. Choose a plan and send the request — we call you to confirm, then you pay by CliQ or cash at the club.', 'اختر القسم لتشوف اشتراكاته بس. الأسعار بالدينار الأردني. اختر اشتراكك وأرسل الطلب — منتصل فيك للتأكيد، وبعدها بتدفع CliQ أو كاش بالنادي.')}</p>
+        <p>{t('Pick a section to see only its plans. Prices are in Jordanian dinars. Choose a plan and send the request — we call you to confirm, then you pay by CliQ or cash at the club.', 'اختر القسم لعرض اشتراكاته فقط. الأسعار بالدينار الأردني. اختر اشتراكك وأرسل الطلب — سنتصل بك للتأكيد، ثم تدفع عبر CliQ أو نقداً في النادي.')}</p>
         <ol className="pl-steps">
-          <li><span>1</span><div><b>{t('Choose a plan', 'اختر اشتراكك')}</b><small>{t('Pick a section below', 'اختر القسم تحت')}</small></div></li>
+          <li><span>1</span><div><b>{t('Choose a plan', 'اختر اشتراكك')}</b><small>{t('Pick a section below', 'اختر القسم أدناه')}</small></div></li>
           <li><span>2</span><div><b>{t('Send the request', 'أرسل الطلب')}</b><small>{t('We call you to confirm', 'نتصل بك للتأكيد')}</small></div></li>
-          <li><span>3</span><div><b>{t('Pay by CliQ or cash', 'ادفع CliQ أو كاش')}</b><small>{t('Follow it in My training', 'تابعه من «تدريبي»')}</small></div></li>
+          <li><span>3</span><div><b>{t('Pay by CliQ or cash', 'ادفع عبر CliQ أو نقداً')}</b><small>{t('Follow it in My training', 'تابعه من «تدريبي»')}</small></div></li>
         </ol>
       </header>
       <nav className="hp3-container pl-chips" aria-label={t('Plan sections', 'أقسام الاشتراكات')}>
@@ -208,7 +208,7 @@ export function PricesPage() {
         </section>
         <aside className="pl-foot">
           <div className="pl-foot-links">
-            <a href="/memberships"><Tag size={16} />{t('Not sure? Take the 1-minute plan finder', 'محتار؟ جرّب دليل الاشتراك بدقيقة')}<ArrowUpRight size={15} /></a>
+            <a href="/memberships"><Tag size={16} />{t('Not sure? Take the 1-minute plan finder', 'لست متأكداً؟ جرّب دليل الاشتراك في دقيقة')}<ArrowUpRight size={15} /></a>
             <a href="/offers"><Sparkles size={16} />{t('See the latest offers', 'شاهد آخر العروض')}<ArrowUpRight size={15} /></a>
           </div>
         </aside>
@@ -279,8 +279,8 @@ export function MyMembership() {
     <section className="pl-me">
       {!s && (
         <div className="pl-me-empty">
-          <h3>{t('You don’t have a plan yet.', 'ما عندك اشتراك لسا.')}</h3>
-          <p>{t('Choose a plan, send the request and pay at reception. It will show here with its start and end dates.', 'اختر اشتراكك وأرسل الطلب وادفع في الاستقبال. رح يظهر هون مع تاريخ البداية والنهاية.')}</p>
+          <h3>{t('You don’t have a plan yet.', 'لا يوجد لديك اشتراك بعد.')}</h3>
+          <p>{t('Choose a plan, send the request and pay at reception. It will show here with its start and end dates.', 'اختر اشتراكك وأرسل الطلب ثم ادفع. سيظهر هنا مع تاريخَي البداية والنهاية.')}</p>
           <div className="pl-me-quick">{popular.map(({ c, p }) => <a key={p.id} href={`/prices#${c.id}`}><span>{t(c.name[0], c.name[1])} · {t(p.label[0], p.label[1])}</span><b>{fmtJD(p.price, lang)}</b></a>)}</div>
           <a className="hp3-button hp3-red" href="/prices">{t('See all plans & prices', 'شاهد كل الأسعار')}<ArrowUpRight size={17} /></a>
         </div>
@@ -290,8 +290,8 @@ export function MyMembership() {
           <div className="pl-me-top"><span className="pl-status is-pending"><Clock3 size={14} />{t('Waiting for payment', 'بانتظار الدفع')}</span><span className="pl-ref" dir="ltr">{s.reference}</span></div>
           <h3>{planLabel(s)}</h3>
           <p className="pl-me-price">{fmtJD(s.price, lang)}{s.example && <sup>*</sup>}</p>
-          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}{!s.months && s.days && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.days === 1 ? t('1 day', 'يوم واحد') : `${s.days} ${t('days', 'أيام')}`}</dd></div>}<div><dt>{t('Payment', 'الدفع')}</dt><dd>{s.payment === 'cliq' ? 'CliQ' : t('Cash at the club', 'كاش بالنادي')}</dd></div></dl>
-          <p className="pl-me-hint"><BadgeCheck size={16} />{s.payment === 'cliq' ? t('The team will call you to confirm. Your plan starts once the CliQ transfer arrives.', 'الفريق رح يتصل فيك ليأكد، وبيبدأ اشتراكك لما يوصل تحويل CliQ.') : t('The team will call you to confirm. Pay cash at reception and your plan starts.', 'الفريق رح يتصل فيك ليأكد. ادفع كاش بالاستقبال وبيبدأ اشتراكك.')}</p>
+          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}{!s.months && s.days && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.days === 1 ? t('1 day', 'يوم واحد') : `${s.days} ${t('days', 'أيام')}`}</dd></div>}<div><dt>{t('Payment', 'الدفع')}</dt><dd>{s.payment === 'cliq' ? 'CliQ' : t('Cash at the club', 'نقداً في النادي')}</dd></div></dl>
+          <p className="pl-me-hint"><BadgeCheck size={16} />{s.payment === 'cliq' ? t('The team will call you to confirm. Your plan starts once the CliQ transfer arrives.', 'سيتصل بك الفريق للتأكيد، ويبدأ اشتراكك عند وصول تحويل CliQ.') : t('The team will call you to confirm. Pay cash at reception and your plan starts.', 'سيتصل بك الفريق للتأكيد. ادفع نقداً في الاستقبال ليبدأ اشتراكك.')}</p>
           {s.payment === 'cliq' && <CliqBox price={s.price} reference={s.reference} />}
           <div className="pl-actions">
             {preview && <button type="button" className="hp3-button hp3-red" disabled={busy} onClick={() => act('activate')}>{t('Mark as paid (demo)', 'تأكيد الدفع (تجريبي)')}</button>}
@@ -314,7 +314,7 @@ export function MyMembership() {
                 <div className="pl-days"><b>{left.toLocaleString(lang === 'ar' ? 'ar-JO' : 'en-US')}</b><span>{t(left === 1 ? 'day left' : 'days left', 'يوم متبقي')}</span></div>
                 <div className="pl-bar" role="progressbar" aria-valuenow={used} aria-valuemin={0} aria-valuemax={100} aria-label={t('Plan used', 'المستخدم من الاشتراك')}><span style={{ width: `${used}%` }} /></div>
                 <dl><div><dt>{t('Started', 'بدأ')}</dt><dd>{fmtDate(s.startDate)}</dd></div><div><dt>{t('Ends', 'ينتهي')}</dt><dd>{fmtDate(s.endDate)}</dd></div><div><dt>{t('Paid', 'المدفوع')}</dt><dd>{fmtJD(s.price, lang)}</dd></div></dl>
-                {soon && <p className="pl-me-hint is-warn"><CalendarDays size={16} />{t('Your plan ends soon — renew to keep training without a break.', 'اشتراكك قرب يخلص — جدّده لتكمل تمرينك بدون انقطاع.')}</p>}
+                {soon && <p className="pl-me-hint is-warn"><CalendarDays size={16} />{t('Your plan ends soon — renew to keep training without a break.', 'اشتراكك على وشك الانتهاء — جدّده لتواصل تمرينك دون انقطاع.')}</p>}
               </>
             ) : <dl><div><dt>{t('Started', 'بدأ')}</dt><dd>{fmtDate(s.startDate)}</dd></div><div><dt>{t('Paid', 'المدفوع')}</dt><dd>{fmtJD(s.price, lang)}</dd></div></dl>}
             <div className="pl-actions"><a className="hp3-button hp3-red" href={`/prices${cat ? `#${cat.id}` : ''}`}>{t('Renew or change plan', 'جدّد أو غيّر الاشتراك')}<ArrowUpRight size={17} /></a></div>

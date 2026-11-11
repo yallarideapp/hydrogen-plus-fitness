@@ -58,7 +58,7 @@ export const services: Service[] = [
       { label: ['Ramadan 2026 hours — ladies', 'دوام رمضان ٢٠٢٦ — السيدات'], value: ['12:00–5:30 PM and 8:30 PM–1:00 AM', '١٢:٠٠–٥:٣٠ م و٨:٣٠ م–١:٠٠ ص'], date: '2026-02-19', source: p('DU8KYELCcnM'), past: true },
     ],
     faqs: [
-      { q: ['Can I see the gym before joining?', 'هل يمكنني رؤية الجيم قبل الاشتراك؟'], a: ['Yes. Send a visit request with your preferred day and the team will call you to arrange it.', 'نعم. أرسل طلب زيارة مع اليوم المناسب لك، وسيتواصل معك الفريق لترتيبها.'] },
+      { q: ['Can I see the gym before joining?', 'هل يمكنني رؤية الجيم قبل الاشتراك؟'], a: ['Yes. No booking needed — come any time during opening hours and the team will show you around.', 'نعم. لا حاجة إلى حجز مسبق — يمكنك الحضور في أي وقت خلال ساعات العمل، وسيرافقك الفريق في جولة داخل الجيم.'] },
       { q: ['Do men and women train at the same time?', 'هل يتمرن الرجال والسيدات في الوقت نفسه؟'], a: ['The club publishes separate men’s and ladies’ hours. Ask the team which areas each session uses.', 'ينشر النادي أوقات دوام منفصلة للرجال والسيدات. اسأل الفريق عن المناطق المخصصة لكل دوام.'] },
       { q: ['How much is a membership?', 'كم سعر الاشتراك؟'], a: ['Prices change with each offer. The most recent offers are listed on News & offers — call the club for today’s price.', 'تتغير الأسعار مع كل عرض. تجد آخر العروض المنشورة في صفحة الأخبار والعروض، واتصل بالنادي لمعرفة سعر اليوم.'] },
     ],

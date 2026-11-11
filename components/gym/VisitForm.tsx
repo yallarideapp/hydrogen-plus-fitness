@@ -75,8 +75,8 @@ export default function VisitForm({ initialKind = '', initialInterest = '', init
       <div className="hp3-container hp3-booking-success">
         <CheckCircle2 size={60} />
         <span className="hp3-kicker">{t('MESSAGE SENT', 'وصلت رسالتك')}</span>
-        <h1>{t('WE’LL GET', 'رح نرجع')}<br />{t('BACK TO YOU.', 'نتواصل معك.')}</h1>
-        <p>{t('The team will reply by phone. Keep your reference in case you call us.', 'الفريق رح يرد عليك بالهاتف. احتفظ برقم الطلب إذا اتصلت فينا.')}</p>
+        <h1>{t('WE’LL GET', 'سنعود')}<br />{t('BACK TO YOU.', 'إليك قريباً.')}</h1>
+        <p>{t('The team will reply by phone. Keep your reference in case you call us.', 'سيردّ عليك الفريق هاتفياً. احتفظ برقم الطلب في حال اتصلت بنا.')}</p>
         <div className="hp3-booking-reference"><small>{t('REQUEST REFERENCE', 'رقم الطلب')}</small><strong>{reference}</strong><span>{t('Waiting for the team to confirm', 'بانتظار تأكيد الفريق')}</span></div>
         <div className="hp3-button-row">
           <a href={`tel:${phoneMain.tel}`} className="hp3-button hp3-red"><Phone size={17} />{t('Call the club', 'اتصل بالنادي')}</a>
@@ -91,10 +91,10 @@ export default function VisitForm({ initialKind = '', initialInterest = '', init
       <header className="vv-head">
         <span className="hp3-kicker">{t('MESSAGE THE CLUB', 'راسل النادي')}</span>
         <h1>{t('SEND US A', 'أرسل لنا')} <em>{t('MESSAGE.', 'رسالة.')}</em></h1>
-        <p>{t('Write your question and leave your number. The team calls you back.', 'اكتب سؤالك واترك رقمك، والفريق بيتصل فيك.')}</p>
+        <p>{t('Write your question and leave your number. The team calls you back.', 'اكتب سؤالك واترك رقمك، وسيتصل بك الفريق.')}</p>
         <div className="vv-links">
-          <a href="/prices"><Tag size={17} /><span><b>{t('Want to subscribe?', 'بدك تشترك؟')}</b> {t('See plans & prices', 'شوف الأسعار والاشتراكات')}</span><ArrowUpRight size={15} /></a>
-          <a href="/contact"><MapPin size={17} /><span><b>{t('Want to come in?', 'بدك تجي؟')}</b> {t('Location & opening hours', 'الموقع وأوقات الدوام')}</span><ArrowUpRight size={15} /></a>
+          <a href="/prices"><Tag size={17} /><span><b>{t('Want to subscribe?', 'ترغب في الاشتراك؟')}</b> {t('See plans & prices', 'اطّلع على الأسعار والاشتراكات')}</span><ArrowUpRight size={15} /></a>
+          <a href="/contact"><MapPin size={17} /><span><b>{t('Want to come in?', 'ترغب في زيارتنا؟')}</b> {t('Location & opening hours', 'الموقع وأوقات الدوام')}</span><ArrowUpRight size={15} /></a>
         </div>
       </header>
 
@@ -119,7 +119,7 @@ export default function VisitForm({ initialKind = '', initialInterest = '', init
           <button className="hp3-button hp3-red vv-send" disabled={busy} type="submit">
             {busy ? t('Sending…', 'جارٍ الإرسال…') : t('Send message', 'أرسل الرسالة')}<ArrowUpRight size={17} />
           </button>
-          <p className="vv-small"><ShieldCheck size={15} />{t('No payment. The team replies by phone.', 'بدون دفع. الفريق بيرد عليك بالهاتف.')}</p>
+          <p className="vv-small"><ShieldCheck size={15} />{t('No payment. The team replies by phone.', 'دون أي دفع. سيردّ عليك الفريق هاتفياً.')}</p>
         </form>
 
         <aside className="vv-aside">
