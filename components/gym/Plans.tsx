@@ -107,46 +107,72 @@ function PlanCard({ cat, plan, onChoose }: { cat: PlanCategory; plan: Plan; onCh
 }
 
 // ---------------------------------------------------------------- /prices
+const subHash = (cb: () => void) => { window.addEventListener('hashchange', cb); return () => window.removeEventListener('hashchange', cb); };
+const readHash = () => decodeURIComponent(window.location.hash.slice(1));
+
 export function PricesPage() {
-  const { t } = useGymLanguage();
+  const { t, lang } = useGymLanguage();
   const cats = usePlans();
   const [choice, setChoice] = useState<Choice | null>(null);
-  const [activeCat, setActiveCat] = useState(cats[0]?.id ?? '');
+  const hash = useSyncExternalStore(subHash, readHash, () => '');
+  const cat = cats.find((c) => c.id === hash) ?? cats[0];
+  const tabsRef = useRef<HTMLDivElement>(null);
   const L = (b: Bi) => t(b[0], b[1]);
-  const anyExample = cats.some((c) => c.plans.some((p) => p.example));
-  useEffect(() => {
-    const els = cats.map((c) => document.getElementById(c.id)).filter(Boolean) as HTMLElement[];
-    const io = new IntersectionObserver((entries) => { const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]; if (vis) setActiveCat(vis.target.id); }, { rootMargin: '-35% 0px -55% 0px' });
-    els.forEach((e) => io.observe(e));
-    return () => io.disconnect();
-  }, [cats]);
-  useEffect(() => { const chip = document.querySelector(`.pl-chips a[href="#${activeCat}"]`); chip?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }); }, [activeCat]);
+  const from = (c: PlanCategory) => Math.min(...c.plans.map((p) => p.price));
+  const sub = (c: PlanCategory) => { const m = c.plans.find((p) => p.months === 1 && !p.unit); return m ? `${t('1 month', 'شهر')} · ${fmtJD(m.price, lang)}` : `${t('from', 'من')} ${fmtJD(from(c), lang)}`; };
+  function pick(id: string) {
+    if (id === cat?.id) return;
+    history.replaceState(history.state, '', `#${id}`);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    // Bring the section buttons to the top so the chosen plans show right under them.
+    const bar = tabsRef.current?.parentElement;
+    if (bar) { const top = bar.getBoundingClientRect().top - 8; if (Math.abs(top) > 24) window.scrollBy({ top, behavior: 'smooth' }); }
+  }
+  function onKey(e: React.KeyboardEvent, i: number) {
+    const dir = (e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0) * (lang === 'ar' ? -1 : 1);
+    if (!dir) return;
+    e.preventDefault();
+    const next = cats[(i + dir + cats.length) % cats.length];
+    pick(next.id);
+    tabsRef.current?.querySelector<HTMLElement>(`#tab-${next.id}`)?.focus();
+  }
+  if (!cat) return null;
   return (
     <div className="pl">
       <header className="hp3-container pl-head">
         <span className="hp3-kicker">{t('PLANS & PRICES', 'الأسعار والاشتراكات')}</span>
         <h1>{t('CLEAR PRICES.', 'أسعار واضحة.')}<br /><em>{t('NO SURPRISES.', 'بدون مفاجآت.')}</em></h1>
-        <p>{t('Every plan at Hydrogen Plus in one place, in Jordanian dinars. Pick a plan, send the request, and pay at reception to start.', 'كل اشتراكات هايدروجين بلس بمكان واحد، بالدينار الأردني. اختر اشتراكك، أرسل الطلب، وادفع في الاستقبال لتبدأ.')}</p>
+        <p>{t('Pick a section to see only its plans. Prices are in Jordanian dinars. Choose a plan, send the request, and pay at reception to start.', 'اختر القسم لتشوف اشتراكاته بس. الأسعار بالدينار الأردني. اختر اشتراكك، أرسل الطلب، وادفع في الاستقبال لتبدأ.')}</p>
         <ol className="pl-steps">
-          <li><span>1</span><div><b>{t('Choose a plan', 'اختر اشتراكك')}</b><small>{t('Compare the options below', 'قارن الخيارات تحت')}</small></div></li>
+          <li><span>1</span><div><b>{t('Choose a plan', 'اختر اشتراكك')}</b><small>{t('Pick a section below', 'اختر القسم تحت')}</small></div></li>
           <li><span>2</span><div><b>{t('Send the request', 'أرسل الطلب')}</b><small>{t('We call you to confirm', 'نتصل بك للتأكيد')}</small></div></li>
           <li><span>3</span><div><b>{t('Pay at reception', 'ادفع في الاستقبال')}</b><small>{t('Follow it in My training', 'تابعه من «تدريبي»')}</small></div></li>
         </ol>
       </header>
-      <nav className="pl-chips" aria-label={t('Plan categories', 'أقسام الاشتراكات')}><div className="hp3-container">{cats.map((c) => <a key={c.id} href={`#${c.id}`} className={activeCat === c.id ? 'is-active' : ''} aria-current={activeCat === c.id ? 'true' : undefined}>{L(c.name)}</a>)}</div></nav>
+      <nav className="hp3-container pl-chips" aria-label={t('Plan sections', 'أقسام الاشتراكات')}>
+        <p className="pl-chips-title">{t('Choose a section', 'اختر القسم')}</p>
+        <div ref={tabsRef} role="tablist" className="pl-tabs">
+          {cats.map((c, i) => {
+            const on = c.id === cat.id;
+            return (
+              <button key={c.id} id={`tab-${c.id}`} type="button" role="tab" aria-selected={on} aria-controls="pl-panel" tabIndex={on ? 0 : -1} className={on ? 'is-active' : ''} onClick={() => pick(c.id)} onKeyDown={(e) => onKey(e, i)}>
+                <span>{L(c.name)}</span><small>{sub(c)}</small>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
       <div className="hp3-container pl-list">
-        {cats.map((c) => (
-          <section key={c.id} id={c.id} className="pl-cat" aria-labelledby={`${c.id}-h`}>
-            <div className="pl-cat-head">
-              <div><h2 id={`${c.id}-h`}>{L(c.name)}</h2><p>{L(c.audience)}</p></div>
-              {c.service && <a href={c.service === 'gym' ? '/services/gym' : `/services/${c.service}`} className="pl-more">{t('About this service', 'عن هذه الخدمة')}<ArrowUpRight size={15} /></a>}
-            </div>
-            {c.includes.length > 0 && <ul className="pl-includes">{c.includes.map((x, i) => <li key={i}><Check size={15} />{L(x)}</li>)}</ul>}
-            <div className="pl-grid">{c.plans.map((p) => <PlanCard key={p.id} cat={c} plan={p} onChoose={() => setChoice({ cat: c, plan: p })} />)}</div>
-          </section>
-        ))}
+        <section key={cat.id} id="pl-panel" role="tabpanel" aria-labelledby={`tab-${cat.id}`} className="pl-cat">
+          <div className="pl-cat-head">
+            <div><h2>{L(cat.name)}</h2><p>{L(cat.audience)}</p></div>
+            {cat.service && <a href={cat.service === 'gym' ? '/services/gym' : `/services/${cat.service}`} className="pl-more">{t('About this service', 'عن هذه الخدمة')}<ArrowUpRight size={15} /></a>}
+          </div>
+          {cat.includes.length > 0 && <ul className="pl-includes">{cat.includes.map((x, i) => <li key={i}><Check size={15} />{L(x)}</li>)}</ul>}
+          <div className="pl-grid">{cat.plans.map((p) => <PlanCard key={p.id} cat={cat} plan={p} onChoose={() => setChoice({ cat, plan: p })} />)}</div>
+          {cat.plans.some((p) => p.example) && <p className="pl-note"><sup>*</sup> {t('Example price — the team confirms the exact price when they call you.', 'سعر تقريبي — يؤكد الفريق السعر النهائي عند الاتصال بك.')}</p>}
+        </section>
         <aside className="pl-foot">
-          {anyExample && <p><sup>*</sup> {t('Example price — the team confirms the exact price when they call you.', 'سعر تقريبي — يؤكد الفريق السعر النهائي عند الاتصال بك.')}</p>}
           <div className="pl-foot-links">
             <a href="/memberships"><Tag size={16} />{t('Not sure? Take the 1-minute plan finder', 'محتار؟ جرّب دليل الاشتراك بدقيقة')}<ArrowUpRight size={15} /></a>
             <a href="/offers"><Sparkles size={16} />{t('See the latest offers', 'شاهد آخر العروض')}<ArrowUpRight size={15} /></a>
