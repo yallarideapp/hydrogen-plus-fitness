@@ -1,7 +1,7 @@
 'use client';
 // Plans & prices page, the "choose a plan" dialog and the member's "My membership" panel.
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { ArrowUpRight, BadgeCheck, CalendarDays, Check, CircleAlert, Clock3, MessageCircle, Phone, Sparkles, Tag, X } from 'lucide-react';
+import { ArrowUpRight, BadgeCheck, Banknote, CalendarDays, Check, CircleAlert, Clock3, Copy, MessageCircle, Phone, Smartphone, Sparkles, Tag, X } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
 import { usePlans, useSiteInfo } from '@/lib/admin/overrides';
 import { isPreviewHost } from '@/lib/preview-api';
@@ -21,6 +21,24 @@ function perMonth(cat: PlanCategory, p: Plan) {
   return { each, save: save > 0 ? save : 0 };
 }
 
+// ---------------------------------------------------------------- payment
+type Pay = 'cash' | 'cliq';
+// CliQ details: who to send the money to and what to write in the note.
+function CliqBox({ price, reference }: { price: number; reference?: string }) {
+  const { t, lang } = useGymLanguage();
+  const { contact } = useSiteInfo();
+  const [copied, setCopied] = useState(false);
+  const copy = async () => { try { await navigator.clipboard.writeText(contact.cliq.alias); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch { /* clipboard blocked */ } };
+  return (
+    <div className="pl-cliq">
+      <p className="pl-cliq-lead"><Smartphone size={17} />{t('After our call, send', 'بعد ما نتصل فيك، حوّل')} <b>{fmtJD(price, lang)}</b> {t('by CliQ to:', 'عن طريق CliQ على:')}</p>
+      <div className="pl-cliq-alias"><span dir="ltr">{contact.cliq.alias}</span><button type="button" onClick={() => void copy()}><Copy size={15} />{copied ? t('Copied', 'تم النسخ') : t('Copy', 'نسخ')}</button></div>
+      <p className="pl-cliq-name">{contact.cliq.name}{contact.cliq.example && <em>{t('Example alias — the team gives you the exact one', 'اسم تجريبي — الفريق بعطيك الاسم الصح')}</em>}</p>
+      {reference && <p className="pl-cliq-ref">{t('Write your reference in the transfer note:', 'اكتب رقم طلبك بملاحظة التحويل:')} <b dir="ltr">{reference}</b></p>}
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------- choose dialog
 type Choice = { cat: PlanCategory; plan: Plan };
 function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () => void }) {
@@ -28,7 +46,7 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
   const { contact } = useSiteInfo();
   const ref = useRef<HTMLDialogElement>(null);
   const [state, setState] = useState<{ busy?: boolean; error?: string; done?: string; offline?: boolean }>({});
-  const [form, setForm] = useState({ name: '', phone: '', startDate: '', consent: false });
+  const [form, setForm] = useState<{ name: string; phone: string; startDate: string; consent: boolean; pay: Pay }>({ name: '', phone: '', startDate: '', consent: false, pay: 'cash' });
   const L = (b: Bi) => t(b[0], b[1]);
   useEffect(() => {
     const d = ref.current; if (!d) return;
@@ -39,13 +57,13 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
   const { cat, plan } = choice;
   const start = form.startDate || todayAmman();
   const planName = `${cat.name[0]} · ${plan.label[0]}`;
-  const waText = encodeURIComponent(`Hello Hydrogen Plus, I would like the ${planName} plan (${plan.price} JD).${state.done ? ` Reference ${state.done}.` : ''}`);
+  const waText = encodeURIComponent(`Hello Hydrogen Plus, I would like the ${planName} plan (${plan.price} JD), paying ${form.pay === 'cliq' ? 'by CliQ' : 'cash at the club'}.${state.done ? ` Reference ${state.done}.` : ''}`);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.consent) { setState({ error: t('Please agree to the Privacy Policy and Terms to continue.', 'يُرجى الموافقة على سياسة الخصوصية والشروط للمتابعة.') }); return; }
     setState({ busy: true });
     try {
-      const r = await fetch('/api/subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: plan.id, planName, categoryName: cat.name[0], price: plan.price, months: plan.months ?? null, days: plan.days ?? null, startDate: start, name: form.name, phone: form.phone, example: !!plan.example, consent: true }) });
+      const r = await fetch('/api/subscription', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId: plan.id, planName, categoryName: cat.name[0], price: plan.price, months: plan.months ?? null, days: plan.days ?? null, payment: form.pay, startDate: start, name: form.name, phone: form.phone, example: !!plan.example, consent: true }) });
       if (r.status === 404 || r.status === 405) { setState({ offline: true }); return; }
       const data = (await r.json().catch(() => ({}))) as { error?: string; reference?: string };
       if (!r.ok) { setState({ error: data.error ?? t('We couldn’t send your request. Please try again.', 'تعذّر إرسال طلبك. حاول مجدداً.') }); return; }
@@ -63,7 +81,8 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
           <div className="pl-done">
             <BadgeCheck size={34} />
             <h3>{t('Request sent', 'تم إرسال الطلب')}</h3>
-            <p>{t('Your reference is', 'رقم طلبك')} <b dir="ltr">{state.done}</b>. {t('Pay at reception to activate your plan. You can follow it any time in My training → My membership.', 'ادفع في الاستقبال لتفعيل اشتراكك. تقدر تتابعه أي وقت من «تدريبي ← اشتراكي».')}</p>
+            <p>{t('Your reference is', 'رقم طلبك')} <b dir="ltr">{state.done}</b>. {t('The team will call you to confirm.', 'الفريق رح يتصل فيك ليأكد.')} {form.pay === 'cash' ? t('Then pay cash at reception and your plan starts.', 'بعدها ادفع كاش بالاستقبال وبيبدأ اشتراكك.') : t('Your plan starts once the CliQ transfer arrives.', 'وبيبدأ اشتراكك لما يوصل تحويل CliQ.')} {t('Follow it any time in My training → My membership.', 'تابعه أي وقت من «تدريبي ← اشتراكي».')}</p>
+            {form.pay === 'cliq' && <CliqBox price={plan.price} reference={state.done} />}
             <div className="pl-actions"><a className="hp3-button hp3-red" href="/member?tab=membership">{t('See my membership', 'شاهد اشتراكي')}<ArrowUpRight size={17} /></a><a className="hp3-button hp3-outline" href={`https://wa.me/${contact.whatsapp}?text=${waText}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} />WhatsApp</a></div>
           </div>
         ) : state.offline ? (
@@ -75,10 +94,19 @@ function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () 
           </div>
         ) : (
           <form className="pl-form" onSubmit={submit}>
-            <ol className="pl-mini-steps"><li>{t('Send this request', 'أرسل الطلب')}</li><li>{t('We call to confirm', 'نتصل بك للتأكيد')}</li><li>{t('Pay at reception — your plan starts', 'ادفع في الاستقبال — يبدأ اشتراكك')}</li></ol>
+            <ol className="pl-mini-steps"><li>{t('Send this request', 'أرسل الطلب')}</li><li>{t('We call to confirm', 'نتصل بك للتأكيد')}</li><li>{t('Pay by CliQ or cash — your plan starts', 'ادفع CliQ أو كاش — يبدأ اشتراكك')}</li></ol>
             <label><span>{t('Full name', 'الاسم الكامل')}</span><input required minLength={2} autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></label>
             <label><span>{t('Phone', 'رقم الهاتف')}</span><input required type="tel" inputMode="tel" autoComplete="tel" dir="ltr" placeholder="07X XXX XXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></label>
             {plan.months ? <label><span>{t('Start date', 'تاريخ البدء')}</span><input type="date" min={todayAmman()} value={start} onChange={(e) => setForm({ ...form, startDate: e.target.value })} /></label> : null}
+            <fieldset className="pl-pay">
+              <legend>{t('How will you pay?', 'كيف بدك تدفع؟')}</legend>
+              {([['cliq', Smartphone, 'CliQ', 'CliQ', 'Instant transfer from your bank app', 'تحويل فوري من تطبيق البنك'], ['cash', Banknote, 'Cash at the club', 'كاش بالنادي', 'Pay at reception', 'بتدفع بالاستقبال']] as const).map(([v, Icon, en, ar, den, dar]) => (
+                <label key={v} className={form.pay === v ? 'is-on' : ''}>
+                  <input type="radio" name="pl-pay" value={v} checked={form.pay === v} onChange={() => setForm({ ...form, pay: v })} />
+                  <Icon size={20} /><span><b>{t(en, ar)}</b><small>{t(den, dar)}</small></span>
+                </label>
+              ))}
+            </fieldset>
             <label className="pl-consent"><input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} /><span>{t('I agree to the', 'أوافق على')} <a href="/privacy" target="_blank">{t('Privacy Policy', 'سياسة الخصوصية')}</a> {t('and', 'و')} <a href="/terms" target="_blank">{t('Terms', 'الشروط')}</a></span></label>
             {state.error && <p className="pl-error" role="alert"><CircleAlert size={16} />{state.error}</p>}
             <button className="hp3-button hp3-red pl-submit" disabled={state.busy}>{state.busy ? t('Sending…', 'جارٍ الإرسال…') : t('Request this plan', 'اطلب هذا الاشتراك')}<ArrowUpRight size={17} /></button>
@@ -120,6 +148,12 @@ export function PricesPage() {
   const L = (b: Bi) => t(b[0], b[1]);
   const from = (c: PlanCategory) => Math.min(...c.plans.map((p) => p.price));
   const sub = (c: PlanCategory) => { const m = c.plans.find((p) => p.months === 1 && !p.unit); return m ? `${t('1 month', 'شهر')} · ${fmtJD(m.price, lang)}` : `${t('from', 'من')} ${fmtJD(from(c), lang)}`; };
+  // Arriving from a link like /prices#day-pass: jump straight to that section's plans.
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const id = setTimeout(() => { const el = document.getElementById('pl-panel'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12 }); }, 60);
+    return () => clearTimeout(id);
+  }, []);
   function pick(id: string) {
     if (id === cat?.id) return;
     history.replaceState(history.state, '', `#${id}`);
@@ -142,11 +176,11 @@ export function PricesPage() {
       <header className="hp3-container pl-head">
         <span className="hp3-kicker">{t('PLANS & PRICES', 'الأسعار والاشتراكات')}</span>
         <h1>{t('CLEAR PRICES.', 'أسعار واضحة.')}<br /><em>{t('NO SURPRISES.', 'بدون مفاجآت.')}</em></h1>
-        <p>{t('Pick a section to see only its plans. Prices are in Jordanian dinars. Choose a plan, send the request, and pay at reception to start.', 'اختر القسم لتشوف اشتراكاته بس. الأسعار بالدينار الأردني. اختر اشتراكك، أرسل الطلب، وادفع في الاستقبال لتبدأ.')}</p>
+        <p>{t('Pick a section to see only its plans. Prices are in Jordanian dinars. Choose a plan and send the request — we call you to confirm, then you pay by CliQ or cash at the club.', 'اختر القسم لتشوف اشتراكاته بس. الأسعار بالدينار الأردني. اختر اشتراكك وأرسل الطلب — منتصل فيك للتأكيد، وبعدها بتدفع CliQ أو كاش بالنادي.')}</p>
         <ol className="pl-steps">
           <li><span>1</span><div><b>{t('Choose a plan', 'اختر اشتراكك')}</b><small>{t('Pick a section below', 'اختر القسم تحت')}</small></div></li>
           <li><span>2</span><div><b>{t('Send the request', 'أرسل الطلب')}</b><small>{t('We call you to confirm', 'نتصل بك للتأكيد')}</small></div></li>
-          <li><span>3</span><div><b>{t('Pay at reception', 'ادفع في الاستقبال')}</b><small>{t('Follow it in My training', 'تابعه من «تدريبي»')}</small></div></li>
+          <li><span>3</span><div><b>{t('Pay by CliQ or cash', 'ادفع CliQ أو كاش')}</b><small>{t('Follow it in My training', 'تابعه من «تدريبي»')}</small></div></li>
         </ol>
       </header>
       <nav className="hp3-container pl-chips" aria-label={t('Plan sections', 'أقسام الاشتراكات')}>
@@ -205,7 +239,7 @@ export function PricesTeaser() {
 }
 
 // ---------------------------------------------------------------- My membership
-type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; days?: number | null; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
+type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; days?: number | null; payment?: Pay; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86400000);
 
 async function fetchSubscription(): Promise<{ kind: 'ok'; data: { subscription: Sub | null; history: Sub[] } } | { kind: 'offline' | 'load' }> {
@@ -256,8 +290,9 @@ export function MyMembership() {
           <div className="pl-me-top"><span className="pl-status is-pending"><Clock3 size={14} />{t('Waiting for payment', 'بانتظار الدفع')}</span><span className="pl-ref" dir="ltr">{s.reference}</span></div>
           <h3>{planLabel(s)}</h3>
           <p className="pl-me-price">{fmtJD(s.price, lang)}{s.example && <sup>*</sup>}</p>
-          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}{!s.months && s.days && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.days === 1 ? t('1 day', 'يوم واحد') : `${s.days} ${t('days', 'أيام')}`}</dd></div>}</dl>
-          <p className="pl-me-hint"><BadgeCheck size={16} />{t('Pay at reception to activate it — the countdown starts on your first day.', 'ادفع في الاستقبال لتفعيله — العدّ يبدأ من أول يوم.')}</p>
+          <dl><div><dt>{t('Requested start', 'تاريخ البدء المطلوب')}</dt><dd>{fmtDate(s.startDate)}</dd></div>{s.months && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.months} {t(s.months === 1 ? 'month' : 'months', s.months === 1 ? 'شهر' : 'أشهر')}</dd></div>}{!s.months && s.days && <div><dt>{t('Length', 'المدة')}</dt><dd>{s.days === 1 ? t('1 day', 'يوم واحد') : `${s.days} ${t('days', 'أيام')}`}</dd></div>}<div><dt>{t('Payment', 'الدفع')}</dt><dd>{s.payment === 'cliq' ? 'CliQ' : t('Cash at the club', 'كاش بالنادي')}</dd></div></dl>
+          <p className="pl-me-hint"><BadgeCheck size={16} />{s.payment === 'cliq' ? t('The team will call you to confirm. Your plan starts once the CliQ transfer arrives.', 'الفريق رح يتصل فيك ليأكد، وبيبدأ اشتراكك لما يوصل تحويل CliQ.') : t('The team will call you to confirm. Pay cash at reception and your plan starts.', 'الفريق رح يتصل فيك ليأكد. ادفع كاش بالاستقبال وبيبدأ اشتراكك.')}</p>
+          {s.payment === 'cliq' && <CliqBox price={s.price} reference={s.reference} />}
           <div className="pl-actions">
             {preview && <button type="button" className="hp3-button hp3-red" disabled={busy} onClick={() => act('activate')}>{t('Mark as paid (demo)', 'تأكيد الدفع (تجريبي)')}</button>}
             <button type="button" className="hp3-button hp3-outline" disabled={busy} onClick={() => act('cancel')}>{t('Cancel request', 'إلغاء الطلب')}</button>

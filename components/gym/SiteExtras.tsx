@@ -33,7 +33,7 @@ export const exploreNav: [string, string, string][] = [
   ['/contact', 'Contact & location', 'التواصل والموقع'],
   ['/support', 'Help & membership support', 'المساعدة وخدمة الأعضاء'],
   ['/careers', 'Careers', 'الوظائف'],
-  ['/prices#gym-men', 'Day pass price', 'سعر الدخول اليومي'],
+  ['/prices#day-pass', 'Day pass price', 'سعر الدخول اليومي'],
 ];
 
 export function ServicesMega({ t, lang, onNavigate }: { t: T; lang: Lang; onNavigate?: () => void }) {

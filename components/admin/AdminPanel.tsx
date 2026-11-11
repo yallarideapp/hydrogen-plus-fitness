@@ -233,6 +233,7 @@ function Overview({ d, go, counts }: { d: Overrides; go: (t: TabId) => void; cou
   const { A } = useA();
   const classes = (d.schedule?.classes ?? baseClasses).length;
   const checks: [boolean, string, string, TabId][] = [
+    [!!(d.contact?.cliq && !d.contact.cliq.example), 'Enter the club’s real CliQ alias for paying plans (an example is shown now).', 'اكتب اسم CliQ الحقيقي للنادي لدفع الاشتراكات (الموجود حالياً تجريبي).', 'contact'],
     [!!d.contact, 'Confirm the phone numbers and WhatsApp (WhatsApp on 079 215 1000 was never confirmed).', 'تأكد من أرقام الهاتف والواتساب (رقم الواتساب ٠٧٩ ٢١٥ ١٠٠٠ غير مؤكد).', 'contact'],
     [!!(d.services?.offers || d.services?.gym), 'Update the current membership offer (the latest published one is from December 2025).', 'حدّث عرض الاشتراك الحالي (آخر عرض منشور من ديسمبر ٢٠٢٥).', 'prices'],
     [!!d.schedule, 'Update the class timetable (it shows the week of 7–12 November 2026).', 'حدّث جدول الحصص (يعرض أسبوع ٧–١٢ نوفمبر ٢٠٢٦).', 'schedule'],
@@ -491,6 +492,11 @@ function ContactTab({ contact, setContact, hours, setHours }: { contact: Contact
         <div className="adm-grid3">
           <Field label={<>{A('WhatsApp number', 'رقم الواتساب')} {r('whatsapp')}</>} dir="ltr" value={contact.whatsapp} hint={A('Country code, no + or spaces: 9627…', 'مع رمز الدولة بدون + أو مسافات: ‎9627…')} invalid={!/^\d{8,15}$/.test(contact.whatsapp)} onChange={(v) => setContact('whatsapp', v.replace(/\D/g, ''))} />
           <Field label={<>{A('E-mail', 'البريد الإلكتروني')} {r('email')}</>} dir="ltr" type="email" value={contact.email} onChange={(v) => setContact('email', v)} />
+        </div>
+        <div className="adm-grid3">
+          <Field label={<>{A('CliQ alias or number', 'اسم أو رقم CliQ')} {r('cliq')}</>} dir="ltr" value={contact.cliq.alias} hint={A('Shown to members who choose to pay by CliQ', 'يظهر للي بيختار يدفع بـ CliQ')} onChange={(v) => setContact('cliq', { ...contact.cliq, alias: v.replace(/\s+/g, '').toUpperCase() })} />
+          <Field label={A('CliQ account name', 'اسم الحساب على CliQ')} value={contact.cliq.name} onChange={(v) => setContact('cliq', { ...contact.cliq, name: v })} />
+          <div className="adm-checks-col"><label className="adm-check"><input type="checkbox" checked={!!contact.cliq.example} onChange={(e) => setContact('cliq', { ...contact.cliq, example: e.target.checked })} />{A('Example alias (not confirmed)', 'اسم تجريبي (غير مؤكد)')}</label></div>
         </div>
         <div className="adm-grid3">
           <Field label={<>{A('Lounge phone (shown)', 'هاتف اللاونج (كما يظهر)')} {r('loungePhone')}</>} dir="ltr" value={contact.loungePhone.display} onChange={(v) => setContact('loungePhone', { ...contact.loungePhone, display: v })} />

@@ -116,6 +116,8 @@ export function sanitize(input: unknown): Overrides {
     if (isStr(c.whatsapp, 20) && /^\d{8,15}$/.test(c.whatsapp)) oc.whatsapp = c.whatsapp;
     const lp = phone(c.loungePhone); if (lp) oc.loungePhone = lp;
     if (isStr(c.email, 120)) oc.email = c.email;
+    const cq = c.cliq as Record<string, unknown> | undefined;
+    if (cq && isStr(cq.alias, 60) && isStr(cq.name, 120)) oc.cliq = { alias: cq.alias.trim(), name: cq.name.trim(), example: !!cq.example };
     const cw = c.careersWhatsapp as Record<string, unknown> | undefined;
     if (cw && isStr(cw.display, 40) && isStr(cw.number, 20)) oc.careersWhatsapp = { display: cw.display, number: cw.number };
     const ad = c.address as Record<string, unknown> | undefined;

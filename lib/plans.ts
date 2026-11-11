@@ -35,7 +35,6 @@ export const planCategories: PlanCategory[] = [
       { id: 'gym-men-3', label: month(3), price: 120, months: 3, popular: true },
       { id: 'gym-men-6', label: month(6), price: 210, months: 6, example: true },
       { id: 'gym-men-12', label: month(12), price: 380, months: 12, example: true },
-      { id: 'gym-men-day', label: ['Day pass', 'دخول يومي'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, note: ['Train for a day without subscribing', 'تمرّن يوم بدون اشتراك'], example: true },
     ],
   },
   {
@@ -46,7 +45,14 @@ export const planCategories: PlanCategory[] = [
       { id: 'ladies-2', label: month(2), price: 80, months: 2, example: true },
       { id: 'ladies-3', label: month(3), price: 110, months: 3, popular: true, example: true },
       { id: 'ladies-6', label: month(6), price: 195, months: 6, example: true },
-      { id: 'ladies-day', label: ['Day pass', 'دخول يومي'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, note: ['Train for a day without subscribing', 'تمرّني يوم بدون اشتراك'], example: true },
+    ],
+  },
+  {
+    id: 'day-pass', name: ['Day pass', 'دخول يومي'], audience: ['One day of training, no subscription', 'يوم تمرين واحد بدون اشتراك'], service: 'gym',
+    includes: [['Full gym floor for the day', 'صالة الجيم كاملة لليوم'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Pay by CliQ or cash at reception', 'بتدفع CliQ أو كاش بالاستقبال']],
+    plans: [
+      { id: 'gym-men-day', label: ['Men’s gym · 1 day', 'جيم الرجال · يوم'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, example: true },
+      { id: 'ladies-day', label: ['Ladies’ club · 1 day', 'نادي السيدات · يوم'], price: 5, unit: ['one day', 'ليوم واحد'], days: 1, example: true },
     ],
   },
   {

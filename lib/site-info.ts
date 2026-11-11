@@ -10,6 +10,8 @@ export const contact = {
   // The posts list both mobile numbers for enquiries. Neither post confirms WhatsApp,
   // so the site labels WhatsApp as "message us" rather than promising a reply channel.
   whatsapp: '962792151000',
+  // CliQ (instant bank transfer) details for paying a plan. EXAMPLE alias until the club confirms it in the admin.
+  cliq: { alias: 'HYDROGENPLUS', name: 'Hydrogen Plus Fitness', example: true },
   loungePhone: { display: '079 837 0157', tel: '+962798370157' },
   email: 'hydrogenplusfitness@gmail.com',
   careersWhatsapp: { display: '079 535 0650', number: '962795350650' },
