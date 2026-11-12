@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState, type ComponentType } from 'react';
+import { fmtDate } from '@/lib/fmt-date';
 import {
   ArrowUpRight, Baby, CalendarDays, Camera, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Dumbbell, ExternalLink, Flower2,
   Images, MessageCircle, Moon, Phone, Play, Salad, Sparkles, Swords, Tag, UserRound, Users, Waves, X,
@@ -23,8 +24,7 @@ export function useDate() {
   const { lang } = useGymLanguage();
   return useCallback((iso: string, withDay = true) => {
     if (!iso) return '';
-    const d = new Date(`${iso.slice(0, 10)}T12:00:00+03:00`);
-    return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-GB', { day: withDay ? 'numeric' : undefined, month: 'short', year: 'numeric', timeZone: 'Asia/Amman' }).format(d);
+    return fmtDate(iso.slice(0, 10), lang, { day: withDay }) ?? '';
   }, [lang]);
 }
 

@@ -1,5 +1,6 @@
 "use client";
 import { useWords } from "./SiteShell";
+import { fmtDate } from "@/lib/fmt-date";
 
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ArrowUpRight, Camera, ChevronLeft, ChevronRight, ExternalLink, Images, Play, Search, X } from "lucide-react";
@@ -28,8 +29,7 @@ const text = {
 function postKey(post: SocialPost) { return `${post.source}-${post.id}`; }
 function dateLabel(date: string | undefined, lang: Lang) {
  if (!date) return null;
- const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(date) ? `${date}T12:00:00+03:00` : date);
- return Number.isNaN(parsed.getTime()) ? null : new Intl.DateTimeFormat(lang === "ar" ? "ar-JO" : "en-GB", { timeZone: "Asia/Amman", day: "numeric", month: "short", year: "numeric" }).format(parsed);
+ return fmtDate(date, lang === "ar" ? "ar" : "en");
 }
 function mediaStyle(media: SocialPost["media"][number]): CSSProperties { return media.width > 0 ? { maxWidth: `min(100%, ${media.width}px)` } : {}; }
 

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { fmtDate } from '@/lib/fmt-date';
 import { useNow } from './SiteExtras';
 import { ArrowUpRight, Camera, Clock, Mail, MapPin, MessageCircle, Navigation, Phone, Send } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
@@ -13,7 +14,7 @@ export default function ContactPage() {
   const { t, lang } = useGymLanguage();
   const now = useNow();
   const [map, setMap] = useState(false);
-  const fmt = (iso: string) => new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso + 'T12:00:00+03:00'));
+  const fmt = (iso: string) => fmtDate(iso, lang) ?? '';
   return (
     <div className="sp">
       <section className="sp-hero fp-hero">

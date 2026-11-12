@@ -1,4 +1,5 @@
 import { LAST_UPDATED, legalText, trademarkNotice, type Lang } from "@/lib/legal";
+import { fmtDate } from "@/lib/fmt-date";
 
 export type LegalKind = "privacy" | "terms";
 const ministry = {
@@ -10,7 +11,7 @@ export default function LegalPage({ lang, kind }: { lang: Lang; kind: LegalKind 
   const text = legalText[lang][kind];
   const arabic = lang === "ar";
   const prefix = arabic ? "/ar" : "";
-  const updated = new Intl.DateTimeFormat(arabic ? "ar-JO" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Amman" }).format(new Date(`${LAST_UPDATED}T12:00:00+03:00`));
+  const updated = fmtDate(LAST_UPDATED, arabic ? "ar" : "en", { long: true });
   return <main className="legal-page" lang={lang} dir={arabic ? "rtl" : "ltr"}>
     <div className="legal-shell">
       <nav className="legal-nav" aria-label={arabic ? "التنقل" : "Navigation"}>

@@ -31,6 +31,8 @@ export default function SiteShell({children,active='home'}:{children:ReactNode;a
 const themeSub=(cb:()=>void)=>{window.addEventListener('hx-theme',cb);return()=>window.removeEventListener('hx-theme',cb)};
 function ThemeToggle(){
  const {t}=useGymLanguage();
+ // Re-apply the saved theme after hydration in case React reset the <html> classes; drop any splash that outlived its script.
+ useEffect(()=>{const d=document.documentElement;try{if(localStorage.getItem('hp-theme')==='light'&&'CSSScopeRule' in window&&!d.classList.contains('hx-light')){d.classList.add('hx-light');window.dispatchEvent(new Event('hx-theme'))}}catch{}const id=setTimeout(()=>{if(!d.classList.contains('hx-splashing'))document.getElementById('hx-splash')?.remove()},3400);return()=>clearTimeout(id)},[]);
  const light=useSyncExternalStore(themeSub,()=>document.documentElement.classList.contains('hx-light'),()=>false);
  const supported=useSyncExternalStore(noSub,()=>'CSSScopeRule' in window,()=>false);
  if(!supported)return null;

@@ -43,6 +43,9 @@ html.hx-leaving .hp3 #page-content,html.hx-leaving .hp3 .hp3-footer{opacity:0;tr
 
 /* Opening splash: the dumbbell logo fills up like water, with rising hydrogen bubbles. Shown once per visit. */
 #hx-splash{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:radial-gradient(120% 80% at 50% 45%,#1d0d0d 0%,#0b0c0b 60%,#070807 100%);transition:opacity .5s ease,visibility .5s;cursor:pointer}
+/* Shown only while the splash script is running it: if the page re-renders, a leftover splash stays hidden instead of covering the site. */
+#hx-splash:not(.hxs-out){display:none}
+html.hx-splashing #hx-splash{display:grid}
 html.hx-nosplash #hx-splash{display:none}
 html.hx-splashing,html.hx-splashing body{overflow:hidden}
 #hx-splash.hxs-out{opacity:0;visibility:hidden}
