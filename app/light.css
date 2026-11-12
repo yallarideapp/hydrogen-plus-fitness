@@ -3153,6 +3153,20 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .hp3-header-actions .hx-theme:focus-visible {
         outline: 2px solid var(--hp3-red)
     }
+    :scope:is(html.hx-light) dialog:focus,:scope:is(html.hx-light) dialog:focus-visible,:scope:is(html.hx-light) .cx-experience dialog:focus-visible,:scope:is(html.hx-light) .cb-experience dialog:focus-visible {
+        outline: none !important
+    }
+    :scope:is(html.hx-light) .cx-detail-close:focus,:scope:is(html.hx-light) .pl-dialog-x:focus,:scope:is(html.hx-light) .sp-lightbox-close:focus {
+        outline: none !important
+    }
+    :scope:is(html.hx-light) .cx-detail-close:focus-visible,:scope:is(html.hx-light) .pl-dialog-x:focus-visible,:scope:is(html.hx-light) .sp-lightbox-close:focus-visible {
+        outline: none !important;
+        box-shadow: 0 0 0 2px #121212,0 0 0 4px var(--hp3-red,#e73434) !important
+    }
+    :scope:is(html.hx-light) .cx-detail-close {
+        background: rgba(249,249,249,0.667);
+        border-color: rgba(18,18,18,0.349)
+    }
     :scope:is(html.hx-light) .hp3 {
         --hp3-red: #e73434;
         --hp3-bg: #eceeed;

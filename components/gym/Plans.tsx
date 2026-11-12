@@ -50,10 +50,10 @@ export function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClo
   const L = (b: Bi) => t(b[0], b[1]);
   useEffect(() => {
     const d = ref.current; if (!d) return;
-    if (choice && !d.open) { d.showModal(); }
+    if (choice && !d.open) { d.showModal(); d?.focus(); }
     if (!choice && d.open) d.close();
   }, [choice]);
-  if (!choice) return <dialog ref={ref} className="pl-dialog" onClose={onClose} />;
+  if (!choice) return <dialog tabIndex={-1} ref={ref} className="pl-dialog" onClose={onClose} />;
   const { cat, plan } = choice;
   const start = form.startDate || todayAmman();
   const planName = `${cat.name[0]} · ${plan.label[0]}`;
@@ -71,7 +71,7 @@ export function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClo
     } catch { setState({ offline: true }); }
   }
   return (
-    <dialog ref={ref} className="pl-dialog" onClose={() => { setState({}); onClose(); }} aria-labelledby="pl-dialog-title">
+    <dialog tabIndex={-1} ref={ref} className="pl-dialog" onClose={() => { setState({}); onClose(); }} aria-labelledby="pl-dialog-title">
       <div className="pl-dialog-card">
         <button type="button" className="pl-dialog-x" aria-label={t('Close', 'إغلاق')} onClick={() => ref.current?.close()}><X size={18} /></button>
         <span className="pl-kicker">{L(cat.name)}</span>

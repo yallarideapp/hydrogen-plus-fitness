@@ -145,3 +145,12 @@ a.hx-announce:hover{filter:brightness(1.08)}
 html.hx-theme-anim *,html.hx-theme-anim *::before,html.hx-theme-anim *::after{transition:background-color .35s ease,color .35s ease,border-color .35s ease,fill .35s ease!important}
 /* Phones: no account icon in the header (it's in the bottom bar as "My training") */
 @media (max-width:600px){.hp3-header-actions .hp3-account{display:none!important}.hp3-header-actions .hx-theme{width:40px;height:40px;min-width:40px!important;min-height:40px!important}}
+
+/* Pop-up windows: focus goes to the window itself on open, so no focus ring around the X on touch */
+dialog:focus,dialog:focus-visible,.cx-experience dialog:focus-visible,.cb-experience dialog:focus-visible{outline:none!important}
+/* Close buttons in pop-ups: a clean round 40px button; focus ring only for keyboard users, drawn inside */
+.cx-detail-close,.pl-dialog-x,.sp-lightbox-close{min-width:40px!important;min-height:40px!important;width:40px!important;height:40px!important;padding:0!important;display:grid!important;place-items:center;border-radius:50%!important;-webkit-tap-highlight-color:transparent}
+.cx-detail-close:focus,.pl-dialog-x:focus,.sp-lightbox-close:focus{outline:none!important}
+.cx-detail-close:focus-visible,.pl-dialog-x:focus-visible,.sp-lightbox-close:focus-visible{outline:none!important;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--hp3-red,#e73434)!important}
+.cx-detail-close{top:14px;right:14px;background:#000a;border-color:#ffffff59;backdrop-filter:blur(6px)}
+[dir=rtl] .cx-detail-close{right:auto;left:14px}
