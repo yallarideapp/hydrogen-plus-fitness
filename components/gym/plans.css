@@ -227,3 +227,50 @@
 @media (max-width:420px){.pl-pay{grid-template-columns:1fr}}
 .pl-price sup{margin-top:10px}
 .pl-cliq-ref b,.pl-done b[dir=ltr],.pl-ref{white-space:nowrap}
+
+/* Plan finder (light panel) */
+.hp3-goal-grid.fd-acts>button{min-height:0;padding:16px 14px;gap:10px}
+.fd-lengths{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fd-lengths button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 16px;border:1px solid #cad9bd;background:#ffffff77;color:#2a3d1d;text-align:start;font:inherit;cursor:pointer}
+.fd-lengths button strong{font-size:18px}
+.fd-lengths button small{font-size:12.5px;color:#7d9169;line-height:1.5}
+.fd-lengths button em{position:absolute;top:10px;inset-inline-end:10px;font-style:normal;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:#e73434;color:#fff}
+.fd-lengths button.is-active{border-color:#e73434;box-shadow:inset 0 0 0 1px #e73434;background:#fff}
+.fd-main{display:flex;flex-direction:column;gap:16px;margin-top:6px;padding:20px;border:1px solid #e73434;background:#fff;box-shadow:0 10px 30px #24321b14}
+.fd-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#e73434;text-transform:uppercase;letter-spacing:.06em}
+[dir=rtl] .fd-tag{letter-spacing:0}
+.fd-main h4{margin:8px 0 0;font-size:22px;color:#1a2513}
+.fd-price{display:flex;align-items:flex-start;gap:4px;margin:8px 0 0}
+.fd-price b{font-family:'Barlow Condensed',sans-serif;font-size:48px;line-height:1;color:#1a2513}
+[dir=rtl] .fd-price b{font-family:inherit;font-size:38px}
+.fd-price sup,.fd-extra-price sup,.fd-note sup{color:#e73434;font-weight:700;font-size:16px}
+.fd-price small{align-self:flex-end;margin-bottom:6px;color:#6b7c5c;font-size:13px}
+.fd-sub{margin:6px 0 0;font-size:13.5px;color:#4f6340}
+.fd-save{color:#1f7a3a;font-weight:700}
+.fd-main ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.fd-main li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#3c4d2f}
+.fd-main li svg{color:#e73434;flex-shrink:0}
+.fd-main .hp3-button{align-self:stretch;justify-content:center}
+.fd-extras-title{margin:22px 0 8px;font-weight:700;color:#24321b}
+.fd-extras{display:flex;flex-direction:column;gap:8px}
+.fd-extra{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:12px 14px;border:1px solid #cad9bd;background:#fff}
+.fd-extra b{display:block;font-size:14.5px;color:#1a2513}
+.fd-extra small{font-size:12.5px;color:#6b7c5c}
+.fd-extra-price{font-weight:700;color:#1a2513;white-space:nowrap}
+.fd-extra button{padding:8px 14px;border:1px solid #e73434;background:transparent;color:#e73434;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.fd-extra button:hover{background:#e73434;color:#fff}
+.fd-total{margin:12px 0 0;font-size:14px;color:#3c4d2f}
+.fd-total b{color:#1a2513;font-size:16px}
+.fd-switch{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px;font-size:13px;color:#4f6340}
+.fd-switch button{padding:7px 12px;border:1px solid #cad9bd;background:#fff;color:#2a3d1d;font:inherit;font-size:12.5px;cursor:pointer}
+.fd-switch button.is-active{border-color:#e73434;color:#e73434;font-weight:700}
+.fd-note{margin:14px 0 6px;font-size:12.5px;color:#6b7c5c}
+.hp3-advisor-buttons .hp3-button:disabled{opacity:.45;cursor:not-allowed}
+@media (max-width:600px){
+  .fd-lengths{grid-template-columns:1fr}
+  .fd-lengths button{padding:16px 14px}
+  .fd-extra{grid-template-columns:1fr auto;}
+  .fd-extra button{grid-column:1/-1}
+  .fd-price b{font-size:42px}
+}
+.hp3-advisor .hp3-advisor-progress>button{min-width:0;min-height:0;height:4px;padding:0;border:0;border-radius:2px}

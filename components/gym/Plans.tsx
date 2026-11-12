@@ -40,8 +40,8 @@ function CliqBox({ price, reference }: { price: number; reference?: string }) {
 }
 
 // ---------------------------------------------------------------- choose dialog
-type Choice = { cat: PlanCategory; plan: Plan };
-function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () => void }) {
+export type Choice = { cat: PlanCategory; plan: Plan };
+export function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClose: () => void }) {
   const { t, lang } = useGymLanguage();
   const { contact } = useSiteInfo();
   const ref = useRef<HTMLDialogElement>(null);

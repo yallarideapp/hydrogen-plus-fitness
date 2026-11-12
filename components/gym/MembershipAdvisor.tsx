@@ -1,25 +1,184 @@
 'use client';
-import {useEffect,useState} from 'react';
-import {ArrowLeft,ArrowRight,ArrowUpRight,Check,CheckCircle2,Dumbbell,Flame,Flower2,Target,Users} from 'lucide-react';
-import {useGymLanguage} from './SiteShell';
+// Plan finder: three quick questions, then the site itself suggests a real plan with its price
+// (from the same plans list as /prices) and lets you choose it right away.
+import { useState } from 'react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, BadgeCheck, Check, Dumbbell, HeartPulse, Salad, Shield, Sparkles, Target, UserRound, Users, Waves } from 'lucide-react';
+import { useGymLanguage } from './SiteShell';
+import { usePlans } from '@/lib/admin/overrides';
+import type { Plan, PlanCategory } from '@/lib/plans';
+import { ChooseDialog, type Choice } from './Plans';
 import './experiences.css';
-const goals=[['strength','Get stronger','أصبح أقوى','Strength training & coaching','تدريب القوة والتوجيه'],['energy','Improve my fitness','أحسّن لياقتي','Cardio & group energy','كارديو وطاقة جماعية'],['balance','Move & recharge','أتحرّك وأسترخي','Pilates, yoga & recovery','بيلاتس ويوغا واسترخاء'],['routine','Build a routine','أبني روتيناً','A mix you can keep coming back to','تنوع يساعدك على الاستمرار']];
-export default function MembershipAdvisor(){
- const {t}=useGymLanguage();const [step,setStep]=useState(0);const [goal,setGoal]=useState('strength');const [style,setStyle]=useState('independent');const [visits,setVisits]=useState(3);const [extras,setExtras]=useState<string[]>([]);const [compare,setCompare]=useState('independent');
- useEffect(()=>{const g=new URLSearchParams(location.search).get('goal');if(goals.some(v=>v[0]===g))setGoal(g!)},[]);
- const goalInfo=goals.find(g=>g[0]===goal)!;const styles=[['independent','My own pace','بإيقاعي الخاص'],['group','Group motivation','مع المجموعة'],['coached','One-to-one guidance','بتوجيه فردي']];
- const extraOptions=[['Pilates','البيلاتس'],['Swimming & spa','السباحة والسبا'],['Boxing & martial arts','الملاكمة والفنون القتالية'],['Nutrition guidance','الإرشاد الغذائي'],['Cycling','الدراجات']];
- const recommendation=style==='coached'?['PERSONAL TRAINING','التدريب الشخصي']:style==='group'?['CLASSES & CLUB LIFE','الحصص وحياة النادي']:['GYM FLOOR & YOUR ROUTINE','صالة النادي وروتينك'];
- const summary=`Goal: ${goalInfo[1]}\nTraining style: ${styles.find(s=>s[0]===style)?.[1]}\nTarget visits per week: ${visits}\nOther interests: ${extras.join(', ')||'Gym access'}\nPlease explain current prices, term lengths, inclusions and membership policies.`;
- const join='/join?kind=membership&interest='+encodeURIComponent(t(...recommendation as [string,string]))+'&message='+encodeURIComponent(summary);
- return <div className="hp3-container hp3-membership-page"><div className="hp3-page-head"><span className="hp3-kicker">{t('MEMBERSHIP, BUILT AROUND YOU','اشتراك يناسبك')}</span><h1>{t('FIND YOUR','اكتشف')} <em>{t('WAY IN.','بدايتك.')}</em></h1><p>{t('Your goals, your schedule, your kind of training. Build a membership wish list and let the club help you find the right option.','أهدافك وجدولك وأسلوب تدريبك. حدّد ما ترغب فيه ليجد فريق النادي الخيار المناسب لك.')}</p></div>
- <section className="hp3-advisor"><div className="hp3-advisor-intro"><span className="hp3-kicker">{t('THE MEMBERSHIP FINDER','دليل اختيار الاشتراك')}</span><h2>{t('WHAT DOES','كيف تبدو')}<br/>{t('YOUR STRONG','نسختك')}<br/><em>{t('LOOK LIKE?','الأقوى؟')}</em></h2><p>{t('Four simple steps. A clearer starting point. No commitment required.','أربع خطوات بسيطة لبداية أوضح، دون أي التزام.')}</p><div className="hp3-advisor-progress">{[0,1,2,3].map(i=><button aria-label={t(`Step ${i+1}`,`الخطوة ${i+1}`)} onClick={()=>i<step&&setStep(i)} key={i} className={i<=step?'is-active':''}/>)}</div><small>{String(step+1).padStart(2,'0')} / 04</small></div><div className="hp3-advisor-panel">
- {step===0&&<><span className="hp3-kicker">{t('01 · YOUR GOAL','٠١ · هدفك')}</span><h3>{t('What brings you here?','ما هدفك؟')}</h3><div className="hp3-goal-grid">{goals.map((g,i)=><button key={g[0]} type="button" className={goal===g[0]?'is-active':''} onClick={()=>setGoal(g[0])}>{i===0?<Dumbbell size={26}/>:i===1?<Flame size={26}/>:i===2?<Flower2 size={26}/>:<Target size={26}/>}<strong>{t(g[1],g[2])}</strong><small>{t(g[3],g[4])}</small>{goal===g[0]&&<Check size={16}/>}</button>)}</div></>}
- {step===1&&<><span className="hp3-kicker">{t('02 · YOUR TRAINING STYLE','٠٢ · أسلوبك')}</span><h3>{t('How do you like to move?','كيف تفضّل التدريب؟')}</h3><div className="hp3-style-options">{styles.map(s=><button type="button" key={s[0]} className={style===s[0]?'is-active':''} onClick={()=>setStyle(s[0])}><span>{s[0]==='group'?<Users size={24}/>:s[0]==='coached'?<Target size={24}/>:<Dumbbell size={24}/>}</span><strong>{t(s[1],s[2])}</strong>{style===s[0]?<CheckCircle2 size={20}/>:<ArrowUpRight size={20}/>}</button>)}</div><label className="hp3-visit-frequency">{t('How often would you like to visit?','كم مرة ترغب في الزيارة أسبوعياً؟')}<div>{[1,2,3,4,5,6,7].map(n=><button type="button" key={n} onClick={()=>setVisits(n)} className={visits===n?'is-active':''}>{n}</button>)}</div><small>{t(`${visits} planned visits per week`,`${visits} زيارات مخططة أسبوعياً`)}</small></label></>}
- {step===2&&<><span className="hp3-kicker">{t('03 · A LITTLE MORE YOU','٠٣ · ما يهمك أيضاً')}</span><h3>{t('What else catches your eye?','ما الذي يلفت اهتمامك؟')}</h3><p className="hp3-muted">{t('Pick anything you’d like the team to explain. Access and inclusions depend on the option confirmed by the club.','اختر ما ترغب في الاستفسار عنه. يحدد النادي خيارات الدخول والمزايا المتاحة.')}</p><div className="hp3-extra-options">{extraOptions.map(([en,ar])=><button key={en} type="button" onClick={()=>setExtras(a=>a.includes(en)?a.filter(x=>x!==en):[...a,en])} className={extras.includes(en)?'is-active':''}><span>{extras.includes(en)&&<Check size={15}/>}</span>{t(en,ar)}<ArrowUpRight size={16}/></button>)}</div></>}
- {step===3&&<><span className="hp3-kicker">{t('04 · YOUR STARTING POINT','٠٤ · نقطة بدايتك')}</span><h3>{t(...recommendation as [string,string])}</h3><p className="hp3-result-description">{t(`Start with ${goalInfo[3].toLowerCase()}, with a plan for ${visits} visits a week. Your membership enquiry will include all your preferences.`,`ابدأ بـ${goalInfo[4]} مع التخطيط لـ${visits} زيارات أسبوعياً. سيشمل استفسار الاشتراك جميع تفضيلاتك.`)}</p><div className="hp3-result-list"><span><Check size={16}/>{t(goalInfo[1],goalInfo[2])}</span><span><Check size={16}/>{t(styles.find(s=>s[0]===style)![1],styles.find(s=>s[0]===style)![2])}</span>{extras.map(e=><span key={e}><Check size={16}/>{t(e,extraOptions.find(x=>x[0]===e)?.[1]??e)}</span>)}</div><div className="hp3-price-callout"><small>{t('MEMBERSHIP PRICING','أسعار الاشتراك')}</small><strong>{t('Get your current quote.','احصل على عرض السعر الحالي.')}</strong><p>{t('The team confirms prices, duration, class access and any extras before you join.','يؤكد الفريق الأسعار والمدة ودخول الحصص والمزايا الإضافية قبل الاشتراك.')}</p></div><a href={join} className="hp3-button hp3-red">{t('Send my membership wish list','أرسل تفضيلات اشتراكي')}<ArrowUpRight size={18}/></a><a href="/contact" className="hp3-text-link">{t('See the club first','شاهد النادي أولاً')}<ArrowUpRight size={15}/></a></>}
- <div className="hp3-advisor-buttons">{step>0&&<button type="button" className="hp3-text-link" onClick={()=>setStep(v=>v-1)}><ArrowLeft size={16}/>{t('Back','السابق')}</button>}{step<3&&<button className="hp3-button hp3-red" onClick={()=>setStep(v=>v+1)}>{t('Next step','الخطوة التالية')}<ArrowRight size={16}/></button>}{step===3&&<button className="hp3-text-link" onClick={()=>setStep(0)}>{t('Start again','ابدأ مجدداً')}</button>}</div></div></section>
- <section className="hp3-section"><div className="hp3-heading-row"><div><span className="hp3-kicker">{t('CHOOSE YOUR APPROACH','اختر أسلوبك')}</span><h2>{t('THREE WAYS','ثلاث طرق')}<br/>{t('TO GET STARTED.','للبداية.')}</h2></div><p>{t('These are training approaches to discuss with the team. The club will confirm the membership products and services currently available.','هذه أساليب تدريب يمكنك مناقشتها مع الفريق، ويؤكد النادي الاشتراكات والخدمات المتوفرة حالياً.')}</p></div><div className="hp3-approach-grid">{[
- ['independent','INDEPENDENT TRAINING','تدريب مستقل','Build your own rhythm on the gym floor.','ابنِ إيقاعك الخاص في صالة النادي.','/images/display/gym-07.webp'],['group','GROUP ENERGY','طاقة المجموعة','Find a routine with classes and shared motivation.','اكتشف روتيناً مع الحصص والحماس المشترك.','/images/display/cycling-studio.webp'],['coached','PERSONAL GUIDANCE','توجيه شخصي','Start a conversation about one-to-one coaching.','ابدأ حديثاً حول التدريب الفردي.','/images/facebook/622573390695999.jpg']
- ].map(([id,en,ar,desc,descAr,image])=><article key={id} className={compare===id?'is-active':''}><img src={image} alt={t(en,ar)} loading="lazy"/><div><h3>{t(en,ar)}</h3><p>{t(desc,descAr)}</p><button className="hp3-text-link" onClick={()=>{setStyle(id);setCompare(id);setStep(1);document.querySelector('.hp3-advisor')?.scrollIntoView({behavior:'smooth'})}}>{t('Build my wish list','حدّد تفضيلاتك')}<ArrowUpRight size={16}/></button></div></article>)}</div><div className="hp3-membership-help"><p>{t('Already part of the club?','هل أنت عضو في النادي؟')}</p><a href="/support">{t('Renewal, freeze and membership support','التجديد والتجميد وخدمة الأعضاء')}<ArrowUpRight size={15}/></a><a href="/prices#day-pass">{t('Day pass price','سعر الدخول اليومي')}<ArrowUpRight size={15}/></a></div></section></div>
+import './plans.css';
+
+type Side = 'men' | 'women';
+type Act = 'gym' | 'classes' | 'boxing' | 'pilates' | 'swimming' | 'coach' | 'nutrition';
+const ACTS: [Act, string, string, string, string, typeof Dumbbell][] = [
+  ['gym', 'Gym floor', 'صالة الجيم', 'Weights, machines and cardio', 'أوزان وأجهزة وكارديو', Dumbbell],
+  ['classes', 'Group classes', 'الحصص الجماعية', 'Train with a group and a coach', 'تمرّن مع مجموعة ومدرب', Users],
+  ['boxing', 'Boxing & martial arts', 'الملاكمة والفنون القتالية', 'Technique, fitness and confidence', 'تقنية ولياقة وثقة', Shield],
+  ['pilates', 'Pilates', 'البيلاتس', 'Reformer sessions for strength and posture', 'جلسات ريفورمر للقوة والقوام', HeartPulse],
+  ['swimming', 'Swimming', 'السباحة', 'Lessons in the club pool', 'دروس في مسبح النادي', Waves],
+  ['coach', 'Personal trainer', 'مدرب شخصي', 'One-to-one sessions with a plan', 'جلسات فردية مع خطة', Target],
+  ['nutrition', 'Meal plan', 'خطة غذائية', 'Healthy meals from Hydro Rest', 'وجبات صحية من هايدرو ريست', Salad],
+];
+const CAT_OF: Record<Exclude<Act, 'gym'>, string> = { classes: 'group-classes', boxing: 'boxing', pilates: 'pilates', swimming: 'swimming', coach: 'personal-training', nutrition: 'meal-plans' };
+const LENGTHS: [number, string, string, string, string][] = [
+  [1, '1 month', 'شهر واحد', 'Try it first', 'للتجربة أولاً'],
+  [3, '3 months', '٣ أشهر', 'Best balance of price and commitment', 'أفضل توازن بين السعر والالتزام'],
+  [6, '6 months', '٦ أشهر', 'Save more', 'توفير أكبر'],
+  [12, '12 months', '١٢ شهراً', 'Lowest price per month', 'أقل سعر شهرياً'],
+];
+
+const fmt = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${Math.round(n).toLocaleString('ar-JO')} د.أ` : `${Math.round(n).toLocaleString('en-US')} JD`);
+// Best plan in a category for the chosen length: same months if there is one, else the closest shorter, else the first.
+function pickPlan(cat: PlanCategory, months: number): Plan {
+  const monthly = cat.plans.filter((p) => p.months && !p.unit);
+  const exact = monthly.find((p) => p.months === months);
+  if (exact) return exact;
+  const shorter = monthly.filter((p) => (p.months ?? 0) <= months).sort((a, b) => (b.months ?? 0) - (a.months ?? 0))[0];
+  return shorter ?? monthly[0] ?? cat.plans[0];
+}
+
+export default function MembershipAdvisor() {
+  const { t, lang } = useGymLanguage();
+  const cats = usePlans();
+  const [step, setStep] = useState(0);
+  const [side, setSide] = useState<Side | ''>('');
+  const [acts, setActs] = useState<Act[]>(['gym']);
+  const [months, setMonths] = useState(3);
+  const [choice, setChoice] = useState<Choice | null>(null);
+  const L = (b: [string, string]) => t(b[0], b[1]);
+
+  const canNext = step === 0 ? !!side : step === 1 ? acts.length > 0 : true;
+  const toggle = (a: Act) => setActs((x) => (x.includes(a) ? x.filter((y) => y !== a) : [...x, a]));
+
+  // Build the suggestion from the live plans list.
+  const gymCat = cats.find((c) => c.id === (side === 'women' ? 'gym-ladies' : 'gym-men'));
+  const picks: { cat: PlanCategory; plan: Plan }[] = [];
+  if (acts.includes('gym') && gymCat) picks.push({ cat: gymCat, plan: pickPlan(gymCat, months) });
+  for (const a of acts) {
+    if (a === 'gym') continue;
+    const cat = cats.find((c) => c.id === CAT_OF[a]);
+    if (cat) picks.push({ cat, plan: pickPlan(cat, months) });
+  }
+  const main = picks[0];
+  const extras = picks.slice(1);
+  const monthlyOf = (p: Plan) => (p.months ? p.price / p.months : p.price);
+  // Monthly cost of everything picked; per-session or per-day plans can't be turned into a month, so they're left out.
+  const isMonthly = (p: Plan) => !!p.months || /month/i.test(p.unit?.[0] ?? '');
+  const perMonth = picks.filter((x) => isMonthly(x.plan)).reduce((sum, x) => sum + monthlyOf(x.plan), 0);
+  const notCounted = picks.some((x) => !isMonthly(x.plan));
+  const anyExample = picks.some((x) => x.plan.example);
+  const oneMonth = main ? main.cat.plans.find((p) => p.months === 1 && !p.unit) : undefined;
+  const saving = main && oneMonth && main.plan.months && main.plan.months > 1 ? oneMonth.price * main.plan.months - main.plan.price : 0;
+
+  return (
+    <div className="hp3-container hp3-membership-page">
+      <div className="hp3-page-head">
+        <span className="hp3-kicker">{t('PLAN FINDER', 'دليل اختيار الاشتراك')}</span>
+        <h1>{t('FIND YOUR', 'اعثر على')} <em>{t('PLAN.', 'اشتراكك.')}</em></h1>
+        <p>{t('Answer three quick questions and we’ll suggest the plan that fits you, with its price. You can choose it straight away.', 'أجب عن ثلاثة أسئلة سريعة، وسنقترح عليك الاشتراك المناسب مع سعره، ويمكنك اختياره مباشرة.')}</p>
+      </div>
+
+      <section className="hp3-advisor">
+        <div className="hp3-advisor-intro">
+          <span className="hp3-kicker">{t('ABOUT ONE MINUTE', 'دقيقة واحدة تقريباً')}</span>
+          <h2>{t('THE RIGHT', 'الاشتراك')} <br />{t('PLAN,', 'المناسب،')} <br /><em>{t('IN 3 STEPS.', 'بثلاث خطوات.')}</em></h2>
+          <p>{t('No sign-up needed. Prices come straight from the club’s price list.', 'دون تسجيل. الأسعار مأخوذة مباشرة من قائمة أسعار النادي.')}</p>
+          <div className="hp3-advisor-progress">{[0, 1, 2, 3].map((i) => <button aria-label={t(`Step ${i + 1}`, `الخطوة ${i + 1}`)} onClick={() => i < step && setStep(i)} key={i} className={i <= step ? 'is-active' : ''} />)}</div>
+          <small>{String(step + 1).padStart(2, '0')} / 04</small>
+        </div>
+        <div className="hp3-advisor-panel">
+          {step === 0 && <>
+            <span className="hp3-kicker">{t('01 · YOUR CLUB', '٠١ · القسم')}</span>
+            <h3>{t('Which side of the club?', 'أي قسم يناسبك؟')}</h3>
+            <div className="hp3-goal-grid">
+              {([['men', 'Men’s gym', 'جيم الرجال', 'The main training floor', 'صالة التدريب الرئيسية'], ['women', 'Ladies’ club', 'نادي السيدات', 'A private space for women', 'مساحة خاصة بالسيدات']] as const).map(([v, en, ar, den, dar]) => (
+                <button key={v} type="button" className={side === v ? 'is-active' : ''} aria-pressed={side === v} onClick={() => { setSide(v); setStep(1); }}>
+                  <UserRound size={26} /><strong>{t(en, ar)}</strong><small>{t(den, dar)}</small>{side === v && <Check size={16} />}
+                </button>
+              ))}
+            </div>
+          </>}
+
+          {step === 1 && <>
+            <span className="hp3-kicker">{t('02 · WHAT YOU WANT', '٠٢ · ما تريده')}</span>
+            <h3>{t('What would you like to do?', 'ماذا تريد أن تمارس؟')}</h3>
+            <p className="hp3-muted">{t('Pick one or more.', 'اختر واحداً أو أكثر.')}</p>
+            <div className="hp3-goal-grid fd-acts">
+              {ACTS.map(([v, en, ar, den, dar, Icon]) => (
+                <button key={v} type="button" className={acts.includes(v) ? 'is-active' : ''} aria-pressed={acts.includes(v)} onClick={() => toggle(v)}>
+                  <Icon size={24} /><strong>{t(en, ar)}</strong><small>{t(den, dar)}</small>{acts.includes(v) && <Check size={16} />}
+                </button>
+              ))}
+            </div>
+          </>}
+
+          {step === 2 && <>
+            <span className="hp3-kicker">{t('03 · HOW LONG', '٠٣ · المدة')}</span>
+            <h3>{t('How long do you want to sign up for?', 'ما المدة التي تريد الاشتراك بها؟')}</h3>
+            <div className="fd-lengths">
+              {LENGTHS.map(([m, en, ar, den, dar]) => (
+                <button key={m} type="button" className={months === m ? 'is-active' : ''} aria-pressed={months === m} onClick={() => { setMonths(m); setStep(3); }}>
+                  <strong>{t(en, ar)}</strong><small>{t(den, dar)}</small>{m === 3 && <em>{t('Most popular', 'الأكثر طلباً')}</em>}
+                </button>
+              ))}
+            </div>
+          </>}
+
+          {step === 3 && main && <>
+            <span className="hp3-kicker">{t('04 · OUR SUGGESTION', '٠٤ · اقتراحنا لك')}</span>
+            <h3>{t('This plan fits you best:', 'هذا الاشتراك هو الأنسب لك:')}</h3>
+            <article className="fd-main">
+              <div className="fd-main-top">
+                <span className="fd-tag"><BadgeCheck size={15} />{L(main.cat.name)}</span>
+                <h4>{L(main.plan.label)}</h4>
+                <p className="fd-price"><b>{fmt(main.plan.price, lang)}</b>{main.plan.example && <sup>*</sup>}{main.plan.unit && <small>/ {L(main.plan.unit)}</small>}</p>
+                {main.plan.months && main.plan.months > 1 && <p className="fd-sub">≈ {fmt(monthlyOf(main.plan), lang)} {t('a month', 'شهرياً')}{saving > 0 && <> · <span className="fd-save">{t('You save', 'توفّر')} {fmt(saving, lang)}</span></>}</p>}
+                {main.cat.includes.length > 0 && <ul>{main.cat.includes.slice(0, 4).map((x, i) => <li key={i}><Check size={14} />{L(x)}</li>)}</ul>}
+              </div>
+              <button type="button" className="hp3-button hp3-red" onClick={() => setChoice(main)}>{t('Choose this plan', 'اختر هذا الاشتراك')}<ArrowUpRight size={17} /></button>
+            </article>
+
+            {extras.length > 0 && <>
+              <p className="fd-extras-title">{t('Also for you:', 'وأيضاً لك:')}</p>
+              <div className="fd-extras">
+                {extras.map((x) => (
+                  <div key={x.cat.id} className="fd-extra">
+                    <div><b>{L(x.cat.name)}</b><small>{L(x.plan.label)}{x.plan.unit ? ` · ${L(x.plan.unit)}` : ''}</small></div>
+                    <span className="fd-extra-price">{fmt(x.plan.price, lang)}{x.plan.example && <sup>*</sup>}</span>
+                    <button type="button" onClick={() => setChoice(x)}>{t('Choose', 'اختر')}</button>
+                  </div>
+                ))}
+              </div>
+              <p className="fd-total">{t('Everything together:', 'المجموع لكل ما اخترته:')} <b>≈ {fmt(perMonth, lang)}</b> {t('a month', 'شهرياً')}{notCounted && <small> {t('(plus per-session prices)', '(إضافة إلى أسعار الجلسات)')}</small>}</p>
+            </>}
+
+            {main.cat.plans.filter((p) => p.months && !p.unit).length > 1 && (
+              <div className="fd-switch"><span>{t('Other lengths:', 'مدد أخرى:')}</span>
+                {main.cat.plans.filter((p) => p.months && !p.unit).map((p) => (
+                  <button key={p.id} type="button" className={p.id === main.plan.id ? 'is-active' : ''} onClick={() => setMonths(p.months!)}>{L(p.label)} · {fmt(p.price, lang)}</button>
+                ))}
+              </div>
+            )}
+            {anyExample && <p className="fd-note"><sup>*</sup> {t('Example price — the team confirms the exact price when they call you.', 'سعر تقريبي — يؤكد الفريق السعر النهائي عند الاتصال بك.')}</p>}
+            <a href={`/prices#${main.cat.id}`} className="hp3-text-link">{t('See all prices', 'اطّلع على كل الأسعار')}<ArrowUpRight size={15} /></a>
+          </>}
+
+          <div className="hp3-advisor-buttons">
+            {step > 0 && <button type="button" className="hp3-text-link" onClick={() => setStep((v) => v - 1)}><ArrowLeft size={16} />{t('Back', 'السابق')}</button>}
+            {step < 3 && <button className="hp3-button hp3-red" disabled={!canNext} onClick={() => setStep((v) => v + 1)}>{step === 2 ? t('Show my plan', 'اعرض اشتراكي') : t('Next', 'التالي')}<ArrowRight size={16} /></button>}
+            {step === 3 && <button className="hp3-text-link" onClick={() => setStep(0)}><Sparkles size={15} />{t('Start again', 'ابدأ من جديد')}</button>}
+          </div>
+        </div>
+      </section>
+
+      <div className="hp3-membership-help">
+        <p>{t('Already part of the club?', 'هل أنت عضو في النادي؟')}</p>
+        <a href="/support">{t('Renewal, freeze and membership support', 'التجديد والتجميد وخدمة الأعضاء')}<ArrowUpRight size={15} /></a>
+        <a href="/prices#day-pass">{t('Day pass price', 'سعر الدخول اليومي')}<ArrowUpRight size={15} /></a>
+      </div>
+      <ChooseDialog choice={choice} onClose={() => setChoice(null)} />
+    </div>
+  );
 }
