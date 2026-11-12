@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { ArrowUpRight, Baby, CalendarDays, Dumbbell, Flower2, Mail, MapPin, MessageCircle, Moon, Navigation, Phone, Salad, Sparkles, Swords, Tag, UserRound, Users, Waves, X } from 'lucide-react';
+import { ArrowUpRight, Baby, CalendarDays, Dumbbell, Flower2, Mail, MapPin, MessageCircle, Moon, Navigation, Phone, Share, Smartphone, SquarePlus, Salad, Sparkles, Swords, Tag, UserRound, Users, Waves, X } from 'lucide-react';
 import { sessionState, formatClock } from '@/lib/site-info';
 import { useSiteInfo } from '@/lib/admin/overrides';
 import type { Lang } from '@/lib/legal';
@@ -14,8 +14,7 @@ export const serviceNav = [
   { href: '/services/group-classes', en: 'Group classes', ar: 'الحصص الجماعية', icon: Users },
   { href: '/services/pilates', en: 'Reformer Pilates', ar: 'ريفورمر بيلاتس', icon: Flower2 },
   { href: '/services/martial-arts', en: 'Boxing & martial arts', ar: 'البوكسينج والفنون القتالية', icon: Swords },
-  { href: '/services/pool-spa', en: 'Pool & spa', ar: 'المسبح والسبا', icon: Waves },
-  { href: '/services/swimming-academy', en: 'Swimming lessons', ar: 'دورات السباحة', icon: Waves },
+  { href: '/services/pool-spa', en: 'Pool, spa & swimming', ar: 'المسبح والسبا والسباحة', icon: Waves },
   { href: '/services/kids', en: 'Kids programmes', ar: 'برامج الأطفال', icon: Baby },
   { href: '/services/personal-training', en: 'Personal training', ar: 'التدريب الشخصي', icon: UserRound },
   { href: '/services/hydro-rest', en: 'Hydro Rest & nutrition', ar: 'هايدرو ريست والتغذية', icon: Salad },
@@ -23,16 +22,31 @@ export const serviceNav = [
   { href: '/services/events', en: 'Events & community', ar: 'الفعاليات والمجتمع', icon: CalendarDays },
 ];
 
-export const exploreNav: [string, string, string][] = [
-  ['/offers', 'News & offers', 'الأخبار والعروض'],
-  ['/coaches', 'Coaches & personal training', 'المدربون والتدريب الشخصي'],
-  ['/calculators', 'Your fitness in numbers', 'لياقتك بالأرقام'],
-  ['/community', 'Instagram & Facebook archive', 'أرشيف إنستغرام وفيسبوك'],
-  ['/contact', 'Contact & location', 'التواصل والموقع'],
-  ['/support', 'Help & membership support', 'المساعدة وخدمة الأعضاء'],
-  ['/careers', 'Careers', 'الوظائف'],
-  ['/prices#day-pass', 'Day pass price', 'سعر الدخول اليومي'],
+// The menu in three groups: membership & prices · classes & coaches · club & contact.
+export const menuGroups: { id: string; en: string; ar: string; links: [string, string, string][] }[] = [
+  { id: 'membership', en: 'Membership & prices', ar: 'الاشتراك والأسعار', links: [
+    ['/prices', 'Plans & prices', 'الأسعار والاشتراكات'],
+    ['/memberships', 'Find my plan', 'دليل اختيار الاشتراك'],
+    ['/prices#day-pass', 'Day pass', 'الدخول اليومي'],
+    ['/offers', 'News & offers', 'الأخبار والعروض'],
+    ['/member', 'My training', 'تدريبي'],
+    ['/support', 'Help & membership support', 'المساعدة وخدمة الأعضاء'],
+  ] },
+  { id: 'classes', en: 'Classes & coaches', ar: 'الحصص والمدربون', links: [
+    ['/classes', 'Class timetable', 'جدول الحصص'],
+    ['/coaches', 'Coaches & personal training', 'المدربون والتدريب الشخصي'],
+    ['/calculators', 'Your fitness in numbers', 'لياقتك بالأرقام'],
+    ['/member?tab=studio', 'Build a workout', 'ابنِ تمرينك'],
+  ] },
+  { id: 'club', en: 'Club & contact', ar: 'النادي والتواصل', links: [
+    ['/club', 'The club', 'النادي'],
+    ['/services/events', 'Events & community', 'الفعاليات والمجتمع'],
+    ['/contact', 'Contact & location', 'التواصل والموقع'],
+    ['/careers', 'Careers', 'الوظائف'],
+  ] },
 ];
+/** Flat list kept for older callers. */
+export const exploreNav: [string, string, string][] = menuGroups.flatMap((g) => g.links);
 
 export function ServicesMega({ t, lang, onNavigate }: { t: T; lang: Lang; onNavigate?: () => void }) {
   return (
@@ -91,7 +105,17 @@ export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
     document.addEventListener('pointerdown', away); document.addEventListener('keydown', esc);
     return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', esc); };
   }, [open]);
-  const msg = encodeURIComponent(lang === 'ar' ? 'مرحباً، لدي استفسار عن هايدروجين بلس' : 'Hello, I have a question about Hydrogen Plus');
+  // The WhatsApp message names the page you're on (its main heading), e.g. "… about: Boxing & martial arts".
+  const [topic, setTopic] = useState('');
+  useEffect(() => {
+    if (!open) return;
+    const home = /\/(hydrogen-plus-fitness\/?)?$/.test(location.pathname) || location.pathname === '/';
+    const h = (document.querySelector('#page-content h1')?.textContent ?? '').replace(/\s+/g, ' ').trim();
+    setTopic(home ? '' : h.slice(0, 80));
+  }, [open]);
+  const msg = encodeURIComponent(topic
+    ? (lang === 'ar' ? `مرحباً، لدي استفسار بخصوص: ${topic}` : `Hello, I have a question about: ${topic}`)
+    : (lang === 'ar' ? 'مرحباً، لدي استفسار عن نادي هايدروجين بلس.' : 'Hello, I have a question about Hydrogen Plus.'));
   return (
     <div ref={box} className={`hx-float ${open ? 'is-open' : ''} ${scrolled || open ? '' : 'is-top'}`}>
       {open && (
@@ -107,6 +131,51 @@ export function FloatingContact({ t, lang }: { t: T; lang: Lang }) {
       <button className="hx-float-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? t('Close contact options', 'إغلاق خيارات التواصل') : t('Contact options', 'خيارات التواصل')}>
         {open ? <X size={22} /> : <Phone size={21} />}
       </button>
+    </div>
+  );
+}
+
+type InstallEvt = Event & { prompt: () => Promise<void>; userChoice?: Promise<{ outcome: string }> };
+const noSub = () => () => {};
+const isStandalone = () => { try { return matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true; } catch { return false; } };
+
+// "Add to home screen": real install prompt where the browser offers one (Android/Chrome), short steps on iPhone.
+export function InstallApp({ t, className = '' }: { t: T; className?: string }) {
+  const standalone = useSyncExternalStore(noSub, isStandalone, () => true);
+  const [help, setHelp] = useState<'' | 'ios' | 'other'>('');
+  const [done, setDone] = useState(false);
+  if (standalone || done) return null;
+  const go = async () => {
+    const w = window as Window & { __hxInstall?: InstallEvt | null };
+    const ev = w.__hxInstall;
+    if (ev) {
+      w.__hxInstall = null;
+      try { await ev.prompt(); const r = await ev.userChoice; if (r?.outcome === 'accepted') setDone(true); } catch { setHelp('other'); }
+      return;
+    }
+    const ua = navigator.userAgent;
+    const ios = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    setHelp(help ? '' : ios ? 'ios' : 'other');
+  };
+  return (
+    <div className={`hx-install ${className}`}>
+      <button type="button" className="hx-install-btn" onClick={go} aria-expanded={!!help}>
+        <Smartphone size={18} />
+        <span><strong>{t('Add to your home screen', 'أضف الموقع إلى شاشتك')}</strong><small>{t('Opens like an app, with our logo', 'يفتح كتطبيق، بشعار النادي')}</small></span>
+      </button>
+      {help === 'ios' && (
+        <ol className="hx-install-help">
+          <li>{t('Open this site in Safari.', 'افتح الموقع في متصفح سفاري.')}</li>
+          <li>{t('Tap the Share button', 'اضغط زر المشاركة')} <Share size={15} aria-hidden="true" /> {t('at the bottom of the screen.', 'أسفل الشاشة.')}</li>
+          <li>{t('Choose “Add to Home Screen”', 'اختر «إضافة إلى الشاشة الرئيسية»')} <SquarePlus size={15} aria-hidden="true" /> {t('then “Add”.', 'ثم «إضافة».')}</li>
+        </ol>
+      )}
+      {help === 'other' && (
+        <ol className="hx-install-help">
+          <li>{t('Open the browser menu (⋮).', 'افتح قائمة المتصفح (⋮).')}</li>
+          <li>{t('Choose “Install app” or “Add to Home screen”.', 'اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».')}</li>
+        </ol>
+      )}
     </div>
   );
 }

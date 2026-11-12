@@ -236,7 +236,7 @@ function Overview({ d, go, counts }: { d: Overrides; go: (t: TabId) => void; cou
     [!!(d.contact?.cliq && !d.contact.cliq.example), 'Enter the club’s real CliQ alias for paying plans (an example is shown now).', 'اكتب اسم CliQ الحقيقي للنادي لدفع الاشتراكات (الموجود حالياً تجريبي).', 'contact'],
     [!!d.contact, 'Confirm the phone numbers and WhatsApp (WhatsApp on 079 215 1000 was never confirmed).', 'تأكد من أرقام الهاتف والواتساب (رقم الواتساب ٠٧٩ ٢١٥ ١٠٠٠ غير مؤكد).', 'contact'],
     [!!(d.services?.offers || d.services?.gym), 'Update the current membership offer (the latest published one is from December 2025).', 'حدّث عرض الاشتراك الحالي (آخر عرض منشور من ديسمبر ٢٠٢٥).', 'prices'],
-    [!!d.schedule, 'Update the class timetable (it shows the week of 7–12 November 2026).', 'حدّث جدول الحصص (يعرض أسبوع ٧–١٢ نوفمبر ٢٠٢٦).', 'schedule'],
+    [!!d.schedule, 'Check the class timetable (the published week repeats every week until you change it).', 'راجع جدول الحصص (الأسبوع المنشور يتكرر كل أسبوع حتى تغيّره).', 'schedule'],
     [!!d.services?.['hydro-rest']?.menu, 'Check the Hydro Rest menu prices (menu from August 2025).', 'راجع أسعار منيو هايدرو ريست (منيو أغسطس ٢٠٢٥).', 'prices'],
     [!!d.hours, 'Check the opening hours.', 'راجع أوقات الدوام.', 'contact'],
   ];
@@ -444,7 +444,7 @@ function ScheduleTab({ sched, setSched }: { sched: { days: ScheduleDay[]; classe
     <Section title={A('Class timetable', 'جدول الحصص')} icon={<CalendarDays size={18} />}
       intro={A('The women’s group timetable on the Classes page, the home page and the service pages. For a new week, move the dates forward, then edit the classes.', 'جدول الحصص الجماعية للسيدات في صفحة الحصص والرئيسية وصفحات الخدمات. لأسبوع جديد قدّم التواريخ ثم عدّل الحصص.')}
       actions={<div className="adm-inline"><button type="button" className="adm-btn" onClick={() => shiftWeek(7)}><CalendarDays size={15} />{A('Move to next week', 'نقل للأسبوع القادم')}</button>{edited && <button type="button" className="adm-btn" onClick={() => setSched({ days: baseDays, classes: baseClasses })}><RotateCcw size={15} />{A('Restore published timetable', 'استرجاع الجدول المنشور')}</button>}</div>}>
-      <p className="adm-intro adm-tip">{A('Tip: the week label (e.g. “7–12 NOVEMBER 2026”) is a text — change it in Website texts → Classes.', 'ملاحظة: عنوان الأسبوع (مثل «٧–١٢ نوفمبر ٢٠٢٦») نص يُعدّل من «نصوص الموقع ← الحصص».')}</p>
+      <p className="adm-intro adm-tip">{A('The visitors always see the coming days: each day of this week repeats weekly with its next date. Enter a new week here whenever the club publishes one.', 'يرى الزوار دائماً الأيام القادمة: كل يوم من هذا الأسبوع يتكرر أسبوعياً بتاريخه القادم. أدخل أسبوعاً جديداً هنا كلما نشر النادي جدولاً جديداً.')}</p>
       <div className="adm-days">
         {sched.days.map((day, i) => {
           const rows = sched.classes.map((c, idx) => ({ c, idx })).filter(({ c }) => c.day === day.en).sort((a, b) => to24(a.c).localeCompare(to24(b.c)));

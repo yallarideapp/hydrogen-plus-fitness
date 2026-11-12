@@ -94,7 +94,7 @@ export const planCategories: PlanCategory[] = [
     ],
   },
   {
-    id: 'swimming', name: ['Swimming academy', 'أكاديمية السباحة'], audience: ['Kids and adults · all levels', 'أطفال وكبار · لكل المستويات'], service: 'swimming-academy',
+    id: 'swimming', name: ['Swimming lessons', 'دورات السباحة'], audience: ['Kids and adults · all levels', 'أطفال وكبار · لكل المستويات'], service: 'pool-spa',
     includes: [['Certified swimming coaches', 'مدربو سباحة معتمدون'], ['Small groups by level', 'مجموعات صغيرة حسب المستوى']],
     plans: [
       { id: 'swim-group', label: ['Group course · 10 sessions', 'دورة جماعية · ١٠ حصص'], price: 70, note: ['6–8 swimmers per group', '٦–٨ سبّاحين في المجموعة'], popular: true },

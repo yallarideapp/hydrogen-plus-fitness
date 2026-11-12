@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import SiteShell from '@/components/gym/SiteShell';
-import ServicePage from '@/components/gym/ServicePage';
-import { serviceBySlug } from '@/lib/services';
-import { postsForService, relatedCards } from '@/lib/service-data';
+import MovedPage from '@/components/gym/MovedPage';
 
-const service = serviceBySlug('swimming-academy')!;
-export const metadata: Metadata = { title: `${service.name[0]} | Hydrogen Plus Fitness & Spa, Irbid`, description: service.intro[0], alternates: { canonical: service.path }, openGraph: { title: `${service.name[0]} · Hydrogen Plus Fitness`, description: service.intro[0], images: [{ url: `/images/og/${service.slug}.jpg`, width: 1200, height: 630 }] } };
-export default function Page() { return <SiteShell active="services"><ServicePage service={service} posts={postsForService('swimming-academy')} related={relatedCards(service)} /></SiteShell>; }
+// Swimming lessons are now part of the Pool, spa & swimming page.
+export const metadata: Metadata = { title: 'Pool, spa & swimming | Hydrogen Plus Fitness', robots: { index: false }, alternates: { canonical: '/services/pool-spa' } };
+export default function Page() {
+  return <SiteShell active="services"><MovedPage from="/services/swimming-academy" to="/services/pool-spa" en="Pool, spa & swimming" ar="المسبح والسبا والسباحة" /></SiteShell>;
+}

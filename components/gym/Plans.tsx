@@ -120,6 +120,8 @@ export function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClo
 // ---------------------------------------------------------------- plan card
 function PlanCard({ cat, plan, onChoose }: { cat: PlanCategory; plan: Plan; onChoose: () => void }) {
   const { t, lang } = useGymLanguage();
+  const { contact } = useSiteInfo();
+  const wa = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(lang === 'ar' ? `مرحباً، أودّ الاستفسار عن اشتراك ${cat.name[1]} – ${plan.label[1]} (${plan.price} د.أ).` : `Hello, I'd like to ask about the ${cat.name[0]} – ${plan.label[0]} plan (${plan.price} JD).`)}`;
   const L = (b: Bi) => t(b[0], b[1]);
   const pm = perMonth(cat, plan);
   return (
@@ -130,6 +132,7 @@ function PlanCard({ cat, plan, onChoose }: { cat: PlanCategory; plan: Plan; onCh
       <p className="pl-sub">{plan.unit ? L(plan.unit) : pm ? `${t('≈', '≈')} ${fmtJD(pm.each, lang)} ${t('a month', 'بالشهر')}` : plan.months === 1 ? t('one month', 'لمدة شهر') : ' '}</p>
       {pm && pm.save > 0 ? <p className="pl-save">{t('Save', 'وفّر')} {fmtJD(pm.save, lang)}</p> : plan.note ? <p className="pl-note">{L(plan.note)}</p> : <p className="pl-note">&nbsp;</p>}
       <button type="button" className={`pl-choose${plan.popular ? ' is-red' : ''}`} onClick={onChoose}>{t('Choose', 'اختر')}<ArrowUpRight size={16} /></button>
+      <a className="pl-wa" href={wa} target="_blank" rel="noopener noreferrer"><MessageCircle size={14} />{t('Ask on WhatsApp', 'اسأل على واتساب')}</a>
     </article>
   );
 }

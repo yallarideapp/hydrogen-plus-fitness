@@ -3,7 +3,7 @@
 // Live mode later (Cloudflare): the same shape is loaded from /api/content instead.
 import { useMemo, useSyncExternalStore } from 'react';
 import { contact as baseContact, hours as baseHours, type HoursRow } from '@/lib/site-info';
-import { schedule as baseClasses, scheduleDays as baseDays, type ScheduledClass, type ScheduleDay } from '@/lib/schedule';
+import { schedule as baseClasses, scheduleDays as baseDays, ammanToday, rollDays, type ScheduledClass, type ScheduleDay } from '@/lib/schedule';
 import type { Bi, MenuSection, Service, ServiceFact, ServiceFaq, TimelineItem } from '@/lib/services';
 import { planCategories, type Plan, type PlanCategory } from '@/lib/plans';
 
@@ -194,7 +194,13 @@ export function applyService<T extends Service>(s: T, o: Overrides): T {
   return p ? { ...s, ...p } : s;
 }
 export const useSiteInfo = () => { const o = useOverrides(); return useMemo(() => siteInfoOf(o), [o]); };
-export const useSchedule = () => { const o = useOverrides(); return useMemo(() => scheduleOf(o), [o]); };
+// Day stamp in Amman; empty on the server so the first render matches the static HTML.
+const subDay = (cb: () => void) => { const id = setInterval(cb, 60_000); return () => clearInterval(id); };
+export const useSchedule = () => {
+  const o = useOverrides();
+  const today = useSyncExternalStore(subDay, () => ammanToday(), () => '');
+  return useMemo(() => { const s = scheduleOf(o); return today ? { ...s, days: rollDays(s.days, today) } : s; }, [o, today]);
+};
 export const useService = <T extends Service>(s: T) => { const o = useOverrides(); return useMemo(() => applyService(s, o), [s, o]); };
 
 export const plansOf = (o: Overrides): PlanCategory[] => o.plans ?? planCategories;

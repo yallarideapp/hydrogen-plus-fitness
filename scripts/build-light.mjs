@@ -111,6 +111,7 @@ for (const [, root] of parsed) root.walkRules((rule) => {
 });
 const inIsland = (sel) => sel.split(',').every((part) => compounds(part.trim()).some((cls) => ISLANDS.some((isl) => isl.every((x) => cls.includes(x)))));
 ISLANDS.push(['legal-page']);
+ISLANDS.push(['hx-events-archive']);
 const islandList = [...new Set(ISLANDS.map((i) => '.' + i.join('.')))];
 const ISL = islandList.join(',');
 

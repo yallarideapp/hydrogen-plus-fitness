@@ -280,3 +280,5 @@
 .pl-for-men{background:#1f2f4a;color:#c2dcff}
 .pl-tab-for{font-style:normal;color:#ffc2e2}
 .pl-chips button.is-active .pl-tab-for{color:#fff}
+.pl-wa{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;padding:6px;font-size:12.5px;font-weight:600;color:#7ccf8f}
+.pl-wa:hover{text-decoration:underline}

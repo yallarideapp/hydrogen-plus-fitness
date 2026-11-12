@@ -365,3 +365,22 @@ export const schedule: ScheduledClass[] = [
     "category": "strength"
   }
 ];
+
+// The published timetable is one week. Treat it as a weekly template: each day gets its next date
+// on or after "today" (Amman), so the site always shows today and the coming days. A day whose date
+// is already today or later (e.g. a newer week entered in the admin) is kept as it is.
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export function ammanToday(date = new Date()): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Amman', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+}
+export function rollDays(days: ScheduleDay[], today: string): ScheduleDay[] {
+  const t = new Date(`${today}T12:00:00Z`);
+  const rolled = days.map((d) => {
+    if (d.date >= today) return d;
+    const wd = WEEKDAYS.indexOf(d.en);
+    if (wd < 0) return d;
+    const next = new Date(t); next.setUTCDate(t.getUTCDate() + ((wd - t.getUTCDay() + 7) % 7));
+    return { ...d, date: next.toISOString().slice(0, 10) };
+  });
+  return rolled.sort((a, b) => a.date.localeCompare(b.date));
+}

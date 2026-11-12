@@ -128,12 +128,12 @@ function WeekSchedule() {
           </div>
         );
       })}
-      <p className="sp-note">{t('Women’s timetable published for 7–12 November 2026. Times are start times; ask the team about duration and places.', 'جدول السيدات المنشور لأسبوع ٧–١٢ نوفمبر ٢٠٢٦. الأوقات هي أوقات البدء؛ اسألي الفريق عن المدة والأماكن.')}</p>
+      <p className="sp-note">{t('Times are start times; ask the team about duration and places.', 'الأوقات هي أوقات البدء؛ اسألي الفريق عن المدة والأماكن.')}</p>
     </div>
   );
 }
 
-export default function ServicePage({ service: published, posts, related }: { service: Service; posts: ServicePost[]; related: ServiceCard[] }) {
+export default function ServicePage({ service: published, posts, related, children }: { service: Service; posts: ServicePost[]; related: ServiceCard[]; children?: React.ReactNode }) {
   const { t, lang } = useGymLanguage();
   const fmt = useDate();
   const service = useService(published);
@@ -275,6 +275,7 @@ export default function ServicePage({ service: published, posts, related }: { se
         </div></section>
       )}
 
+      {children}
       {related.length > 0 && (
         <section className="sp-section"><div className="sp-container">
           <div className="sp-head"><div><span className="sp-eyebrow">{t('KEEP EXPLORING', 'استكشف المزيد')}</span><h2>{t('Related services', 'خدمات ذات صلة')}</h2></div><a className="sp-link" href="/services">{t('All services', 'كل الخدمات')}<ArrowUpRight size={14} /></a></div>
