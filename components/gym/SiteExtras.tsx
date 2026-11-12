@@ -26,7 +26,7 @@ export const serviceNav = [
 export const exploreNav: [string, string, string][] = [
   ['/offers', 'News & offers', 'الأخبار والعروض'],
   ['/coaches', 'Coaches', 'المدربون'],
-  ['/calculators', 'Fitness calculators', 'حاسبات اللياقة'],
+  ['/calculators', 'Your fitness in numbers', 'لياقتك بالأرقام'],
   ['/tools', 'Workout studio', 'استوديو التمارين'],
   ['/training', 'Plan your training', 'خطط لتدريبك'],
   ['/community', 'Instagram & Facebook archive', 'أرشيف إنستغرام وفيسبوك'],

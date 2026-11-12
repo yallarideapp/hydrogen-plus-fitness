@@ -19,7 +19,7 @@ export default function ContactPage() {
       <section className="sp-hero fp-hero">
         <div className="sp-hero-text">
           <span className="sp-kicker"><MapPin size={14} />{t('CONTACT & LOCATION', 'التواصل والموقع')}</span>
-          <h1>{t('Find us.', 'تعال إلينا.')}</h1>
+          <h1>{t('Find us.', 'تفضّل بزيارتنا.')}</h1>
           <p className="sp-headline">{t(contact.address.en, contact.address.ar)}</p>
           <p className="sp-intro">{t('Call, message or drop in — the team can answer questions about memberships, classes, the pool, Hydro Rest and the lounge.', 'اتصل أو راسلنا أو زرنا مباشرة — يجيب الفريق عن أسئلتك حول الاشتراكات والحصص والمسبح وهايدرو ريست واللاونج.')}</p>
           <div className="sp-actions">

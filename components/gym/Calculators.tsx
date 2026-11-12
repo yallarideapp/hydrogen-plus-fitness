@@ -61,8 +61,8 @@ export default function Calculators() {
   return (
     <div className="sp">
       <section className="sv-hero">
-        <div><span className="sp-kicker"><Activity size={14} />{t('FITNESS CALCULATORS', 'حاسبات اللياقة')}</span><h1>{t('Know your numbers.', 'اعرف أرقامك.')}</h1></div>
-        <div><p>{t('Quick estimates to start a conversation with your coach or the club’s nutritionist. Enter your details once — every calculator uses them.', 'تقديرات سريعة لتبدأ بها الحديث مع مدربك أو أخصائية التغذية في هايدرو ريست. أدخل بياناتك مرة واحدة وتستخدمها كل الحاسبات.')}</p></div>
+        <div><span className="sp-kicker"><Activity size={14} />{t('YOUR FITNESS IN NUMBERS', 'لياقتك بالأرقام')}</span><h1>{t('Know your numbers.', 'اعرف أرقامك.')}</h1></div>
+        <div><p>{t('Quick estimates to start a conversation with your coach or the club’s nutritionist. Enter your details once — every calculator uses them.', 'تقديرات سريعة لتبدأ بها الحديث مع مدربك أو أخصائية التغذية في النادي. أدخل بياناتك مرة واحدة وتستخدمها كل الحاسبات.')}</p></div>
       </section>
       <section className="sp-container fc-profile" aria-label={t('Your details', 'بياناتك')}>
         <Seg label={t('Sex', 'الجنس')} value={sex} onChange={setSex} options={[['f', t('Female', 'أنثى')], ['m', t('Male', 'ذكر')]]} />

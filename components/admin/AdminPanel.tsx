@@ -30,7 +30,7 @@ const PRICE = /JD|دينار|دنانير/;
 const DEFAULT_ACCENT = '#e73434';
 const AREA_AR: Record<string, string> = {
   Home: 'الرئيسية', 'Header, menu & footer': 'الترويسة والقائمة والتذييل', 'The club': 'النادي', Classes: 'الحصص', Memberships: 'الاشتراكات',
-  Training: 'التدريب', Coaches: 'المدربون', Contact: 'التواصل', Careers: 'الوظائف', 'Help centre': 'مركز المساعدة', 'Tools & calculators': 'الأدوات والحاسبات',
+  Training: 'التدريب', Coaches: 'المدربون', Contact: 'التواصل', Careers: 'الوظائف', 'Help centre': 'مركز المساعدة', 'Tools & calculators': 'الأدوات ولياقتك بالأرقام',
   'Visit & join form': 'نموذج الزيارة والاشتراك', 'Service pages (shared)': 'صفحات الخدمات (مشترك)', 'All services': 'كل الخدمات', 'Member area': 'منطقة الأعضاء',
   'Workout studio': 'استوديو التمارين', Community: 'المجتمع', 'Plans & prices': 'الأسعار والاشتراكات',
 };
