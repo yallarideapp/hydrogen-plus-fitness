@@ -829,7 +829,7 @@ html.hx-light.hp-ar-pending body {
         color: #8c8c8c
     }
     :scope:is(html.hx-light) .cx-planned-actions .cx-remove:hover {
-        color: #e3756f
+        color: #761c17
     }
     :scope:is(html.hx-light) .cx-planned-card.is-completed {
         border-color: #ababab;
@@ -1323,7 +1323,7 @@ html.hx-light.hp-ar-pending body {
         color: #121212
     }
     :scope:is(html.hx-light) .hp3-goal-selector>button.is-active small {
-        color: #380900
+        color: #7a1400
     }
     :scope:is(html.hx-light) .hp3-goal-feature {
         background: #dce1d9
@@ -1636,7 +1636,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-coach-avatar {
         background: #c4dab5;
-        color: #223313
+        color: #3b5921
     }
     :scope:is(html.hx-light) .hp3-coach-styles>span {
         border: 1px solid #b4d2a1;
@@ -1644,7 +1644,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-coach-grid article>a {
         border-top: 1px solid #b6d4a2;
-        color: #2f411c
+        color: #3e5625
     }
     :scope:is(html.hx-light) .hp3-coach-grid article>a:last-child {
         border: 0;
@@ -1658,7 +1658,7 @@ html.hx-light.hp-ar-pending body {
         background: #e6e9e4
     }
     :scope:is(html.hx-light) .hp3-goal-settings-intro>svg {
-        color: #273c15
+        color: #3b5b20
     }
     :scope:is(html.hx-light) .hp3-goal-settings h2>em {
         color: #e73434
@@ -1673,7 +1673,7 @@ html.hx-light.hp-ar-pending body {
         border: 1px solid #b8d7a5
     }
     :scope:is(html.hx-light) .hp3-training-tools-link>svg {
-        color: #3a5424
+        color: #3b5625
     }
     :scope:is(html.hx-light) .hp3-training-tools-link p {
         color: #6f8f51
@@ -1700,7 +1700,7 @@ html.hx-light.hp-ar-pending body {
         color: #6f8f4e
     }
     :scope:is(html.hx-light) .hp3-plan-empty>svg {
-        color: #b1d38f
+        color: #3f5a23
     }
     :scope:is(html.hx-light) .hp3-plan-empty p {
         color: #5d813e
@@ -1711,10 +1711,10 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-plan-status {
         border: 1px solid #a0c783;
-        color: #b2d391
+        color: #3e5823
     }
     :scope:is(html.hx-light) .hp3-plan-status.is-done {
-        color: #94cc66;
+        color: #52822b;
         background: #c7e6b0
     }
     :scope:is(html.hx-light) .hp3-member-planned-list p {
@@ -1931,10 +1931,10 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .fc-nutri-icon {
         background: #cfd9ce;
-        color: #28701c
+        color: #236218
     }
     :scope:is(html.hx-light) .fc-nutri-kicker {
-        color: #28701c
+        color: #236218
     }
     :scope:is(html.hx-light) .fc-nutri-text p {
         color: #484e45
@@ -1943,15 +1943,15 @@ html.hx-light.hp-ar-pending body {
         color: #191d15
     }
     :scope:is(html.hx-light) .fc-nutri-hours svg {
-        color: #28701c
+        color: #236218
     }
     :scope:is(html.hx-light) .fc-nutri-hours em {
         background: #d7cccb;
-        color: #65180f
+        color: #6b1910
     }
     :scope:is(html.hx-light) .fc-nutri-hours em.is-open {
         background: #cfd9ce;
-        color: #28701c
+        color: #236218
     }
     :scope:is(html.hx-light) .hp-help {
         background: #eceeed;
@@ -1973,7 +1973,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp-help-direct-icon {
         background: #e6313118;
-        color: #f15c58
+        color: #8b0f0c
     }
     :scope:is(html.hx-light) .hp-help-direct>.hp3-kicker {
         color: #414a37
@@ -2082,7 +2082,7 @@ html.hx-light.hp-ar-pending body {
         color: #1b2012
     }
     :scope:is(html.hx-light) .hp-help-faq-answer .hp-help-text-link:hover {
-        color: #ff7770
+        color: #7a0600
     }
     :scope:is(html.hx-light) .hp-help-empty {
         border: 1px dashed #bac4b1;
@@ -2339,7 +2339,7 @@ html.hx-light.hp-ar-pending body {
         color: #121212
     }
     :scope:is(html.hx-light) .pl-chips button.is-active small {
-        color: #240500
+        color: #7a1100
     }
     :scope:is(html.hx-light) .pl-note {
         color: var(--hp3-muted)
@@ -2389,7 +2389,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .pl-save {
         background: #cdd8d1;
-        color: #7ee2a3
+        color: #176835
     }
     :scope:is(html.hx-light) .pl-note {
         color: #50574a
@@ -2540,11 +2540,11 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .pl-status.is-active {
         background: #cdd8d1;
-        color: #7ee2a3
+        color: #176835
     }
     :scope:is(html.hx-light) .pl-status.is-pending {
         background: #dcdad2;
-        color: #83650a
+        color: #725809
     }
     :scope:is(html.hx-light) .pl-ref {
         color: var(--hp3-muted)
@@ -2632,7 +2632,7 @@ html.hx-light.hp-ar-pending body {
         color: #484e45
     }
     :scope:is(html.hx-light) .pl-cliq-name em {
-        color: #65180f
+        color: #6b1910
     }
     :scope:is(html.hx-light) .pl-cliq-ref {
         color: #292d24
@@ -2713,14 +2713,14 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .pl-for-women {
         background: #e0b5d0;
-        color: #3d0020
+        color: #7a0040
     }
     :scope:is(html.hx-light) .pl-for-men {
         background: #b5c5e0;
-        color: #001a3d
+        color: #00347a
     }
     :scope:is(html.hx-light) .pl-tab-for {
-        color: #3d0020
+        color: #7a0040
     }
     :scope:is(html.hx-light) .pl-chips button.is-active .pl-tab-for {
         color: #121212
@@ -3108,7 +3108,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hx-preview {
         background: #dcdad2;
-        color: #83650a
+        color: #725809
     }
     :scope:is(html.hx-light) .hx-preview a {
         color: #121212
@@ -3317,7 +3317,7 @@ html.hx-light.hp-ar-pending body {
         accent-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hp3-error {
-        color: #6e0900
+        color: #7a0a00
     }
     :scope:is(html.hx-light) .hp3-notice {
         border: 1px solid #92b684;
@@ -3849,7 +3849,7 @@ html.hx-light.hp-ar-pending body {
         color: #292d24
     }
     :scope:is(html.hx-light) .vv-error {
-        color: #7f0a00
+        color: #7a0a00
     }
     :scope:is(html.hx-light) .vv-small {
         color: var(--hp3-muted)
@@ -4080,13 +4080,13 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .adm-mode {
         background: #dcdad2;
-        color: #83650a
+        color: #725809
     }
     :scope:is(html.hx-light) .adm-state {
         color: #535c4c
     }
     :scope:is(html.hx-light) .adm-state.is-dirty {
-        color: #570c00
+        color: #7a1100
     }
     :scope:is(html.hx-light) .adm-top .adm-primary {
         background: var(--adm-accent);
@@ -4272,7 +4272,7 @@ html.hx-light.hp-ar-pending body {
         box-shadow: 0 12px 40px rgba(249,249,249,0.333)
     }
     :scope:is(html.hx-light) .adm-toast.is-ok svg:first-child {
-        color: #5ee08f
+        color: #1a8743
     }
     :scope:is(html.hx-light) .adm-toast.is-warn svg:first-child {
         color: #ffb020
@@ -4294,5 +4294,4 @@ html.hx-light.hp-ar-pending body {
 html.hx-light :is(.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav){--paper:#f7f6f2;--ink:#20201f;--muted:#777771;--line:#deded8;--cx-dark:#111312;--cx-ink:#1e211e;--cx-paper:#f5f4ef;--cb-paper:#f5f4ef;--cb-ink:#20221f;--cb-dark:#111312;--bg:#111312;--panel:#1a1d1b;--panel2:#202421;--hp3-bg:#111312;--hp3-panel:#1a1d1b;--hp3-line:#ffffff20;--hp3-muted:#a3a9a2;--hp3-paper:#f4f4ee;--social-paper:#f7f6f2;--social-ink:#20201f;--social-muted:#777771;--adm-bg:#f3f4ef;--adm-card:#fff;--adm-line:#dfe2d8;--adm-ink:#1b1f19;--adm-muted:#667062}
 /* Hand-tuned extras for the light theme */
 html.hx-light{color-scheme:light}
-html.hx-light img[src*="logo"]{filter:invert(1) hue-rotate(180deg)}
-html.hx-light video,html.hx-light img:not([src*="logo"]){filter:none}
+html.hx-light .pl-save{background:#dcf2e3;color:#146a34}
