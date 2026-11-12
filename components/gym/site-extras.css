@@ -135,3 +135,10 @@ a.hx-announce:hover{filter:brightness(1.08)}
 /* Logo subtitle: small, like a wordmark tagline */
 .hp3 .hp3-logo small{font-size:10px;letter-spacing:3.4px;margin-top:6px;font-weight:600}
 @media(max-width:600px){.hp3 .hp3-logo small{font-size:8.5px;letter-spacing:3px;margin-top:5px}}
+
+/* Light / dark switch in the header */
+.hx-theme{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--hp3-line);background:transparent;color:inherit;cursor:pointer;flex-shrink:0;transition:background .2s,transform .2s}
+.hx-theme:hover{background:#ffffff14}
+.hx-theme:active{transform:scale(.92) rotate(-20deg)}
+html.hx-theme-anim *,html.hx-theme-anim *::before,html.hx-theme-anim *::after{transition:background-color .35s ease,color .35s ease,border-color .35s ease,fill .35s ease!important}
+@media (max-width:600px){.hx-theme{width:34px;height:34px}}

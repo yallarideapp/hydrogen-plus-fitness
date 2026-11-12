@@ -273,7 +273,7 @@
   .fd-extra button{grid-column:1/-1}
   .fd-price b{font-size:42px}
 }
-.hp3-advisor .hp3-advisor-progress>button{min-width:0;min-height:0;height:4px;padding:0;border:0;border-radius:2px}
+.hp3-advisor .hp3-advisor-progress>button{min-width:0!important;min-height:0!important;height:4px;padding:0;border:0;border-radius:2px}
 
 .pl-for{display:inline-block;vertical-align:middle;margin-inline-start:10px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.02em;font-family:inherit}
 .pl-for-women{background:#4a1f3a;color:#ffc2e2}
