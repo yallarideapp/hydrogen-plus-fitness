@@ -1,6 +1,6 @@
 {
-  "_TrainingJourney-hb5IQj3V.js": {
-    "file": "_next/static/chunks/TrainingJourney-hb5IQj3V.js",
+  "_TrainingJourney-Bf7dQ5bZ.js": {
+    "file": "_next/static/chunks/TrainingJourney-Bf7dQ5bZ.js",
     "name": "TrainingJourney",
     "imports": [
       "_rolldown-runtime-C60lm6uB.js",
@@ -92,13 +92,6 @@
       "_phone-D36fIaBK.js"
     ]
   },
-  "_download-MRsKf67y.js": {
-    "file": "_next/static/chunks/download-MRsKf67y.js",
-    "name": "download",
-    "imports": [
-      "_phone-D36fIaBK.js"
-    ]
-  },
   "_experiences.CKfN_m45.css": {
     "file": "_next/static/css/experiences.CKfN_m45.css",
     "src": "_experiences.CKfN_m45.css"
@@ -180,15 +173,8 @@
       "_phone-D36fIaBK.js"
     ]
   },
-  "_plus-BVM1LMZa.js": {
-    "file": "_next/static/chunks/plus-BVM1LMZa.js",
-    "name": "plus",
-    "imports": [
-      "_phone-D36fIaBK.js"
-    ]
-  },
-  "_refresh-cw-PQiIBnI6.js": {
-    "file": "_next/static/chunks/refresh-cw-PQiIBnI6.js",
+  "_refresh-cw-BKx5G1wC.js": {
+    "file": "_next/static/chunks/refresh-cw-BKx5G1wC.js",
     "name": "refresh-cw",
     "imports": [
       "_phone-D36fIaBK.js"
@@ -198,22 +184,22 @@
     "file": "_next/static/chunks/rolldown-runtime-C60lm6uB.js",
     "name": "rolldown-runtime"
   },
-  "_rotate-ccw-lvpUDjou.js": {
-    "file": "_next/static/chunks/rotate-ccw-lvpUDjou.js",
+  "_rotate-ccw-CqUlahYR.js": {
+    "file": "_next/static/chunks/rotate-ccw-CqUlahYR.js",
     "name": "rotate-ccw",
     "imports": [
       "_phone-D36fIaBK.js"
     ]
   },
-  "_scale-FoquEVVs.js": {
-    "file": "_next/static/chunks/scale-FoquEVVs.js",
+  "_scale-DPCgn4Ys.js": {
+    "file": "_next/static/chunks/scale-DPCgn4Ys.js",
     "name": "scale",
     "imports": [
       "_phone-D36fIaBK.js"
     ]
   },
-  "_search-f5cbV0-r.js": {
-    "file": "_next/static/chunks/search-f5cbV0-r.js",
+  "_search-B0qlbEng.js": {
+    "file": "_next/static/chunks/search-B0qlbEng.js",
     "name": "search",
     "imports": [
       "_phone-D36fIaBK.js"
@@ -223,29 +209,29 @@
     "file": "_next/static/css/service-page.DHuV4uTL.css",
     "src": "_service-page.DHuV4uTL.css"
   },
-  "_shield-check-B5oV-Y8p.js": {
-    "file": "_next/static/chunks/shield-check-B5oV-Y8p.js",
+  "_shield-check-DjT1pvSN.js": {
+    "file": "_next/static/chunks/shield-check-DjT1pvSN.js",
     "name": "shield-check",
     "imports": [
       "_phone-D36fIaBK.js"
     ]
   },
-  "_target-DcLMIgN8.js": {
-    "file": "_next/static/chunks/target-DcLMIgN8.js",
+  "_target-CQif12G1.js": {
+    "file": "_next/static/chunks/target-CQif12G1.js",
     "name": "target",
     "imports": [
       "_phone-D36fIaBK.js"
     ]
   },
-  "_trash-2-CBHRJRYi.js": {
-    "file": "_next/static/chunks/trash-2-CBHRJRYi.js",
+  "_trash-2-IBc8Eq_P.js": {
+    "file": "_next/static/chunks/trash-2-IBc8Eq_P.js",
     "name": "trash-2",
     "imports": [
       "_phone-D36fIaBK.js"
     ]
   },
   "components/admin/AdminPanel.tsx": {
-    "file": "_next/static/chunks/AdminPanel-B0xnAHqf.js",
+    "file": "_next/static/chunks/AdminPanel-DLHYK7f-.js",
     "name": "AdminPanel",
     "src": "components/admin/AdminPanel.tsx",
     "isDynamicEntry": true,
@@ -254,15 +240,13 @@
       "_photos-DsEgPQzo.js",
       "_phone-D36fIaBK.js",
       "_arrow-down-BLXGhu8v.js",
-      "_rotate-ccw-lvpUDjou.js",
+      "_rotate-ccw-CqUlahYR.js",
       "_circle-alert-I1vt3zmH.js",
       "_circle-check-Cw2eMskN.js",
       "_clock-3-CzSgLEMf.js",
-      "_download-MRsKf67y.js",
+      "_trash-2-IBc8Eq_P.js",
       "_external-link-Dzs_ltm0.js",
-      "_plus-BVM1LMZa.js",
-      "_search-f5cbV0-r.js",
-      "_trash-2-CBHRJRYi.js",
+      "_search-B0qlbEng.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -270,7 +254,7 @@
     ]
   },
   "components/gym/Calculators.tsx": {
-    "file": "_next/static/chunks/Calculators-Dz8GTWVm.js",
+    "file": "_next/static/chunks/Calculators-vC_ZBH1m.js",
     "name": "Calculators",
     "src": "components/gym/Calculators.tsx",
     "isDynamicEntry": true,
@@ -283,7 +267,7 @@
       "_clock-LtVHfhv-.js",
       "_flame-CXGQpImP.js",
       "_heart-pulse-BKMNxbZS.js",
-      "_scale-FoquEVVs.js",
+      "_scale-DPCgn4Ys.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -292,7 +276,7 @@
     ]
   },
   "components/gym/CareersPage.tsx": {
-    "file": "_next/static/chunks/CareersPage-Cad4IPO2.js",
+    "file": "_next/static/chunks/CareersPage-DJdCHpHe.js",
     "name": "CareersPage",
     "src": "components/gym/CareersPage.tsx",
     "isDynamicEntry": true,
@@ -310,7 +294,7 @@
     ]
   },
   "components/gym/ClassesExperience.tsx": {
-    "file": "_next/static/chunks/ClassesExperience-DCkMogBo.js",
+    "file": "_next/static/chunks/ClassesExperience-JcnO1TcF.js",
     "name": "ClassesExperience",
     "src": "components/gym/ClassesExperience.tsx",
     "isDynamicEntry": true,
@@ -325,11 +309,10 @@
       "_chevron-right-B0TXBv9M.js",
       "_circle-check-Cw2eMskN.js",
       "_clock-3-CzSgLEMf.js",
-      "_download-MRsKf67y.js",
+      "_trash-2-IBc8Eq_P.js",
       "_flame-CXGQpImP.js",
       "_loader-circle-5uSfn1yo.js",
-      "_search-f5cbV0-r.js",
-      "_trash-2-CBHRJRYi.js",
+      "_search-B0qlbEng.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -337,7 +320,7 @@
     ]
   },
   "components/gym/ClubExperience.tsx": {
-    "file": "_next/static/chunks/ClubExperience-CFU92FJv.js",
+    "file": "_next/static/chunks/ClubExperience-CA-S5kVo.js",
     "name": "ClubExperience",
     "src": "components/gym/ClubExperience.tsx",
     "isDynamicEntry": true,
@@ -361,25 +344,29 @@
     ]
   },
   "components/gym/CoachesPage.tsx": {
-    "file": "_next/static/chunks/CoachesPage-KxOmDLtH.js",
+    "file": "_next/static/chunks/CoachesPage-9iWSwfIN.js",
     "name": "CoachesPage",
     "src": "components/gym/CoachesPage.tsx",
     "isDynamicEntry": true,
     "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
       "components/gym/SiteShell.tsx",
+      "_TrainingJourney-Bf7dQ5bZ.js",
       "_photos-DsEgPQzo.js",
       "_legal-Dfb3SWoA.js",
       "_phone-D36fIaBK.js",
       "_briefcase-CM_U6_Rd.js",
+      "_check-BhjkBAna.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
+      "_next/static/css/experiences.CKfN_m45.css",
       "_next/static/css/feature-pages.DN39UlD7.css",
       "_next/static/css/service-page.DHuV4uTL.css"
     ]
   },
   "components/gym/ContactPage.tsx": {
-    "file": "_next/static/chunks/ContactPage-DRSGHORn.js",
+    "file": "_next/static/chunks/ContactPage-DHsZLDcZ.js",
     "name": "ContactPage",
     "src": "components/gym/ContactPage.tsx",
     "isDynamicEntry": true,
@@ -399,7 +386,7 @@
     ]
   },
   "components/gym/HelpCentre.tsx": {
-    "file": "_next/static/chunks/HelpCentre-DFOxR2B5.js",
+    "file": "_next/static/chunks/HelpCentre-BMAZymD0.js",
     "name": "HelpCentre",
     "src": "components/gym/HelpCentre.tsx",
     "isDynamicEntry": true,
@@ -411,9 +398,9 @@
       "_phone-D36fIaBK.js",
       "_check-BhjkBAna.js",
       "_clock-3-CzSgLEMf.js",
-      "_refresh-cw-PQiIBnI6.js",
-      "_search-f5cbV0-r.js",
-      "_shield-check-B5oV-Y8p.js",
+      "_refresh-cw-BKx5G1wC.js",
+      "_search-B0qlbEng.js",
+      "_shield-check-DjT1pvSN.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -421,7 +408,7 @@
     ]
   },
   "components/gym/HomeExperience.tsx": {
-    "file": "_next/static/chunks/HomeExperience-BplHBCoE.js",
+    "file": "_next/static/chunks/HomeExperience-CMJ3JBIG.js",
     "name": "HomeExperience",
     "src": "components/gym/HomeExperience.tsx",
     "isDynamicEntry": true,
@@ -437,7 +424,7 @@
       "_check-BhjkBAna.js",
       "_chevron-right-B0TXBv9M.js",
       "_flame-CXGQpImP.js",
-      "_target-DcLMIgN8.js",
+      "_target-CQif12G1.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -445,7 +432,7 @@
     ]
   },
   "components/gym/MemberExperience.tsx": {
-    "file": "_next/static/chunks/MemberExperience-CXs5t8sl.js",
+    "file": "_next/static/chunks/MemberExperience-DzYMQM_d.js",
     "name": "MemberExperience",
     "src": "components/gym/MemberExperience.tsx",
     "isDynamicEntry": true,
@@ -453,27 +440,30 @@
       "_rolldown-runtime-C60lm6uB.js",
       "components/gym/SiteShell.tsx",
       "components/gym/Plans.tsx",
-      "_TrainingJourney-hb5IQj3V.js",
+      "_TrainingJourney-Bf7dQ5bZ.js",
       "_photos-DsEgPQzo.js",
       "_legal-Dfb3SWoA.js",
       "_phone-D36fIaBK.js",
+      "_arrow-down-BLXGhu8v.js",
+      "_rotate-ccw-CqUlahYR.js",
       "_check-BhjkBAna.js",
       "_circle-check-Cw2eMskN.js",
       "_clock-3-CzSgLEMf.js",
+      "_trash-2-IBc8Eq_P.js",
       "_loader-circle-5uSfn1yo.js",
-      "_plus-BVM1LMZa.js",
-      "_scale-FoquEVVs.js",
-      "_target-DcLMIgN8.js",
-      "_trash-2-CBHRJRYi.js",
+      "_play-zG6EzGaM.js",
+      "_scale-DPCgn4Ys.js",
+      "_search-B0qlbEng.js",
+      "_target-CQif12G1.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
-      "_next/static/css/MemberExperience.BXmTrwnC.css",
+      "_next/static/css/MemberExperience.C6sFSRYg.css",
       "_next/static/css/experiences.CKfN_m45.css"
     ]
   },
   "components/gym/MembershipAdvisor.tsx": {
-    "file": "_next/static/chunks/MembershipAdvisor-l4ARBWIl.js",
+    "file": "_next/static/chunks/MembershipAdvisor-BgBvuOkX.js",
     "name": "MembershipAdvisor",
     "src": "components/gym/MembershipAdvisor.tsx",
     "isDynamicEntry": true,
@@ -487,15 +477,27 @@
       "_arrow-left-D7x1W36F.js",
       "_check-BhjkBAna.js",
       "_heart-pulse-BKMNxbZS.js",
-      "_target-DcLMIgN8.js",
+      "_target-CQif12G1.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
       "_next/static/css/experiences.CKfN_m45.css"
     ]
   },
+  "components/gym/MovedPage.tsx": {
+    "file": "_next/static/chunks/MovedPage-C12kLR4E.js",
+    "name": "MovedPage",
+    "src": "components/gym/MovedPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "components/gym/SiteShell.tsx",
+      "_legal-Dfb3SWoA.js",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
   "components/gym/Plans.tsx": {
-    "file": "_next/static/chunks/Plans-BjJIfQCj.js",
+    "file": "_next/static/chunks/Plans-DitLFxnF.js",
     "name": "Plans",
     "src": "components/gym/Plans.tsx",
     "isDynamicEntry": true,
@@ -515,7 +517,7 @@
     ]
   },
   "components/gym/ServicePage.tsx": {
-    "file": "_next/static/chunks/ServicePage-1yZE3dmC.js",
+    "file": "_next/static/chunks/ServicePage-BESEIzRq.js",
     "name": "ServicePage",
     "src": "components/gym/ServicePage.tsx",
     "isDynamicEntry": true,
@@ -540,7 +542,7 @@
     ]
   },
   "components/gym/ServicesIndex.tsx": {
-    "file": "_next/static/chunks/ServicesIndex-cecuf4rN.js",
+    "file": "_next/static/chunks/ServicesIndex-B4qTud85.js",
     "name": "ServicesIndex",
     "src": "components/gym/ServicesIndex.tsx",
     "isDynamicEntry": true,
@@ -556,7 +558,7 @@
     ]
   },
   "components/gym/SiteShell.tsx": {
-    "file": "_next/static/chunks/SiteShell-B0_ztYbx.js",
+    "file": "_next/static/chunks/SiteShell-DqOL_EeP.js",
     "name": "SiteShell",
     "src": "components/gym/SiteShell.tsx",
     "isDynamicEntry": true,
@@ -572,7 +574,7 @@
     ]
   },
   "components/gym/SocialArchive.tsx": {
-    "file": "_next/static/chunks/SocialArchive-Br-p9E-Q.js",
+    "file": "_next/static/chunks/SocialArchive-BAJmFeNr.js",
     "name": "SocialArchive",
     "src": "components/gym/SocialArchive.tsx",
     "isDynamicEntry": true,
@@ -588,7 +590,7 @@
       "_external-link-Dzs_ltm0.js",
       "_images-CUlL4U2P.js",
       "_play-zG6EzGaM.js",
-      "_search-f5cbV0-r.js",
+      "_search-B0qlbEng.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -596,7 +598,7 @@
     ]
   },
   "components/gym/StaffArea.tsx": {
-    "file": "_next/static/chunks/StaffArea-DdEhQ653.js",
+    "file": "_next/static/chunks/StaffArea-DbDJWqiB.js",
     "name": "StaffArea",
     "src": "components/gym/StaffArea.tsx",
     "isDynamicEntry": true,
@@ -608,37 +610,17 @@
       "_check-BhjkBAna.js",
       "_clock-3-CzSgLEMf.js",
       "_loader-circle-5uSfn1yo.js",
-      "_refresh-cw-PQiIBnI6.js",
-      "_search-f5cbV0-r.js",
-      "_shield-check-B5oV-Y8p.js",
+      "_refresh-cw-BKx5G1wC.js",
+      "_search-B0qlbEng.js",
+      "_shield-check-DjT1pvSN.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
       "_next/static/css/StaffArea.DFxhQe83.css"
     ]
   },
-  "components/gym/TrainingExperience.tsx": {
-    "file": "_next/static/chunks/TrainingExperience-BWHKw1Cd.js",
-    "name": "TrainingExperience",
-    "src": "components/gym/TrainingExperience.tsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "_rolldown-runtime-C60lm6uB.js",
-      "components/gym/SiteShell.tsx",
-      "_TrainingJourney-hb5IQj3V.js",
-      "_photos-DsEgPQzo.js",
-      "_legal-Dfb3SWoA.js",
-      "_check-BhjkBAna.js",
-      "_search-f5cbV0-r.js",
-      "_target-DcLMIgN8.js",
-      "_framework-D_rUT4EX.js"
-    ],
-    "css": [
-      "_next/static/css/experiences.CKfN_m45.css"
-    ]
-  },
   "components/gym/VisitForm.tsx": {
-    "file": "_next/static/chunks/VisitForm-B0y4zEKO.js",
+    "file": "_next/static/chunks/VisitForm-CZ84knoJ.js",
     "name": "VisitForm",
     "src": "components/gym/VisitForm.tsx",
     "isDynamicEntry": true,
@@ -650,7 +632,7 @@
       "_phone-D36fIaBK.js",
       "_circle-check-Cw2eMskN.js",
       "_clock-3-CzSgLEMf.js",
-      "_shield-check-B5oV-Y8p.js",
+      "_shield-check-DjT1pvSN.js",
       "_framework-D_rUT4EX.js"
     ],
     "css": [
@@ -658,34 +640,8 @@
       "_next/static/css/experiences.CKfN_m45.css"
     ]
   },
-  "components/gym/WorkoutStudio.tsx": {
-    "file": "_next/static/chunks/WorkoutStudio-_ZbMSyUx.js",
-    "name": "WorkoutStudio",
-    "src": "components/gym/WorkoutStudio.tsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "_rolldown-runtime-C60lm6uB.js",
-      "components/gym/SiteShell.tsx",
-      "_legal-Dfb3SWoA.js",
-      "_phone-D36fIaBK.js",
-      "_arrow-down-BLXGhu8v.js",
-      "_rotate-ccw-lvpUDjou.js",
-      "_check-BhjkBAna.js",
-      "_clock-3-CzSgLEMf.js",
-      "_download-MRsKf67y.js",
-      "_loader-circle-5uSfn1yo.js",
-      "_play-zG6EzGaM.js",
-      "_plus-BVM1LMZa.js",
-      "_search-f5cbV0-r.js",
-      "_trash-2-CBHRJRYi.js",
-      "_framework-D_rUT4EX.js"
-    ],
-    "css": [
-      "_next/static/css/WorkoutStudio.D6AuqBt1.css"
-    ]
-  },
   "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
-    "file": "_next/static/chunks/app-route-prefetch-policy-9VRJWnKl.js",
+    "file": "_next/static/chunks/app-route-prefetch-policy-C9BpJkeY.js",
     "name": "app-route-prefetch-policy",
     "src": "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
     "isDynamicEntry": true,
@@ -694,7 +650,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-a-Az-Eha.js",
+    "file": "_next/static/chunks/layout-segment-context-W2z35leT.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -705,7 +661,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/streamed-icons.js": {
-    "file": "_next/static/chunks/streamed-icons-DBIkVt9-.js",
+    "file": "_next/static/chunks/streamed-icons-1BbVoA8s.js",
     "name": "streamed-icons",
     "src": "node_modules/vinext/dist/shims/streamed-icons.js",
     "isDynamicEntry": true,
@@ -715,7 +671,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-i6M2oMVl.js",
+    "file": "_next/static/chunks/index-B1woAtqB.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
@@ -729,13 +685,11 @@
       "node_modules/vinext/dist/shims/layout-segment-context.js",
       "components/gym/SocialArchive.tsx",
       "components/gym/ClassesExperience.tsx",
-      "components/gym/WorkoutStudio.tsx",
       "components/admin/AdminPanel.tsx",
       "components/gym/VisitForm.tsx",
       "components/gym/Calculators.tsx",
       "components/gym/SiteShell.tsx",
       "components/gym/Plans.tsx",
-      "components/gym/TrainingExperience.tsx",
       "components/gym/HomeExperience.tsx",
       "components/gym/MemberExperience.tsx",
       "components/gym/ContactPage.tsx",
@@ -744,6 +698,7 @@
       "components/gym/HelpCentre.tsx",
       "components/gym/StaffArea.tsx",
       "components/gym/ClubExperience.tsx",
+      "components/gym/MovedPage.tsx",
       "components/gym/ServicePage.tsx",
       "components/gym/MembershipAdvisor.tsx",
       "components/gym/ServicesIndex.tsx",
