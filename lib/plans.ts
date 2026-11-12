@@ -19,6 +19,7 @@ export type PlanCategory = {
   name: Bi;
   audience: Bi;
   service?: string;     // service page slug
+  for?: 'men' | 'women'; // only for men or only for women (shown as a badge; the plan finder filters on it)
   includes: Bi[];
   plans: Plan[];
 };
@@ -27,7 +28,7 @@ const month = (n: number): Bi => [n === 1 ? '1 month' : `${n} months`, n === 1 ?
 
 export const planCategories: PlanCategory[] = [
   {
-    id: 'gym-men', name: ['Men’s gym', 'جيم الرجال'], audience: ['Men · 16 years and over', 'للرجال · ١٦ سنة فما فوق'], service: 'gym',
+    id: 'gym-men', for: 'men', name: ['Men’s gym', 'جيم الرجال'], audience: ['Men · 16 years and over', 'للرجال · ١٦ سنة فما فوق'], service: 'gym',
     includes: [['Full gym floor, 6 AM to midnight', 'كامل صالة الجيم من ٦ صباحاً حتى منتصف الليل'], ['Cardio, free weights and machines', 'كارديو وأوزان حرة وأجهزة'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Free first assessment with a coach', 'تقييم أول مجاني مع مدرب']],
     plans: [
       { id: 'gym-men-1', label: month(1), price: 50, months: 1 },
@@ -38,7 +39,7 @@ export const planCategories: PlanCategory[] = [
     ],
   },
   {
-    id: 'gym-ladies', name: ['Ladies’ club', 'نادي السيدات'], audience: ['Women only · separate floor', 'للسيدات فقط · طابق مستقل'], service: 'ladies',
+    id: 'gym-ladies', for: 'women', name: ['Ladies’ club', 'نادي السيدات'], audience: ['Women only · separate floor', 'للسيدات فقط · طابق مستقل'], service: 'ladies',
     includes: [['Private ladies’ gym, 8 AM to 11 PM', 'جيم خاص بالسيدات من ٨ صباحاً حتى ١١ ليلاً'], ['Women’s group classes timetable', 'جدول الحصص الجماعية للسيدات'], ['Female coaches', 'مدربات'], ['Lockers and changing rooms', 'خزائن وغرف تبديل']],
     plans: [
       { id: 'ladies-1', label: month(1), price: 45, months: 1, example: true },
@@ -56,7 +57,7 @@ export const planCategories: PlanCategory[] = [
     ],
   },
   {
-    id: 'boxing', name: ['Boxing & martial arts', 'الملاكمة والفنون القتالية'], audience: ['Men, women and kids groups', 'مجموعات رجال وسيدات وأطفال'], service: 'martial-arts',
+    id: 'boxing', name: ['Boxing & martial arts', 'الملاكمة والفنون القتالية'], audience: ['Young men and men · groups for young girls', 'للشباب والرجال · ومجموعات للبنات الصغيرات'], service: 'martial-arts',
     includes: [['3 sessions a week with a coach', '٣ حصص أسبوعياً مع مدرب'], ['Boxing, kickboxing and self-defence', 'ملاكمة وكيك بوكسينغ ودفاع عن النفس'], ['Gloves available at the club', 'القفازات متوفرة في النادي']],
     plans: [
       { id: 'boxing-1', label: month(1), price: 50, months: 1 },
@@ -65,7 +66,7 @@ export const planCategories: PlanCategory[] = [
     ],
   },
   {
-    id: 'group-classes', name: ['Group classes', 'الحصص الجماعية'], audience: ['Ladies’ timetable · all levels', 'جدول السيدات · لكل المستويات'], service: 'group-classes',
+    id: 'group-classes', for: 'women', name: ['Group classes', 'الحصص الجماعية'], audience: ['Ladies only · women coaches · all levels', 'للسيدات فقط · بإشراف مدرّبات · لكل المستويات'], service: 'group-classes',
     includes: [['Zumba, step, core, Pilates mat and more', 'زومبا وستيب وكور وبيلاتس مات وغيرها'], ['Book your place on the Classes page', 'احجزي مكانك من صفحة الحصص']],
     plans: [
       { id: 'classes-1', label: month(1), price: 35, months: 1, example: true },
@@ -74,7 +75,7 @@ export const planCategories: PlanCategory[] = [
     ],
   },
   {
-    id: 'pilates', name: ['Reformer Pilates', 'بيلاتس ريفورمر'], audience: ['Private and small-group sessions', 'حصص خاصة ومجموعات صغيرة'], service: 'pilates',
+    id: 'pilates', for: 'women', name: ['Reformer Pilates', 'بيلاتس ريفورمر'], audience: ['Ladies only · private and small-group sessions', 'للسيدات فقط · حصص خاصة ومجموعات صغيرة'], service: 'pilates',
     includes: [['Reformer machines with a certified coach', 'أجهزة ريفورمر مع مدربة معتمدة'], ['Book times that suit you', 'احجزي الأوقات المناسبة لك']],
     plans: [
       { id: 'pilates-trial', label: ['Trial session', 'حصة تجريبية'], price: 15, note: ['20 JD for non-members', '٢٠ ديناراً لغير الأعضاء'] },

@@ -96,7 +96,7 @@ function cleanPlans(v: unknown): PlanCategory[] | undefined {
       const unit = bi(p.unit, 60), note = bi(p.note, 200);
       return [{ id: p.id, label, price: Math.round(price * 100) / 100, ...(unit && (unit[0] || unit[1]) ? { unit } : {}), ...(Number.isInteger(months) && months >= 1 && months <= 24 ? { months } : {}), ...(Number.isInteger(days) && days >= 1 && days <= 60 ? { days } : {}), ...(note && (note[0] || note[1]) ? { note } : {}), ...(p.example ? { example: true } : {}), ...(p.popular ? { popular: true } : {}) }];
     }) : [];
-    return [{ id: c.id, name, audience, ...(isStr(c.service, 40) && c.service ? { service: c.service } : {}), includes: biList(c.includes, 12) ?? [], plans }];
+    return [{ id: c.id, name, audience, ...(isStr(c.service, 40) && c.service ? { service: c.service } : {}), ...(c.for === 'men' || c.for === 'women' ? { for: c.for as 'men' | 'women' } : {}), includes: biList(c.includes, 12) ?? [], plans }];
   });
   return cats.length ? cats : undefined;
 }

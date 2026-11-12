@@ -190,7 +190,7 @@ export function PricesPage() {
             const on = c.id === cat.id;
             return (
               <button key={c.id} id={`tab-${c.id}`} type="button" role="tab" aria-selected={on} aria-controls="pl-panel" tabIndex={on ? 0 : -1} className={on ? 'is-active' : ''} onClick={() => pick(c.id)} onKeyDown={(e) => onKey(e, i)}>
-                <span>{L(c.name)}</span><small>{sub(c)}</small>
+                <span>{L(c.name)}</span><small>{sub(c)}{c.for === 'women' && <i className="pl-tab-for"> · {t('Ladies', 'للسيدات')}</i>}</small>
               </button>
             );
           })}
@@ -199,7 +199,7 @@ export function PricesPage() {
       <div className="hp3-container pl-list">
         <section key={cat.id} id="pl-panel" role="tabpanel" aria-labelledby={`tab-${cat.id}`} className="pl-cat">
           <div className="pl-cat-head">
-            <div><h2>{L(cat.name)}</h2><p>{L(cat.audience)}</p></div>
+            <div><h2>{L(cat.name)}{cat.for && <span className={`pl-for pl-for-${cat.for}`}>{cat.for === 'women' ? t('Ladies only', 'للسيدات فقط') : t('Men only', 'للرجال فقط')}</span>}</h2><p>{L(cat.audience)}</p></div>
             {cat.service && <a href={cat.service === 'gym' ? '/services/gym' : `/services/${cat.service}`} className="pl-more">{t('About this service', 'عن هذه الخدمة')}<ArrowUpRight size={15} /></a>}
           </div>
           {cat.includes.length > 0 && <ul className="pl-includes">{cat.includes.map((x, i) => <li key={i}><Check size={15} />{L(x)}</li>)}</ul>}

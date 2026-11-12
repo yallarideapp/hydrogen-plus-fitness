@@ -12,9 +12,11 @@ import './plans.css';
 
 type Side = 'men' | 'women';
 type Act = 'gym' | 'classes' | 'boxing' | 'pilates' | 'swimming' | 'coach' | 'nutrition';
+// Who each activity is offered to (adults): classes and Pilates are ladies only; boxing is for men (girls' boxing is for young girls, under Kids).
+const ONLY: Partial<Record<Act, Side>> = { classes: 'women', pilates: 'women', boxing: 'men' };
 const ACTS: [Act, string, string, string, string, typeof Dumbbell][] = [
   ['gym', 'Gym floor', 'صالة الجيم', 'Weights, machines and cardio', 'أوزان وأجهزة وكارديو', Dumbbell],
-  ['classes', 'Group classes', 'الحصص الجماعية', 'Train with a group and a coach', 'تمرّن مع مجموعة ومدرب', Users],
+  ['classes', 'Group classes', 'الحصص الجماعية', 'Cycling, Zumba, yoga and more with women coaches', 'دراجات وزومبا ويوغا وغيرها مع مدرّبات', Users],
   ['boxing', 'Boxing & martial arts', 'الملاكمة والفنون القتالية', 'Technique, fitness and confidence', 'تقنية ولياقة وثقة', Shield],
   ['pilates', 'Pilates', 'البيلاتس', 'Reformer sessions for strength and posture', 'جلسات ريفورمر للقوة والقوام', HeartPulse],
   ['swimming', 'Swimming', 'السباحة', 'Lessons in the club pool', 'دروس في مسبح النادي', Waves],
@@ -93,8 +95,8 @@ export default function MembershipAdvisor() {
             <span className="hp3-kicker">{t('01 · YOUR CLUB', '٠١ · القسم')}</span>
             <h3>{t('Which side of the club?', 'أي قسم يناسبك؟')}</h3>
             <div className="hp3-goal-grid">
-              {([['men', 'Men’s gym', 'جيم الرجال', 'The main training floor', 'صالة التدريب الرئيسية'], ['women', 'Ladies’ club', 'نادي السيدات', 'A private space for women', 'مساحة خاصة بالسيدات']] as const).map(([v, en, ar, den, dar]) => (
-                <button key={v} type="button" className={side === v ? 'is-active' : ''} aria-pressed={side === v} onClick={() => { setSide(v); setStep(1); }}>
+              {([['men', 'Men’s gym', 'جيم الرجال', 'Gym, boxing and personal training', 'الجيم والملاكمة والتدريب الشخصي'], ['women', 'Ladies’ club', 'نادي السيدات', 'Separate gym, classes and Pilates with women coaches', 'جيم مستقل وحصص وبيلاتس مع مدرّبات']] as const).map(([v, en, ar, den, dar]) => (
+                <button key={v} type="button" className={side === v ? 'is-active' : ''} aria-pressed={side === v} onClick={() => { setSide(v); setActs((x) => x.filter((a) => !ONLY[a] || ONLY[a] === v)); setStep(1); }}>
                   <UserRound size={26} /><strong>{t(en, ar)}</strong><small>{t(den, dar)}</small>{side === v && <Check size={16} />}
                 </button>
               ))}
@@ -106,7 +108,7 @@ export default function MembershipAdvisor() {
             <h3>{t('What would you like to do?', 'ماذا تريد أن تمارس؟')}</h3>
             <p className="hp3-muted">{t('Pick one or more.', 'اختر واحداً أو أكثر.')}</p>
             <div className="hp3-goal-grid fd-acts">
-              {ACTS.map(([v, en, ar, den, dar, Icon]) => (
+              {ACTS.filter(([v]) => !ONLY[v] || ONLY[v] === side).map(([v, en, ar, den, dar, Icon]) => (
                 <button key={v} type="button" className={acts.includes(v) ? 'is-active' : ''} aria-pressed={acts.includes(v)} onClick={() => toggle(v)}>
                   <Icon size={24} /><strong>{t(en, ar)}</strong><small>{t(den, dar)}</small>{acts.includes(v) && <Check size={16} />}
                 </button>

@@ -96,7 +96,7 @@ export const services: Service[] = [
   },
   {
     slug: 'group-classes', path: '/services/group-classes', icon: 'users',
-    name: ['Group classes', 'الحصص الجماعية'], kicker: ['MOVE TOGETHER', 'تحرّكوا معاً'],
+    name: ['Group classes', 'الحصص الجماعية'], kicker: ['LADIES ONLY · MOVE TOGETHER', 'للسيدات فقط · تحرّكن معاً'],
     headline: ['Find the class that fits your goal.', 'اكتشفي الحصة التي تناسب هدفك.'],
     intro: ['A new women’s timetable every week — cycling, Zumba, yoga, Tabata, step, belly dance, core and toning — plus seasonal specials such as poolside outdoor classes and aqua aerobics.', 'جدول حصص جديد للسيدات كل أسبوع — دراجات، زومبا، يوغا، تاباتا، ستيب، رقص شرقي، تمارين الجذع والشد — بالإضافة إلى حصص موسمية مثل الحصص الخارجية بجانب المسبح والأكوا إيروبيك.'],
     body: [['Whether your goal is muscle strength, toning, flexibility or burning fat, the club’s coaches point you to the right class. CrossFit courses for men and women have also been offered.', 'سواء كان هدفك تقوية العضلات أو شد الجسم أو المرونة أو حرق الدهون، ترشدك المدربات إلى الحصة المناسبة. كما قدّم النادي دورات كروس فيت للرجال والسيدات.']],
@@ -124,7 +124,7 @@ export const services: Service[] = [
   },
   {
     slug: 'pilates', path: '/services/pilates', icon: 'flower',
-    name: ['Reformer Pilates', 'ريفورمر بيلاتس'], kicker: ['FIRST IN IRBID', 'الأولى في إربد'],
+    name: ['Reformer Pilates', 'ريفورمر بيلاتس'], kicker: ['LADIES ONLY · FIRST IN IRBID', 'للسيدات فقط · الأولى في إربد'],
     headline: ['Irbid’s first reformer Pilates room.', 'أول غرفة ريفورمر بيلاتس في إربد.'],
     intro: ['A dedicated, calm reformer studio with a certified coach — private sessions, prenatal Pilates and the occasional outdoor Pilates retreat.', 'غرفة ريفورمر مخصصة وهادئة مع كوتش معتمدة — حصص خاصة، وبيلاتس للحوامل، وجلسات بيلاتس خارجية بين الحين والآخر.'],
     body: [['The club’s Pilates highlight describes the room as designed for calm, energy and a safe space to move freely. Prenatal sessions focus on pelvic-floor and back strength, breathing and relaxation and easing lower-back discomfort — always check with your doctor first. In spring 2026 the studio took Pilates outdoors to the hills of Salt.', 'يصف النادي غرفة البيلاتس بأنها مصممة لتمنحك الهدوء والطاقة ومساحة آمنة للحركة بحرية. تركّز حصص الحوامل على تقوية عضلات الحوض والظهر وتحسين التنفس والاسترخاء وتخفيف آلام أسفل الظهر — استشيري طبيبك أولاً. وفي ربيع ٢٠٢٦ نقل الاستوديو جلسات البيلاتس إلى الطبيعة بين جبال السلط.']],
