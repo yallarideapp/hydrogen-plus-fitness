@@ -3286,6 +3286,12 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .hx-install-help svg {
         color: var(--hp3-red,#e73434)
     }
+    :scope:is(html.hx-light) .hx-m-svc-grid a {
+        border: 1px solid var(--hp3-line) !important
+    }
+    :scope:is(html.hx-light) .hx-m-svc-grid a svg {
+        color: var(--hp3-red)
+    }
     :scope:is(html.hx-light) .hp3 {
         --hp3-red: #e73434;
         --hp3-bg: #eceeed;

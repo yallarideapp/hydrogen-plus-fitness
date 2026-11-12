@@ -44,12 +44,12 @@ export default function ContactPage() {
             return (
               <li key={h.id}>
                 <div><b>{t(h.en, h.ar)}</b><small>{t('Published', 'منشور')} {fmt(h.published)} · <a href={h.source} target="_blank" rel="noopener noreferrer">{t('source', 'المصدر')}</a></small></div>
-                <span className="fp-time" dir="ltr">{formatClock(h.open, lang)} – {formatClock(h.close, lang)}</span>
+                <span className="fp-time" dir={lang === 'ar' ? 'rtl' : 'ltr'}>{formatClock(h.open, lang)} – {formatClock(h.close, lang)}</span>
                 {st && <span className={`fp-state ${st.isOpen ? 'is-open' : ''}`}>{st.isOpen ? t('Open now', 'مفتوح الآن') : t('Closed', 'مغلق')}</span>}
               </li>
             );
           })}
-            <li><div><b>{t('Pool', 'المسبح')}</b><small>{t('Seasonal · latest post', 'موسمي · آخر منشور')} {fmt('2026-10-01')} · <a href="/services/pool-spa">{t('details', 'التفاصيل')}</a></small></div><span className="fp-time" dir="ltr">{formatClock('09:00', lang)} – {formatClock('17:00', lang)}</span></li>
+            <li><div><b>{t('Pool', 'المسبح')}</b><small>{t('Seasonal · latest post', 'موسمي · آخر منشور')} {fmt('2026-10-01')} · <a href="/services/pool-spa">{t('details', 'التفاصيل')}</a></small></div><span className="fp-time" dir={lang === 'ar' ? 'rtl' : 'ltr'}>{formatClock('09:00', lang)} – {formatClock('17:00', lang)}</span></li>
           </ul>
           <p className="sp-note">{t('Holiday and Ramadan hours are announced on Instagram — see News & offers. Times shown in Irbid (Asia/Amman) time.', 'تُعلن أوقات العطل ورمضان على إنستغرام — راجع الأخبار والعروض. الأوقات حسب توقيت إربد (عمّان).')} <a className="sp-link" href="/offers">{t('News & offers', 'الأخبار والعروض')}</a></p>
         </div>
