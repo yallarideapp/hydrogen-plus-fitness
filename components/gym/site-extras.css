@@ -136,9 +136,12 @@ a.hx-announce:hover{filter:brightness(1.08)}
 .hp3 .hp3-logo small{font-size:10px;letter-spacing:3.4px;margin-top:6px;font-weight:600}
 @media(max-width:600px){.hp3 .hp3-logo small{font-size:8.5px;letter-spacing:3px;margin-top:5px}}
 
-/* Light / dark switch in the header */
-.hx-theme{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--hp3-line);background:transparent;color:inherit;cursor:pointer;flex-shrink:0;transition:background .2s,transform .2s}
-.hx-theme:hover{background:#ffffff14}
-.hx-theme:active{transform:scale(.92) rotate(-20deg)}
+/* Light / dark switch in the header: a plain icon button, same size as the other header icons */
+.hp3-header-actions .hx-theme{display:grid;place-items:center;width:44px;height:44px;min-width:44px!important;min-height:44px!important;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer;flex-shrink:0;transition:background .2s,transform .25s}
+.hp3-header-actions .hx-theme svg{width:20px;height:20px;stroke-width:1.9}
+.hp3-header-actions .hx-theme:hover{background:#ffffff12}
+.hp3-header-actions .hx-theme:active{transform:scale(.9) rotate(-25deg)}
+.hp3-header-actions .hx-theme:focus-visible{outline:2px solid var(--hp3-red);outline-offset:2px}
 html.hx-theme-anim *,html.hx-theme-anim *::before,html.hx-theme-anim *::after{transition:background-color .35s ease,color .35s ease,border-color .35s ease,fill .35s ease!important}
-@media (max-width:600px){.hx-theme{width:34px;height:34px}}
+/* Phones: no account icon in the header (it's in the bottom bar as "My training") */
+@media (max-width:600px){.hp3-header-actions .hp3-account{display:none!important}.hp3-header-actions .hx-theme{width:40px;height:40px;min-width:40px!important;min-height:40px!important}}

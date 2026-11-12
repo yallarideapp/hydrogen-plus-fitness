@@ -3166,13 +3166,16 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
-    :scope:is(html.hx-light) .hx-theme {
-        border: 1px solid var(--hp3-line);
+    :scope:is(html.hx-light) .hp3-header-actions .hx-theme {
+        border: 0;
         background: transparent;
         color: inherit
     }
-    :scope:is(html.hx-light) .hx-theme:hover {
-        background: rgba(18,18,18,0.078)
+    :scope:is(html.hx-light) .hp3-header-actions .hx-theme:hover {
+        background: rgba(18,18,18,0.071)
+    }
+    :scope:is(html.hx-light) .hp3-header-actions .hx-theme:focus-visible {
+        outline: 2px solid var(--hp3-red)
     }
     :scope:is(html.hx-light) .hp3 {
         --hp3-red: #e73434;
