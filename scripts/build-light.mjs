@@ -87,7 +87,11 @@ const scope = (sel) => sel.split(',').map((s) => {
 // otherwise they would turn into dark blocks.
 const parsed = FILES.map((f) => [f, postcss.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'), { from: f })]);
 const VARS = {};
-for (const [, root] of parsed) root.walkDecls(/^--/, (d) => { if (!(d.prop in VARS) && /#[0-9a-f]{3,8}\b|rgba?\(|\b(white|black)\b/i.test(d.value)) VARS[d.prop] = d.value.trim(); });
+const VAR_ALL = {};
+for (const [, root] of parsed) root.walkDecls(/^--/, (d) => { if (/#[0-9a-f]{3,8}\b|rgba?\(|\b(white|black)\b/i.test(d.value)) (VAR_ALL[d.prop] ??= new Set()).add(d.value.trim()); });
+// A variable defined with both light and dark values in different places (e.g. --line) is ambiguous: don't resolve it.
+const lightness = (v) => { const t = v.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|\b(white|black)\b/i); const c = t && parse(t[0]); if (!c) return null; return c[3] < 0.9 ? NaN : toHsl(c)[2]; }; // translucent → unknown
+for (const [k, set] of Object.entries(VAR_ALL)) { const ls = [...set].map(lightness).filter((x) => x != null); if (ls.length && !ls.some(Number.isNaN) && (Math.max(...ls) - Math.min(...ls) < 0.35)) VARS[k] = [...set][0]; }
 const resolveVars = (v) => v.replace(/var\((--[a-z0-9-]+)(?:,[^)]*)?\)/gi, (m, n) => VARS[n] ?? m);
 const isLight = (tok) => { const c = parse(tok); if (!c || c[3] < 0.9) return false; return toHsl(c)[2] > 0.8; };
 const compounds = (sel) => sel.split(/\s*[>+~]\s*|\s+/).filter(Boolean).map((c) => (c.match(/\.[a-z0-9_-]+/gi) ?? []).map((x) => x.slice(1)));
@@ -106,11 +110,13 @@ for (const [, root] of parsed) root.walkRules((rule) => {
   });
 });
 const inIsland = (sel) => sel.split(',').every((part) => compounds(part.trim()).some((cls) => ISLANDS.some((isl) => isl.every((x) => cls.includes(x)))));
+ISLANDS.push(['legal-page']);
 const islandList = [...new Set(ISLANDS.map((i) => '.' + i.join('.')))];
 const ISL = islandList.join(',');
 
 const out = postcss.root();
 const COLLECT = [];
+const LATE = [];
 let rules = 0, decls = 0;
 for (const [, root] of parsed) {
   root.walkRules((rule) => {
@@ -118,14 +124,35 @@ for (const [, root] of parsed) {
     if (SKIP_SELECTOR.test(rule.selector)) return;
     const keep = [];
     const island = inIsland(rule.selector);
+    // Text sitting on a kept saturated background (red buttons, badges) stays as designed (usually white).
+    const satBg = rule.nodes.some((d) => d.type === 'decl' && /^background(-color)?$/.test(d.prop) && (() => { const t = resolveVars(d.value).match(COLOR_RE); const c = t && parse(t[0]); if (!c) return false; const [, s, l] = toHsl(c); return c[3] >= 0.9 && s > 0.38 && l > 0.28 && l < 0.72; })());
+    const pageRoot = /^(html|body)$/.test(rule.selector.trim());
     rule.each((d) => {
       if (d.type !== 'decl' || !COLOR_PROPS.test(d.prop)) return;
       if (/url\(/i.test(d.value) && !/gradient/i.test(d.value)) return;
       if (island) return;
+      // The body background stays as designed: every themed page paints its own background.
+      if (pageRoot && /^(background|background-color|color)$/.test(d.prop)) return;
+      if (satBg && d.prop === 'color') return; // handled below
       const v = d.value.replace(COLOR_RE, (t) => map(t, d.prop));
       // Copy every colour declaration (changed or not) so state rules (:hover, .is-active...) keep beating base rules.
       keep.push(postcss.decl({ prop: d.prop, value: v, important: d.important }));
     });
+    // On a kept saturated background (red buttons, badges), text keeps its designed light colour — even when
+    // a general rule makes it inherit — so this rule doubles its last class to win over e.g. '.hp3 a{color:inherit}'.
+    if (satBg && !island && !/:hover|:focus|:active/.test(rule.selector)) {
+      const own = rule.nodes.find((d) => d.type === 'decl' && d.prop === 'color');
+      let txt = own ? resolveVars(own.value) : '#fff';
+      const tc = parse((txt.match(COLOR_RE) ?? ['#fff'])[0]);
+      if (!tc || /var\(|inherit|currentcolor/i.test(txt) || toHsl(tc)[2] < 0.6) txt = '#fff';
+      const dbl = rule.selector.split(',').map((x) => { const m = x.trim().match(/^(.*)(\.[a-z0-9_-]+)([^.\s>+~]*)$/i); return m ? `${m[1]}${m[2]}${m[2]}${m[3]}` : null; });
+      if (dbl.every(Boolean)) {
+        const r2 = postcss.rule({ selector: scopedSel(dbl.join(',')) }); r2.append(postcss.decl({ prop: 'color', value: txt }));
+        const ch = []; let pp = rule.parent; let ok = true;
+        while (pp && pp.type === 'atrule') { if (!/^(media|supports|container)$/i.test(pp.name)) { ok = false; break; } ch.unshift(`@${pp.name} ${pp.params}`); pp = pp.parent; }
+        if (ok) LATE.push({ chain: ch.join('|'), chainArr: ch, global: false, rule: r2 });
+      }
+    }
     if (!keep.length) return;
     const chain = []; let p = rule.parent;
     while (p && p.type === 'atrule') { if (!/^(media|supports|container)$/i.test(p.name)) return; chain.unshift(`@${p.name} ${p.params}`); p = p.parent; }
@@ -135,6 +162,7 @@ for (const [, root] of parsed) {
     COLLECT.push({ chain: chain.join('|'), chainArr: chain, global, rule: nr }); rules++; decls += keep.length;
   });
 }
+COLLECT.push(...LATE);
 // Emit: consecutive rules with the same @media chain share one @scope block, whose lower boundary
 // (the light islands) keeps those sections exactly as in dark mode.
 let i = 0;
@@ -154,6 +182,8 @@ const extra = `
 ${islandVars}
 /* Hand-tuned extras for the light theme */
 html.hx-light{color-scheme:light}
+/* Pages that paint on the body (privacy, terms) are already light: keep the body as designed */
+html.hx-light body{background:#f7f6f2;color:#20201f}
 html.hx-light .pl-save{background:#dcf2e3!important;color:#146a34!important}
 `;
 const banner = '/* GENERATED by scripts/build-light.mjs from the site stylesheets — do not edit by hand. */\n';

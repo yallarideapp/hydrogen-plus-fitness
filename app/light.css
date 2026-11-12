@@ -7,11 +7,7 @@ html.hx-light {
     --line: #272721;
     --font-sans: 'Manrope',sans-serif
 }
-html.hx-light body {
-    color: var(--ink);
-    background: var(--paper)
-}
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) a {
         color: inherit
     }
@@ -109,8 +105,7 @@ html.hx-light body {
         color: #5d5d5a
     }
     :scope:is(html.hx-light) .ticker {
-        background: var(--red);
-        color: #121212
+        background: var(--red)
     }
     :scope:is(html.hx-light) .highlights {
         border-bottom: 1px solid var(--line)
@@ -219,7 +214,6 @@ html.hx-light body {
         border: 1px solid rgba(18,18,18,0.533)
     }
     :scope:is(html.hx-light) .club-photo-stamp {
-        color: #121212;
         background: var(--red)
     }
     :scope:is(html.hx-light) .club-copy>p {
@@ -343,8 +337,7 @@ html.hx-light body {
         border: 1px solid var(--line)
     }
     :scope:is(html.hx-light) .footer-socials a:hover {
-        background: var(--red);
-        color: #121212
+        background: var(--red)
     }
     :scope:is(html.hx-light) .footer-bottom {
         color: var(--muted)
@@ -354,7 +347,6 @@ html.hx-light body {
     }
     :scope:is(html.hx-light) .floating-contact {
         background: var(--red);
-        color: #121212;
         box-shadow: 0 3px 16px rgba(249,249,249,0.133)
     }
     :scope:is(html.hx-light) .dialog-close {
@@ -475,7 +467,7 @@ html.hx-light[dir=rtl] .contact-details {
     border-right: 1px solid #c1c1bb
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .highlights>div,:scope:is(html.hx-light) .highlights>div:first-child,:scope:is(html.hx-light) .highlights>div:last-child {
             border: 0
         }
@@ -494,7 +486,7 @@ html.hx-light[dir=rtl] .contact-details {
         border-right: 0
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .class-book:disabled:hover {
         color: inherit;
         background: transparent
@@ -573,7 +565,7 @@ html.hx-light[dir=rtl] .hero-visual .image-shade {
     background: linear-gradient(270deg,rgba(249,249,249,0.8) 0%,rgba(249,249,249,0.6) 36%,rgba(249,249,249,0.133) 67%,rgba(249,249,249,0.067)),linear-gradient(0deg,rgba(249,249,249,0.333),transparent 45%)
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hero-visual .image-shade {
             background: linear-gradient(0deg,rgba(249,249,249,0.8),rgba(249,249,249,0.467) 57%,rgba(249,249,249,0.267))
         }
@@ -584,7 +576,7 @@ html.hx-light[dir=rtl] .hero-visual .image-shade {
         background: linear-gradient(0deg,rgba(249,249,249,0.8),rgba(249,249,249,0.467) 57%,rgba(249,249,249,0.267))
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .hero-visual .image-shade {
         background: linear-gradient(90deg,rgba(249,249,249,0.467) 0%,rgba(249,249,249,0.267) 34%,transparent 67%),linear-gradient(0deg,rgba(249,249,249,0.2),transparent 50%)
     }
@@ -596,13 +588,13 @@ html.hx-light[dir=rtl] .hero-visual .image-shade {
     background: linear-gradient(270deg,rgba(249,249,249,0.467) 0%,rgba(249,249,249,0.267) 34%,transparent 67%),linear-gradient(0deg,rgba(249,249,249,0.2),transparent 50%)
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hero-visual .image-shade,:scope:is(html.hx-light) html[dir=rtl] .hero-visual .image-shade {
             background: linear-gradient(0deg,rgba(249,249,249,0.667),rgba(249,249,249,0.333) 58%,rgba(249,249,249,0.2))
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .amenity-phone>svg {
         color: var(--red)
     }
@@ -610,7 +602,7 @@ html.hx-light[dir=rtl] .hero-visual .image-shade {
 html.hx-light.hp-ar-pending body {
     background: #eceeed
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .cx-experience {
         --cx-dark: #eceeed;
         --cx-ink: #dee1de;
@@ -645,8 +637,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .cx-button-red {
         background: var(--cx-red);
-        border-color: var(--cx-red);
-        color: #121212
+        border-color: var(--cx-red)
     }
     :scope:is(html.hx-light) .cx-button-red:hover {
         background: #c92525;
@@ -718,8 +709,7 @@ html.hx-light.hp-ar-pending body {
         color: #c1c1c1
     }
     :scope:is(html.hx-light) .cx-card-saved {
-        background: #e63131;
-        color: #121212
+        background: #e63131
     }
     :scope:is(html.hx-light) .cx-image-arrow {
         color: rgba(18,18,18,0.78)
@@ -1091,7 +1081,6 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .cb-tour-strip-copy .cb-button:hover {
         background: var(--cb-red);
-        color: #121212;
         border-color: var(--cb-red)
     }
     :scope:is(html.hx-light) .cb-tour-previews button {
@@ -1195,7 +1184,6 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .cb-viewer-close:hover {
         background: var(--cb-red);
-        color: #121212;
         border-color: var(--cb-red)
     }
     :scope:is(html.hx-light) .cb-viewer-stage {
@@ -1208,7 +1196,6 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .cb-viewer-prev:hover,:scope:is(html.hx-light) .cb-viewer-next:hover {
         background: #e63131;
-        color: #121212;
         border-color: #e63131
     }
     :scope:is(html.hx-light) .cb-viewer-counter {
@@ -1254,14 +1241,14 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:680px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .cb-dialog-tour .cb-viewer-detail {
             border-inline-start: 0;
             border-top: 1px solid #b8b8b8
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .hp3-home-hero-copy h1 em {
         color: var(--hp3-red)
     }
@@ -1319,8 +1306,7 @@ html.hx-light.hp-ar-pending body {
         color: #8c9682
     }
     :scope:is(html.hx-light) .hp3-goal-selector>button.is-active {
-        background: var(--hp3-red);
-        color: #121212
+        background: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hp3-goal-selector>button.is-active small {
         color: #7a1400
@@ -1407,8 +1393,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-stepper>button.is-current>span {
         background: #e73434;
-        border-color: #e73434;
-        color: #121212
+        border-color: #e73434
     }
     :scope:is(html.hx-light) .hp3-stepper>button.is-done {
         color: #344227
@@ -1426,8 +1411,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-purpose-grid>button.is-active {
         background: #e73434;
-        border-color: #e73434;
-        color: #121212
+        border-color: #e73434
     }
     :scope:is(html.hx-light) .hp3-visit-suggestions .hp3-chip {
         border-color: #38442b;
@@ -1542,7 +1526,6 @@ html.hx-light.hp-ar-pending body {
         background: rgba(18,18,18,0.4)
     }
     :scope:is(html.hx-light) .hp3-visit-frequency button.is-active {
-        color: #121212;
         background: #e73434;
         border-color: #e73434
     }
@@ -1564,8 +1547,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-extra-options>button.is-active>span {
         border-color: #e73434;
-        background: #e73434;
-        color: #121212
+        background: #e73434
     }
     :scope:is(html.hx-light) .hp3-result-description {
         color: #85a26e
@@ -1687,8 +1669,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-member-nav>button.is-active {
         background: #e73434;
-        border-color: #e73434;
-        color: #121212
+        border-color: #e73434
     }
     :scope:is(html.hx-light) .hp3-member-nav>a {
         color: #4c6831
@@ -1731,7 +1712,7 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-goal-selector>button {
             border-bottom: 1px solid var(--hp3-line);
             border-inline-end: 1px solid var(--hp3-line)
@@ -1747,7 +1728,7 @@ html.hx-light.hp-ar-pending body {
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .fp-map {
         background: #e2e5e3;
         border: 1px solid rgba(18,18,18,0.122)
@@ -1854,8 +1835,7 @@ html.hx-light.hp-ar-pending body {
         color: #383d35
     }
     :scope:is(html.hx-light) .fc-seg button.is-on {
-        background: #e73434;
-        color: #121212
+        background: #e73434
     }
     :scope:is(html.hx-light) .fc-card {
         background: #e2e5e3;
@@ -2142,7 +2122,6 @@ html.hx-light.hp-ar-pending body {
         color: #3d4d2c
     }
     :scope:is(html.hx-light) .hp-help-track-symbol>span {
-        color: #121212;
         background: #e63131
     }
     :scope:is(html.hx-light) .hp-help-track p {
@@ -2310,8 +2289,7 @@ html.hx-light.hp-ar-pending body {
         border: 1px solid var(--hp3-line)
     }
     :scope:is(html.hx-light) .pl-steps li>span {
-        background: var(--hp3-red);
-        color: #121212
+        background: var(--hp3-red)
     }
     :scope:is(html.hx-light) .pl-steps small {
         color: var(--hp3-muted)
@@ -2335,8 +2313,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .pl-chips button.is-active {
         background: var(--hp3-red);
-        border-color: var(--hp3-red);
-        color: #121212
+        border-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .pl-chips button.is-active small {
         color: #7a1100
@@ -2375,8 +2352,7 @@ html.hx-light.hp-ar-pending body {
         box-shadow: inset 0 3px 0 var(--hp3-red)
     }
     :scope:is(html.hx-light) .pl-badge {
-        background: var(--hp3-red);
-        color: #121212
+        background: var(--hp3-red)
     }
     :scope:is(html.hx-light) .pl-card h4 {
         color: #13150f
@@ -2405,8 +2381,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .pl-choose.is-red {
         background: var(--hp3-red);
-        border-color: var(--hp3-red);
-        color: #121212
+        border-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .pl-foot {
         color: #50574a
@@ -2655,8 +2630,7 @@ html.hx-light.hp-ar-pending body {
         color: #82966e
     }
     :scope:is(html.hx-light) .fd-lengths button em {
-        background: #e73434;
-        color: #121212
+        background: #e73434
     }
     :scope:is(html.hx-light) .fd-lengths button.is-active {
         border-color: #e73434;
@@ -2871,6 +2845,10 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .sp-timeline time {
         color: #bfc4be
     }
+    :scope:is(html.hx-light) .sp-week {
+        background: var(--line);
+        border: 1px solid var(--line)
+    }
     :scope:is(html.hx-light) .sp-week-day {
         background: var(--panel)
     }
@@ -2886,6 +2864,9 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .sp-week-day li em {
         color: var(--muted)
     }
+    :scope:is(html.hx-light) .sp-week .sp-note {
+        background: var(--bg)
+    }
     :scope:is(html.hx-light) .sp-video-frame {
         background: #f9f9f9
     }
@@ -2898,7 +2879,6 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .sp-play {
         background: var(--red);
-        color: #121212;
         box-shadow: 0 8px 30px rgba(249,249,249,0.533)
     }
     :scope:is(html.hx-light) .sp-video-badge {
@@ -3065,7 +3045,6 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .hx-float-btn {
         border: 0;
         background: var(--hp3-red);
-        color: #121212;
         box-shadow: 0 10px 30px rgba(249,249,249,0.467)
     }
     :scope:is(html.hx-light) .hx-float-panel {
@@ -3093,8 +3072,7 @@ html.hx-light.hp-ar-pending body {
         border-bottom: 1px solid var(--hp3-red)
     }
     :scope:is(html.hx-light) .hx-announce {
-        background: var(--hp3-red);
-        color: #121212
+        background: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hx-admin {
         border: 1px solid color-mix(in srgb,var(--hp3-red) 55%,transparent);
@@ -3103,8 +3081,7 @@ html.hx-light.hp-ar-pending body {
         box-shadow: 0 5px 20px rgba(249,249,249,0.333)
     }
     :scope:is(html.hx-light) .hx-admin:hover {
-        background: var(--hp3-red);
-        color: #121212 !important
+        background: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hx-preview {
         background: #dcdad2;
@@ -3115,7 +3092,7 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3 .hp3-mobile-dock {
             background: rgba(234,237,234,0.969);
             border-top: 1px solid rgba(18,18,18,0.122);
@@ -3141,7 +3118,6 @@ html.hx-light.hp-ar-pending body {
         }
         :scope:is(html.hx-light) .hx-dock-main-icon {
             background: var(--hp3-red);
-            color: #121212;
             box-shadow: 0 6px 18px color-mix(in srgb,var(--hp3-red) 45%,transparent);
             border: 3px solid #eaedea
         }
@@ -3165,7 +3141,7 @@ html.hx-light.hp-ar-pending body {
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .hp3-header-actions .hx-theme {
         border: 0;
         background: transparent;
@@ -3247,8 +3223,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-red {
         background: var(--hp3-red);
-        border-color: var(--hp3-red);
-        color: #121212 !important
+        border-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hp3-red:hover {
         background: #c62a2a;
@@ -3286,8 +3261,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .hp3-chip.is-active {
         background: var(--hp3-red);
-        border-color: var(--hp3-red);
-        color: #121212
+        border-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .hp3-muted {
         color: var(--hp3-muted)
@@ -3360,7 +3334,7 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:820px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-menu-toggle {
             color: #121212
         }
@@ -3373,7 +3347,7 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:600px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-mobile-dock {
             background: rgba(233,238,233,0.961);
             border-top: 1px solid rgba(18,18,18,0.145)
@@ -3387,7 +3361,7 @@ html.hx-light.hp-ar-pending body {
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .hp-social-archive {
         --social-red: #e63131;
         --social-paper: #16140e;
@@ -3603,14 +3577,14 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:760px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp-social-viewer-detail {
             border-inline-start: 0;
             border-top: 1px solid rgba(18,18,18,0.094)
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .hp-social-archive-note {
         color: #707066
     }
@@ -3816,8 +3790,7 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .vv-chip.is-on {
         background: var(--hp3-red);
-        border-color: var(--hp3-red);
-        color: #121212
+        border-color: var(--hp3-red)
     }
     :scope:is(html.hx-light) .vv-field {
         color: #292d24
@@ -3929,8 +3902,7 @@ html.hx-light.hp-ar-pending body {
         color: #bac4b1
     }
     :scope:is(html.hx-light) .hp3-studio-exercise-list article button:hover {
-        background: #e63131;
-        color: #121212
+        background: #e63131
     }
     :scope:is(html.hx-light) .hp3-studio-empty-search,:scope:is(html.hx-light) .hp3-studio-limit {
         color: #828a79
@@ -4033,8 +4005,7 @@ html.hx-light.hp-ar-pending body {
         accent-color: #e63131
     }
     :scope:is(html.hx-light) .hp3-studio-log {
-        background: #e63131 !important;
-        color: #121212 !important
+        background: #e63131 !important
     }
     :scope:is(html.hx-light) .hp3-studio-feedback {
         color: #90a17c
@@ -4044,21 +4015,21 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:820px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-studio-exercise-list article:nth-child(odd) {
             border-inline-end: 1px solid #13160e
         }
     }
 }
 @media (max-width:540px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-studio-exercise-list article:nth-child(odd) {
             border-inline-end: 0
         }
     }
 }
 @media print {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .hp3-studio-movement-inputs input {
             border: 0;
             background: none;
@@ -4066,7 +4037,7 @@ html.hx-light.hp-ar-pending body {
         }
     }
 }
-@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
     :scope:is(html.hx-light) .adm-top {
         background: #eaedea;
         color: #14150f;
@@ -4090,13 +4061,11 @@ html.hx-light.hp-ar-pending body {
     }
     :scope:is(html.hx-light) .adm-top .adm-primary {
         background: var(--adm-accent);
-        border-color: var(--adm-accent);
-        color: #121212
+        border-color: var(--adm-accent)
     }
     :scope:is(html.hx-light) .adm-primary {
         background: var(--adm-accent);
-        border-color: var(--adm-accent);
-        color: #121212
+        border-color: var(--adm-accent)
     }
     :scope:is(html.hx-light) .adm-primary:hover {
         background: var(--adm-accent)
@@ -4284,14 +4253,132 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @media (max-width:900px) {
-    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
         :scope:is(html.hx-light) .adm-class {
             border-bottom: 1px dashed #24271d
         }
     }
 }
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
+    :scope:is(html.hx-light) .button-red.button-red {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .red-line.red-line {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .status-dot.status-dot {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .ticker.ticker {
+        color: white
+    }
+    :scope:is(html.hx-light) .club-photo-stamp.club-photo-stamp {
+        color: white
+    }
+    :scope:is(html.hx-light) .featured-label.featured-label {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .floating-contact.floating-contact {
+        color: white
+    }
+    :scope:is(html.hx-light) .hero-buttons>.button.button {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .club-photo-stamp.club-photo-stamp {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .cx-button-red.cx-button-red {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .cx-card-saved.cx-card-saved {
+        color: white
+    }
+    :scope:is(html.hx-light) .cb-button-red.cb-button-red {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hp3-goal-selector>button.is-active.is-active {
+        color: white
+    }
+    :scope:is(html.hx-light) .hp3-purpose-grid>button.is-active.is-active {
+        color: white
+    }
+    :scope:is(html.hx-light) .hp3-advisor-progress>button.is-active.is-active {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hp3-visit-frequency button.is-active.is-active {
+        color: white
+    }
+    :scope:is(html.hx-light) .hp3-member-nav>button.is-active.is-active {
+        color: white
+    }
+    :scope:is(html.hx-light) .fc-seg button.is-on.is-on {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .member-danger.member-danger {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .pl-chips button.is-active.is-active {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .pl-badge.pl-badge {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .pl-choose.is-red.is-red {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .sp-eyebrow.sp-eyebrow:before {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .sp-btn-red.sp-btn-red {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .sp-play.sp-play {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hx-float-btn.hx-float-btn {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hx-announce.hx-announce {
+        color: #fff
+    }
+}
+@media (max-width:600px) {
+    @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
+        :scope:is(html.hx-light) .hx-dock-main-icon.hx-dock-main-icon {
+            color: #fff
+        }
+    }
+}
+@scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page) {
+    :scope:is(html.hx-light) .hp3-desktop-nav>a.is-active.is-active:after {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hp3-red.hp3-red {
+        color: white
+    }
+    :scope:is(html.hx-light) .hp3-kicker.hp3-kicker:before {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hp3-chip.is-active.is-active {
+        color: white
+    }
+    :scope:is(html.hx-light) .vv-chip.is-on.is-on {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .hp3-studio-log.hp3-studio-log {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .adm-top .adm-primary.adm-primary {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .adm-primary.adm-primary {
+        color: #fff
+    }
+}
 /* Light islands keep their dark-mode variables */
-html.hx-light :is(.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-week,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav){--paper:#f7f6f2;--ink:#20201f;--muted:#777771;--line:#deded8;--cx-dark:#111312;--cx-ink:#1e211e;--cx-paper:#f5f4ef;--cb-paper:#f5f4ef;--cb-ink:#20221f;--cb-dark:#111312;--bg:#111312;--panel:#1a1d1b;--panel2:#202421;--hp3-bg:#111312;--hp3-panel:#1a1d1b;--hp3-line:#ffffff20;--hp3-muted:#a3a9a2;--hp3-paper:#f4f4ee;--social-paper:#f7f6f2;--social-ink:#20201f;--social-muted:#777771;--adm-bg:#f3f4ef;--adm-card:#fff;--adm-line:#dfe2d8;--adm-ink:#1b1f19;--adm-muted:#667062}
+html.hx-light :is(.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page){--paper:#f7f6f2;--ink:#20201f;--muted:#777771;--cx-dark:#111312;--cx-ink:#1e211e;--cx-paper:#f5f4ef;--cb-paper:#f5f4ef;--cb-ink:#20221f;--cb-dark:#111312;--bg:#111312;--panel:#1a1d1b;--panel2:#202421;--hp3-bg:#111312;--hp3-panel:#1a1d1b;--hp3-muted:#a3a9a2;--hp3-paper:#f4f4ee;--social-paper:#f7f6f2;--social-ink:#20201f;--social-muted:#777771;--adm-bg:#f3f4ef;--adm-card:#fff;--adm-line:#dfe2d8;--adm-ink:#1b1f19;--adm-muted:#667062}
 /* Hand-tuned extras for the light theme */
 html.hx-light{color-scheme:light}
+/* Pages that paint on the body (privacy, terms) are already light: keep the body as designed */
+html.hx-light body{background:#f7f6f2;color:#20201f}
 html.hx-light .pl-save{background:#dcf2e3!important;color:#146a34!important}
