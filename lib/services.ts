@@ -274,7 +274,7 @@ export const services: Service[] = [
       { name: ['Captain Mahmoud Al-Kawamleh', 'الكابتن محمود الكواملة'], role: ['Joined the coaching team (Dec 2025)', 'انضم إلى فريق التدريب (كانون الأول ٢٠٢٥)'], source: p('DS7NMeoCI0n') },
       ...(timetableCoaches ?? []),
     ],
-    links: [{ label: ['Meet the coaches', 'تعرّف على المدربين'], href: '/coaches' }, { label: ['Plan your training', 'خطط لتدريبك'], href: '/training' }],
+    links: [{ label: ['Meet the coaches', 'تعرّف على المدربين'], href: '/coaches' }, { label: ['Personal training prices', 'أسعار التدريب الشخصي'], href: '/prices#personal-training' }],
     featured: ['DS7NMeoCI0n', 'DdB2x9aDYTw', 'DdtkVNrtcws', 'DfSI2HPtJeG', 'DSz-dkHjCOr'],
   },
   {

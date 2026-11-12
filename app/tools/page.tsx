@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
-import SiteShell from "@/components/gym/SiteShell";
-import WorkoutStudio from "@/components/gym/WorkoutStudio";
+import type { Metadata } from 'next';
+import SiteShell from '@/components/gym/SiteShell';
+import MovedPage from '@/components/gym/MovedPage';
 
-export const metadata: Metadata = {
-  title: "Workout Studio | Hydrogen Plus Fitness",
-  description: "Build your own session with an exercise library, editable sets and reps, workout timers, exports and a private workout journal.",
-  alternates: { canonical: "/tools" },
-};
-
+// The workout studio now lives inside My training (tab "Build a workout").
+export const metadata: Metadata = { title: 'Build a workout | Hydrogen Plus Fitness', robots: { index: false }, alternates: { canonical: '/member' } };
 export default function ToolsPage() {
-  return <SiteShell active="tools"><WorkoutStudio /></SiteShell>;
+  return <SiteShell active="member"><MovedPage from="/tools" to="/member?tab=studio" en="My training → Build a workout" ar="تدريبي ← ابنِ تمرينك" /></SiteShell>;
 }

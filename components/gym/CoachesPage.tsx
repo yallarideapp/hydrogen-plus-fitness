@@ -2,6 +2,7 @@
 import { ArrowUpRight, Briefcase, CalendarDays, MessageCircle, UserRound } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
 import { useSchedule, useSiteInfo } from '@/lib/admin/overrides';
+import { PersonalTrainingIntro } from './TrainingExperience';
 import './service-page.css';
 import './feature-pages.css';
 
@@ -48,7 +49,7 @@ export default function CoachesPage() {
   return (
     <div className="sp">
       <section className="sv-hero">
-        <div><span className="sp-kicker"><UserRound size={14} />{t('THE TEAM', 'الفريق')}</span><h1>{t('Meet the coaches.', 'تعرّف على المدربين.')}</h1></div>
+        <div><span className="sp-kicker"><UserRound size={14} />{t('COACHES & PERSONAL TRAINING', 'المدربون والتدريب الشخصي')}</span><h1>{t('Meet the coaches.', 'تعرّف على المدربين.')}</h1></div>
         <div><p>{t('Coaches named on the club’s timetable and posts. Their published classes update with each new weekly timetable.', 'المدربون المذكورون في جدول النادي ومنشوراته. تتحدّث حصصهم مع كل جدول أسبوعي جديد.')}</p>
           <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/join?kind=training">{t('Match me with a coach', 'رشّح لي مدرباً')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="/classes"><CalendarDays size={15} />{t('Class timetable', 'جدول الحصص')}</a></div></div>
       </section>
@@ -59,6 +60,7 @@ export default function CoachesPage() {
         <ul className="fc-coaches">{guests.map(card)}</ul>
         <p className="sp-note">{t('Only names and roles the club has published are shown. Ask the team about qualifications and availability.', 'نعرض فقط الأسماء والأدوار التي نشرها النادي. اسأل الفريق عن المؤهلات والأوقات المتاحة.')}</p>
       </div></section>
+      <section className="sp-section" id="personal-training"><div className="sp-container"><PersonalTrainingIntro /></div></section>
       <section className="sp-section"><div className="sp-container fp-two">
         <div><span className="sp-eyebrow">{t('JOIN THE TEAM', 'انضم إلى الفريق')}</span><h2 className="fp-h2">{t('Are you a coach?', 'هل أنت مدرب؟')}</h2><p className="sp-intro">{t('The club has recruited female fitness trainers and hosts the JO FIT CPT course for new trainers.', 'استقطب النادي مدربات لياقة بدنية، ويستضيف دورة CPT من JO FIT للمدربين الجدد.')}</p></div>
         <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/careers"><Briefcase size={16} />{t('Careers', 'الوظائف')}</a><a className="sp-btn" href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={16} />WhatsApp</a></div>

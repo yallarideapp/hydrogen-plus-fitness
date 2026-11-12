@@ -102,7 +102,7 @@ export default function Calculators() {
       <Nutritionist />
       <section className="sp-container fc-foot">
         <p>{t('These are general estimates for healthy adults, not medical advice. If you are pregnant, under 18, or managing a health condition, speak with your doctor first.', 'هذه تقديرات عامة للبالغين الأصحاء وليست نصيحة طبية. إن كنتِ حاملاً أو كان عمرك أقل من ١٨ عاماً أو لديك حالة صحية، استشر طبيبك أولاً.')}</p>
-        <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/services/personal-training">{t('Plan it with a coach', 'خطط مع مدرب')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="#nutritionist">{t('Talk to the nutritionist', 'تحدث مع أخصائية التغذية')}</a><a className="sp-btn sp-btn-ghost" href="/tools">{t('Workout studio', 'استوديو التمارين')}<ArrowUpRight size={15} /></a></div>
+        <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/services/personal-training">{t('Plan it with a coach', 'خطط مع مدرب')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="#nutritionist">{t('Talk to the nutritionist', 'تحدث مع أخصائية التغذية')}</a><a className="sp-btn sp-btn-ghost" href="/member?tab=studio">{t('Build a workout', 'ابنِ تمرينك')}<ArrowUpRight size={15} /></a></div>
       </section>
     </div>
   );

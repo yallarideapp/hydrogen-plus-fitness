@@ -5,7 +5,7 @@ import {useGymLanguage} from './SiteShell';
 import {legalConsent,legalError} from '@/lib/legal';
 import './experiences.css';
 type SavedGoal={focus:string;weeklyTarget:number;experience:string;preferredTraining:string;notes?:string|null};
-export default function TrainingJourney({returnTo='/training'}:{returnTo?:string}){
+export default function TrainingJourney({returnTo='/member'}:{returnTo?:string}){
  const {lang,t}=useGymLanguage();const [goal,setGoal]=useState<SavedGoal>({focus:'Build strength',weeklyTarget:3,experience:'beginner',preferredTraining:'solo',notes:''});const [auth,setAuth]=useState<boolean|null>(null);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [saved,setSaved]=useState(false);const [consent,setConsent]=useState(false);
  useEffect(()=>{fetch('/api/goals',{cache:'no-store'}).then(async r=>{if(r.status===401){setAuth(false);return}if(!r.ok){setError(t('We couldn’t load your saved goals. You can try saving them again.','تعذّر تحميل أهدافك. يمكنك محاولة حفظها مجدداً.'));return}const data=await r.json() as {goal:SavedGoal|null};setAuth(true);if(data.goal)setGoal(data.goal)}).catch(()=>setError(t('We couldn’t connect to your training profile.','تعذّر الاتصال بملف تدريبك.')))},[]);
  const update=(patch:Partial<SavedGoal>)=>{setGoal(g=>({...g,...patch}));setSaved(false)};

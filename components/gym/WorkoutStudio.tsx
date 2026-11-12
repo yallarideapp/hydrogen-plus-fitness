@@ -57,7 +57,7 @@ function formatClock(total: number) {
   return [hours > 0 ? String(hours).padStart(2, "0") : null, String(minutes).padStart(2, "0"), String(seconds).padStart(2, "0")].filter(Boolean).join(":");
 }
 
-export default function WorkoutStudio() {
+export default function WorkoutStudio({ embedded = false }: { embedded?: boolean } = {}) {
   const { lang, t: tr } = useGymLanguage();
   const t = useWords(copy);
   const [search, setSearch] = useState("");
@@ -177,7 +177,7 @@ export default function WorkoutStudio() {
   }
 
   return <div className="hp3-studio" dir={lang === "ar" ? "rtl" : "ltr"}>
-    <header className="hp3-studio-hero"><div><span className="hp3-studio-eyebrow"><Dumbbell size={15} />{t.eyebrow}</span><h1>{t.title.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</h1><p>{t.intro}</p></div><div className="hp3-studio-emblem" aria-hidden="true"><span>H<sup>+</sup></span><small>{t.tag}</small></div></header>
+    {!embedded && <header className="hp3-studio-hero"><div><span className="hp3-studio-eyebrow"><Dumbbell size={15} />{t.eyebrow}</span><h1>{t.title.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</h1><p>{t.intro}</p></div><div className="hp3-studio-emblem" aria-hidden="true"><span>H<sup>+</sup></span><small>{t.tag}</small></div></header>}
 
     <div className="hp3-studio-summary"><div><span>{t.exercises}</span><strong>{String(plan.length).padStart(2, "0")}</strong></div><div><span>{t.sets}</span><strong>{String(totalSets).padStart(2, "0")}</strong></div><div><span>{t.timer}</span><strong dir="ltr">{formatClock(elapsed)}</strong></div><p>{t.planningNote}</p></div>
 

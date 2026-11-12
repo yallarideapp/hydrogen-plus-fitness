@@ -3,7 +3,7 @@ import { LAST_UPDATED } from "@/lib/legal";
 const origin = "https://hydrogen-plus-fitness.abdullahqudah19.chatgpt.site";
 
 export function GET() {
-  const entries = ["/", "/services", ...["gym","ladies","group-classes","pilates","martial-arts","pool-spa","swimming-academy","kids","personal-training","hydro-rest","lounge","events"].map((s) => `/services/${s}`), "/prices", "/offers", "/classes", "/club", "/memberships", "/training", "/coaches", "/calculators", "/contact", "/careers", "/tools", "/support", "/join", "/community", "/privacy", "/terms", "/ar/privacy", "/ar/terms"].map((path) => {
+  const entries = ["/", "/services", ...["gym","ladies","group-classes","pilates","martial-arts","pool-spa","swimming-academy","kids","personal-training","hydro-rest","lounge","events"].map((s) => `/services/${s}`), "/prices", "/offers", "/classes", "/club", "/memberships", "/coaches", "/calculators", "/contact", "/careers", "/support", "/join", "/community", "/privacy", "/terms", "/ar/privacy", "/ar/terms"].map((path) => {
     const kind = path.endsWith("privacy") ? "privacy" : path.endsWith("terms") ? "terms" : null;
     const alternate = kind ? `<xhtml:link rel="alternate" hreflang="en" href="${origin}/${kind}"/><xhtml:link rel="alternate" hreflang="ar" href="${origin}/ar/${kind}"/>` : "";
     return `<url><loc>${origin}${path}</loc><lastmod>${LAST_UPDATED}</lastmod>${alternate}</url>`;

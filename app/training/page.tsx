@@ -1,5 +1,9 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import SiteShell from '@/components/gym/SiteShell';
-import TrainingExperience from '@/components/gym/TrainingExperience';
-export const metadata:Metadata={title:'Training & instructors | Hydrogen Plus Fitness',description:'Explore personal training, find class instructors by training focus, and save your private weekly training goals.'};
-export default function TrainingPage(){return <SiteShell active="training"><TrainingExperience/></SiteShell>}
+import MovedPage from '@/components/gym/MovedPage';
+
+// Personal training now lives on the Coaches page.
+export const metadata: Metadata = { title: 'Coaches & personal training | Hydrogen Plus Fitness', robots: { index: false }, alternates: { canonical: '/coaches' } };
+export default function TrainingPage() {
+  return <SiteShell active="coaches"><MovedPage from="/training" to="/coaches#personal-training" en="Coaches & personal training" ar="المدربون والتدريب الشخصي" /></SiteShell>;
+}
