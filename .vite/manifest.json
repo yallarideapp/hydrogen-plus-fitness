@@ -437,7 +437,7 @@
     ]
   },
   "components/gym/HomeExperience.tsx": {
-    "file": "_next/static/chunks/HomeExperience-CvK4ahls.js",
+    "file": "_next/static/chunks/HomeExperience-CIgPtty8.js",
     "name": "HomeExperience",
     "src": "components/gym/HomeExperience.tsx",
     "isDynamicEntry": true,
@@ -445,10 +445,12 @@
       "_rolldown-runtime-C60lm6uB.js",
       "components/gym/SiteShell.tsx",
       "components/gym/Plans.tsx",
+      "components/gym/ServicePage.tsx",
       "_photos-EeOn1yBB.js",
       "_legal-Dfb3SWoA.js",
       "_phone-D36fIaBK.js",
       "_arrow-down-BLXGhu8v.js",
+      "_check-BhjkBAna.js",
       "_clock-3-CzSgLEMf.js",
       "_framework-D_rUT4EX.js"
     ],
@@ -457,7 +459,7 @@
     ]
   },
   "components/gym/MemberExperience.tsx": {
-    "file": "_next/static/chunks/MemberExperience-C96f6_2n.js",
+    "file": "_next/static/chunks/MemberExperience-D-Dk0ARl.js",
     "name": "MemberExperience",
     "src": "components/gym/MemberExperience.tsx",
     "isDynamicEntry": true,
@@ -488,7 +490,7 @@
     ]
   },
   "components/gym/MembershipAdvisor.tsx": {
-    "file": "_next/static/chunks/MembershipAdvisor-D3JS_evE.js",
+    "file": "_next/static/chunks/MembershipAdvisor-Cy_DrB4o.js",
     "name": "MembershipAdvisor",
     "src": "components/gym/MembershipAdvisor.tsx",
     "isDynamicEntry": true,
@@ -510,7 +512,7 @@
     ]
   },
   "components/gym/MovedPage.tsx": {
-    "file": "_next/static/chunks/MovedPage-XvHeoheJ.js",
+    "file": "_next/static/chunks/MovedPage-pTZ9R2uB.js",
     "name": "MovedPage",
     "src": "components/gym/MovedPage.tsx",
     "isDynamicEntry": true,
@@ -522,7 +524,7 @@
     ]
   },
   "components/gym/Plans.tsx": {
-    "file": "_next/static/chunks/Plans-CGlrjGSf.js",
+    "file": "_next/static/chunks/Plans-CqlnqdGn.js",
     "name": "Plans",
     "src": "components/gym/Plans.tsx",
     "isDynamicEntry": true,
@@ -542,7 +544,7 @@
     ]
   },
   "components/gym/ServicePage.tsx": {
-    "file": "_next/static/chunks/ServicePage-C848inP8.js",
+    "file": "_next/static/chunks/ServicePage-BRARuAdG.js",
     "name": "ServicePage",
     "src": "components/gym/ServicePage.tsx",
     "isDynamicEntry": true,
@@ -568,7 +570,7 @@
     ]
   },
   "components/gym/ServicesIndex.tsx": {
-    "file": "_next/static/chunks/ServicesIndex-B52GmjhQ.js",
+    "file": "_next/static/chunks/ServicesIndex-GJ7CRf8d.js",
     "name": "ServicesIndex",
     "src": "components/gym/ServicesIndex.tsx",
     "isDynamicEntry": true,
@@ -643,7 +645,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
-    "file": "_next/static/chunks/app-route-prefetch-policy-BHERXz5z.js",
+    "file": "_next/static/chunks/app-route-prefetch-policy-CVLxgaAJ.js",
     "name": "app-route-prefetch-policy",
     "src": "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
     "isDynamicEntry": true,
@@ -652,7 +654,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-Cjc2aid3.js",
+    "file": "_next/static/chunks/layout-segment-context-DAl8p3Zv.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -673,7 +675,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-CkXkbWvK.js",
+    "file": "_next/static/chunks/index-DpSfQO9N.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
