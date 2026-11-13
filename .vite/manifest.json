@@ -298,7 +298,7 @@
     ]
   },
   "components/gym/ClassesExperience.tsx": {
-    "file": "_next/static/chunks/ClassesExperience-B2GFIjZZ.js",
+    "file": "_next/static/chunks/ClassesExperience-qtMb4A_M.js",
     "name": "ClassesExperience",
     "src": "components/gym/ClassesExperience.tsx",
     "isDynamicEntry": true,
@@ -324,7 +324,7 @@
     ]
   },
   "components/gym/ClubExperience.tsx": {
-    "file": "_next/static/chunks/ClubExperience-q2RU-i9Q.js",
+    "file": "_next/static/chunks/ClubExperience-DHnmPMlF.js",
     "name": "ClubExperience",
     "src": "components/gym/ClubExperience.tsx",
     "isDynamicEntry": true,
@@ -645,7 +645,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
-    "file": "_next/static/chunks/app-route-prefetch-policy-Cn_MxsS1.js",
+    "file": "_next/static/chunks/app-route-prefetch-policy-CcsUJfWs.js",
     "name": "app-route-prefetch-policy",
     "src": "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
     "isDynamicEntry": true,
@@ -654,7 +654,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-Bk_wh0Fb.js",
+    "file": "_next/static/chunks/layout-segment-context-B9sV6oKS.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -675,7 +675,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-Bn5ltlKS.js",
+    "file": "_next/static/chunks/index-LEX65TXR.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
