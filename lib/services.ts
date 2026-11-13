@@ -96,7 +96,7 @@ export const services: Service[] = [
   },
   {
     slug: 'group-classes', path: '/services/group-classes', icon: 'users',
-    name: ['Group classes', 'الحصص الجماعية'], kicker: ['LADIES ONLY · MOVE TOGETHER', 'للسيدات فقط · تحرّكن معاً'],
+    name: ['Group classes', 'الحصص الجماعية'], kicker: ['WOMEN’S CLASSES · BOXING FOR MEN', 'حصص للسيدات · وملاكمة للشباب'],
     headline: ['Find the class that fits your goal.', 'اكتشفي الحصة التي تناسب هدفك.'],
     intro: ['A new women’s timetable every week — cycling, Zumba, yoga, Tabata, step, belly dance, core and toning — plus seasonal specials such as poolside outdoor classes and aqua aerobics.', 'جدول حصص جديد للسيدات كل أسبوع — دراجات، زومبا، يوغا، تاباتا، ستيب، رقص شرقي، تمارين الجذع والشد — بالإضافة إلى حصص موسمية مثل الحصص الخارجية بجانب المسبح والأكوا إيروبيك.'],
     body: [['Whether your goal is muscle strength, toning, flexibility or burning fat, the club’s coaches point you to the right class. CrossFit courses for men and women have also been offered.', 'سواء كان هدفك تقوية العضلات أو شد الجسم أو المرونة أو حرق الدهون، ترشدك المدربات إلى الحصة المناسبة. كما قدّم النادي دورات كروس فيت للرجال والسيدات.']],
@@ -109,6 +109,7 @@ export const services: Service[] = [
       { label: ['Current timetable', 'الجدول الحالي'], value: ['35 classes a week, Saturday to Thursday', '٣٥ حصة أسبوعياً، من السبت إلى الخميس'], date: '2026-11-06', source: p('DfZrJukouow') },
       { label: ['Aqua aerobics with Coach Marwa', 'أكوا إيروبيك مع كوتش مروى'], value: ['Members only · bring swimwear · limited places, book ahead', 'للمشتركين فقط · يرجى إحضار ملابس السباحة · الأعداد محدودة والحجز مسبق'], date: '2026-11-04', source: p('DNQsXJkozGu') },
       { label: ['Outdoor poolside classes', 'الحصص الخارجية بجانب المسبح'], value: ['Kickboxing, yoga, belly dance and Zumba for female members', 'كيك بوكسينج ويوغا ورقص شرقي وزومبا لمشتركات النادي'], date: '2025-09-19', source: p('DOyYxsLjwfi'), past: true },
+      { label: ['Boxing & MMA classes', 'حصص البوكسينج وMMA'], value: ['For men and young girls · see Boxing & martial arts', 'للشباب والبنات الصغار · التفاصيل في صفحة البوكسينج والفنون القتالية'], date: '2026-10-20', source: 'https://www.instagram.com/reel/DetwIuuILDo/' },
       { label: ['CrossFit courses', 'دورات كروس فيت'], value: ['For men and women', 'للرجال والسيدات'], date: '2026-01-26', source: p('DT-jAGZCK3C'), past: true },
     ],
     faqs: [
