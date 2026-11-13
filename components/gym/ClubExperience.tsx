@@ -15,7 +15,7 @@ const strength: ClubPhoto = { src: "/images/display/strength-floor.webp", width:
 const reelPhoto = (id: string, en: string, ar: string): ClubPhoto => ({ src: `/images/facebook/${id}.jpg`, width: 1080, height: 1920, en, ar, source: `https://www.facebook.com/reel/${id}/` });
 const pilates = reelPhoto("622573390695999", "The Pilates room shown in the club’s reel.", "غرفة البيلاتس كما تظهر في مقطع النادي.");
 const combat = reelPhoto("1475121240230393", "Boxing at Hydrogen Plus Fitness.", "البوكسينج في هايدروجين بلس.");
-const hydroRest = reelPhoto("1468218194545030", "A post-workout stop at Hydro Rest.", "استراحة بعد التمرين في هايدرو ريست.");
+const hydroRest: ClubPhoto = { src: "/images/archive/ig-DcgXKyFjmnp-04.jpg", width: 864, height: 1080, en: "Inside Hydro Rest, the club’s healthy café.", ar: "داخل هايدرو ريست، مقهى النادي الصحي.", source: "https://www.instagram.com/p/DcgXKyFjmnp/" };
 const lounge = reelPhoto("1353706342989583", "An evening at Hydrogen Lounge.", "أمسية في هايدروجين لاونج.");
 const facilities: Facility[] = [
  { id: "strength", icon: Dumbbell, en: "Strength", ar: "القوة", title: ["YOUR KIND OF STRONG.", "قوتك، على طريقتك."], description: ["Explore the red-and-black training floor, resistance equipment and free-weight areas shown in the club’s own photography. Find your starting point with the team.", "اكتشف صالة التدريب بأجهزتها الحمراء والسوداء ومناطق الأوزان الحرة كما تظهر في صور النادي. حدّد نقطة البداية المناسبة مع الفريق."], highlights: [["Resistance equipment", "أجهزة المقاومة"], ["Free-weight areas", "مناطق الأوزان الحرة"], ["Personal training enquiries", "الاستفسار عن التدريب الشخصي"]], photos: [photo("gym-03"), photo("gym-07"), strength, photo("gym-05")] },
