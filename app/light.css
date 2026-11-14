@@ -1933,6 +1933,25 @@ html.hx-light.hp-ar-pending body {
         background: #cfd9ce;
         color: #236218
     }
+    :scope:is(html.hx-light) .fc-scale .is-low {
+        background: #5b8bd6
+    }
+    :scope:is(html.hx-light) .fc-scale .is-ok {
+        background: #3fae6a
+    }
+    :scope:is(html.hx-light) .fc-scale .is-over {
+        background: #e0a33a
+    }
+    :scope:is(html.hx-light) .fc-scale .is-high {
+        background: #e5484d
+    }
+    :scope:is(html.hx-light) .fc-scale i {
+        background: #121212;
+        box-shadow: 0 0 0 2px #eeeeee
+    }
+    :scope:is(html.hx-light) .fc-scale-labels {
+        color: #6c726a
+    }
     :scope:is(html.hx-light) .hp-help {
         background: #eceeed;
         color: #14150f
@@ -4470,6 +4489,18 @@ html.hx-light.hp-ar-pending body {
         color: white
     }
     :scope:is(html.hx-light) .fc-seg button.is-on.is-on {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .fc-scale .is-low.is-low {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .fc-scale .is-ok.is-ok {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .fc-scale .is-over.is-over {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .fc-scale .is-high.is-high {
         color: #fff
     }
     :scope:is(html.hx-light) .member-danger.member-danger {

@@ -42,6 +42,8 @@ export default function Calculators() {
   const A = num(age), H = num(height), W = num(weight);
   const bmi = W / ((H / 100) ** 2);
   const bmiBand = !Number.isFinite(bmi) ? '' : bmi < 18.5 ? t('Below the healthy range', 'أقل من المعدل الصحي') : bmi < 25 ? t('Within the healthy range', 'ضمن المعدل الصحي') : bmi < 30 ? t('Above the healthy range', 'أعلى من المعدل الصحي') : t('Well above the healthy range', 'أعلى بكثير من المعدل الصحي');
+  const healthyLo = 18.5 * (H / 100) ** 2, healthyHi = 24.9 * (H / 100) ** 2;
+  const whtr = num(waist) / H;
   const bmr = 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
   const tdee = bmr * num(activity);
   const floor = sex === 'm' ? 1500 : 1200;
@@ -71,8 +73,15 @@ export default function Calculators() {
         <Field label={t('Weight', 'الوزن')} value={weight} onChange={setWeight} unit="kg" min={35} max={250} step={0.5} />
       </section>
       <section className="sp-container fc-grid">
-        <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('Weight relative to height. It doesn’t tell muscle from fat.', 'الوزن مقارنة بالطول، ولا يميّز بين العضل والدهون.')} result={<><b>{n0(bmi, 1)}</b><span>{bmiBand}</span><small>{t('Healthy adult range: 18.5–24.9', 'المعدل الصحي للبالغين: ١٨٫٥–٢٤٫٩')}</small></>}>
-          <p className="fc-hint">{t('Uses your height and weight above.', 'يستخدم طولك ووزنك أعلاه.')}</p>
+        <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('A quick check of your weight for your height. It can’t tell muscle from fat, so a muscular member may show as overweight — the waist check below helps.', 'مقارنة سريعة بين وزنك وطولك. لا يفرّق بين العضل والدهون، لذلك قد يظهر المتدرّب صاحب العضلات الكبيرة بوزن زائد — قياس الخصر بالأسفل يوضّح الصورة.')} result={<>
+          <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
+          {Number.isFinite(healthyLo) && <span>{t('Healthy weight for your height', 'الوزن الصحي لطولك')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re', 'أنت أعلى بـ')} ${n0(W - healthyHi)} ${t('kg above', 'كغ')}` : W < healthyLo ? ` · ${t('you’re', 'أنت أقل بـ')} ${n0(healthyLo - W)} ${t('kg below', 'كغ')}` : ''}</span>}
+          {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من ٠٫٥)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
+          {bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
+        </>}>
+          <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
+          <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
+          <Field label={t('Waist (at the navel)', 'محيط الخصر (عند السرة)')} value={waist} onChange={setWaist} unit="cm" min={50} max={200} />
         </Card>
         <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('Mifflin–St Jeor estimate of what you burn, with a target for your goal.', 'تقدير معادلة Mifflin–St Jeor لما تحرقه، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
           <label className="fc-field"><span>{t('Activity', 'النشاط')}</span><select value={activity} onChange={(e) => setActivity(e.target.value)}>

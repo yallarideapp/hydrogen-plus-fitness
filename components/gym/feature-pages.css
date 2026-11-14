@@ -122,3 +122,13 @@
   .fc-nutri-text h2{font-size:22px}
   .fc-nutri-actions{flex-direction:column}
 }
+
+/* BMI scale: 15 → 35, bands at 18.5 / 25 / 30 */
+.fc-scale{position:relative;display:grid;grid-template-columns:17.5fr 32.5fr 25fr 25fr;height:10px;margin:6px 0 4px;border-radius:6px;overflow:visible}
+[dir=rtl] .fc-scale{direction:ltr}
+.fc-scale span:first-child{border-radius:6px 0 0 6px}.fc-scale span:nth-child(4){border-radius:0 6px 6px 0}
+.fc-scale .is-low{background:#5b8bd6}.fc-scale .is-ok{background:#3fae6a}.fc-scale .is-over{background:#e0a33a}.fc-scale .is-high{background:#e5484d}
+.fc-scale i{position:absolute;top:-5px;width:4px;height:20px;margin-inline-start:-2px;background:#fff;border-radius:2px;box-shadow:0 0 0 2px #111}
+.fc-scale-labels{position:relative;height:16px;font-size:11px;color:#8f958d;margin-bottom:14px;direction:ltr}
+.fc-scale-labels span{position:absolute;transform:translateX(-50%)}
+.fc-scale-labels span:first-child{transform:none}.fc-scale-labels span:last-child{transform:translateX(-100%)}
