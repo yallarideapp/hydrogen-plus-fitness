@@ -132,3 +132,11 @@
 .fc-scale-labels{position:relative;height:16px;font-size:11px;color:#8f958d;margin-bottom:14px;direction:ltr}
 .fc-scale-labels span{position:absolute;transform:translateX(-50%)}
 .fc-scale-labels span:first-child{transform:none}.fc-scale-labels span:last-child{transform:translateX(-100%)}
+
+/* Optional body-scan reading inside the BMI card */
+.fc-comp{display:grid;gap:10px;margin-top:6px;padding-top:14px;border-top:1px dashed #ffffff26}
+.fc-comp-title{font-size:13.5px;font-weight:700}
+.fc-hint a{color:inherit;text-decoration:underline}
+.fc-verdict{margin:4px 0 0;padding:10px 12px;font-size:14px;font-weight:700;line-height:1.55;border-inline-start:4px solid}
+.fc-verdict.is-good{background:#3fae6a1f;border-color:#3fae6a;color:#c9f0d6}
+.fc-verdict.is-warn{background:#e0a33a1f;border-color:#e0a33a;color:#f5ddb0}

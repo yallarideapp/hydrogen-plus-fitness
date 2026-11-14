@@ -1952,6 +1952,25 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .fc-scale-labels {
         color: #6c726a
     }
+    :scope:is(html.hx-light) .fc-comp {
+        border-top: 1px dashed rgba(18,18,18,0.149)
+    }
+    :scope:is(html.hx-light) .fc-hint a {
+        color: inherit
+    }
+    :scope:is(html.hx-light) .fc-verdict {
+        border-inline-start: 4px solid
+    }
+    :scope:is(html.hx-light) .fc-verdict.is-good {
+        background: #3fae6a1f;
+        border-color: #3fae6a;
+        color: #1b6032
+    }
+    :scope:is(html.hx-light) .fc-verdict.is-warn {
+        background: #e0a33a1f;
+        border-color: #e0a33a;
+        color: #6d4c0e
+    }
     :scope:is(html.hx-light) .hp-help {
         background: #eceeed;
         color: #14150f

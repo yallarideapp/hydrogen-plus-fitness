@@ -9,6 +9,11 @@ import './service-page.css';
 import './feature-pages.css';
 
 type Sex = 'm' | 'f';
+// Body-composition reference bands, by sex and age (18/20–39, 40–59, 60–79/80). Each row: [low below, healthy below, high below]; above = very high.
+// Body fat: Gallagher et al., Am J Clin Nutr 2000 (as used by body-composition scales). Skeletal muscle %: Omron Healthcare tables.
+const FAT_BANDS: Record<Sex, [number, number, number][]> = { m: [[8, 20, 25], [11, 22, 28], [13, 25, 30]], f: [[21, 33, 39], [23, 34, 40], [24, 36, 42]] };
+const MUSCLE_BANDS: Record<Sex, [number, number, number][]> = { m: [[33.3, 39.4, 44.1], [33.1, 39.2, 43.9], [32.9, 39, 43.7]], f: [[24.3, 30.4, 35.4], [24.1, 30.2, 35.2], [23.9, 30, 35]] };
+const level = (v: number, b: [number, number, number]) => (v < b[0] ? 0 : v < b[1] ? 1 : v < b[2] ? 2 : 3);
 const num = (v: string) => { const n = parseFloat(v.replace(',', '.')); return Number.isFinite(n) ? n : NaN; };
 
 function Field({ label, value, onChange, unit, min, max, step = 1 }: { label: string; value: string; onChange: (v: string) => void; unit?: string; min: number; max: number; step?: number }) {
@@ -21,8 +26,8 @@ function Field({ label, value, onChange, unit, min, max, step = 1 }: { label: st
 function Seg<T extends string>({ value, options, onChange, label }: { value: T; options: [T, string][]; onChange: (v: T) => void; label: string }) {
   return <div className="fc-seg" role="radiogroup" aria-label={label}>{options.map(([v, l]) => <button key={v} type="button" role="radio" aria-checked={value === v} className={value === v ? 'is-on' : ''} onClick={() => onChange(v)}>{l}</button>)}</div>;
 }
-function Card({ icon, title, intro, children, result }: { icon: ReactNode; title: string; intro: string; children: ReactNode; result: ReactNode }) {
-  return <article className="fc-card"><header>{icon}<div><h3>{title}</h3><p>{intro}</p></div></header><div className="fc-body">{children}</div><div className="fc-result" aria-live="polite">{result}</div></article>;
+function Card({ icon, title, intro, children, result, id }: { icon: ReactNode; title: string; intro: string; children: ReactNode; result: ReactNode; id?: string }) {
+  return <article className="fc-card" id={id}><header>{icon}<div><h3>{title}</h3><p>{intro}</p></div></header><div className="fc-body">{children}</div><div className="fc-result" aria-live="polite">{result}</div></article>;
 }
 
 export default function Calculators() {
@@ -38,12 +43,32 @@ export default function Calculators() {
   const [lift, setLift] = useState('60'); const [reps, setReps] = useState('5');
   const [neck, setNeck] = useState('33'); const [waist, setWaist] = useState('72'); const [hip, setHip] = useState('96');
   const [mins, setMins] = useState('60');
+  const [compKind, setCompKind] = useState<'fat' | 'muscle'>('fat');
+  const [comp, setComp] = useState('');
 
   const A = num(age), H = num(height), W = num(weight);
   const bmi = W / ((H / 100) ** 2);
   const bmiBand = !Number.isFinite(bmi) ? '' : bmi < 18.5 ? t('Below the healthy range', 'أقل من المعدل الصحي') : bmi < 25 ? t('Within the healthy range', 'ضمن المعدل الصحي') : bmi < 30 ? t('Above the healthy range', 'أعلى من المعدل الصحي') : t('Well above the healthy range', 'أعلى بكثير من المعدل الصحي');
   const healthyLo = 18.5 * (H / 100) ** 2, healthyHi = 24.9 * (H / 100) ** 2;
   const whtr = num(waist) / H;
+  // Optional reading from a body-composition scale: body fat % or skeletal muscle %.
+  const C = num(comp);
+  const band = A < 40 ? 0 : A < 60 ? 1 : 2;
+  const compLevel = Number.isFinite(C) && C > 0 && C < 75 ? level(C, (compKind === 'fat' ? FAT_BANDS : MUSCLE_BANDS)[sex][band]) : -1;
+  const fb = FAT_BANDS[sex][band];
+  const lean = W * (1 - C / 100);
+  const fitLo = lean / (1 - fb[0] / 100), fitHi = lean / (1 - fb[1] / 100);
+  const overBmi = bmi >= 25;
+  const compVerdict = compLevel < 0 ? '' : compKind === 'fat'
+    ? [t('Body fat is below the healthy range — your weight isn’t too high. Talk to the nutritionist about gaining well.', 'نسبة الدهون أقل من المعدل الصحي، فوزنك ليس زائداً. تحدّث مع أخصائية التغذية عن زيادة صحية.'),
+       overBmi ? t('Body fat is healthy, so your weight suits you — the extra BMI is muscle.', 'نسبة الدهون ضمن المعدل الصحي، فوزنك مناسب لك، والزيادة في المؤشر عضل.') : t('Body fat is healthy and your weight suits you.', 'نسبة الدهون ضمن المعدل الصحي ووزنك مناسب لك.'),
+       t('Body fat is above the healthy range.', 'نسبة الدهون أعلى من المعدل الصحي.'),
+       t('Body fat is high. A plan with a coach and the nutritionist will help.', 'نسبة الدهون مرتفعة. ستفيدك خطة مع المدرب وأخصائية التغذية.')][compLevel]
+    : [overBmi ? t('Muscle is below the normal range, so the extra weight is likely fat.', 'الكتلة العضلية أقل من الطبيعي، لذلك الوزن الزائد على الأغلب دهون.') : t('Your weight is in range but muscle is low — strength training will help.', 'وزنك ضمن المعدل لكن الكتلة العضلية قليلة، وتمارين المقاومة ستفيدك.'),
+       overBmi ? t('Muscle is normal, so part of the extra weight is likely fat. A body-fat reading will tell you more.', 'الكتلة العضلية طبيعية، لذلك جزء من الوزن الزائد على الأغلب دهون. قياس نسبة الدهون يوضّح أكثر.') : t('Muscle is normal and your weight suits you.', 'الكتلة العضلية طبيعية ووزنك مناسب لك.'),
+       overBmi ? t('Muscle is high, so your weight likely suits you — the extra is muscle.', 'الكتلة العضلية مرتفعة، فوزنك على الأغلب مناسب لك، والزيادة عضل.') : t('Muscle is high — great work.', 'الكتلة العضلية مرتفعة، أحسنت.'),
+       overBmi ? t('Muscle is very high, so your weight suits you — the extra is muscle.', 'الكتلة العضلية مرتفعة جداً، فوزنك مناسب لك والزيادة عضل.') : t('Muscle is very high — great work.', 'الكتلة العضلية مرتفعة جداً، أحسنت.')][compLevel];
+  const compGood = compKind === 'fat' ? compLevel === 1 : compLevel >= 1 && !(overBmi && compLevel === 1);
   const bmr = 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
   const tdee = bmr * num(activity);
   const floor = sex === 'm' ? 1500 : 1200;
@@ -77,11 +102,21 @@ export default function Calculators() {
           <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
           {Number.isFinite(healthyLo) && <span>{t('Healthy weight for your height', 'الوزن الصحي لطولك')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re', 'أنت أعلى بـ')} ${n0(W - healthyHi)} ${t('kg above', 'كغ')}` : W < healthyLo ? ` · ${t('you’re', 'أنت أقل بـ')} ${n0(healthyLo - W)} ${t('kg below', 'كغ')}` : ''}</span>}
           {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من ٠٫٥)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
-          {bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
+          {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
+          {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
+          {compLevel >= 2 && compKind === 'fat' && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
         </>}>
           <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
           <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
           <Field label={t('Waist (at the navel)', 'محيط الخصر (عند السرة)')} value={waist} onChange={setWaist} unit="cm" min={50} max={200} />
+          <div className="fc-comp">
+            <span className="fc-comp-title">{t('Have a body-scan reading? (optional)', 'لديك قراءة من جهاز تحليل الجسم؟ (اختياري)')}</span>
+            <Seg label={t('Reading type', 'نوع القراءة')} value={compKind} onChange={(v) => setCompKind(v)} options={[['fat', t('Body fat %', 'نسبة الدهون %')], ['muscle', t('Muscle %', 'نسبة العضلات %')]]} />
+            <Field label={compKind === 'fat' ? t('Body fat', 'نسبة الدهون') : t('Skeletal muscle', 'نسبة العضلات الهيكلية')} value={comp} onChange={setComp} unit="%" min={3} max={70} step={0.1} />
+            <p className="fc-hint">{compKind === 'fat'
+              ? <>{t('No reading? Estimate it with', 'لا تملك قراءة؟ احسبها بـ')} <a href="#body-fat">{t('the tape-measure calculator', 'حاسبة شريط القياس')}</a>.</>
+              : t('Muscle % differs between devices (these bands follow Omron scales). Body fat % compares more reliably.', 'تختلف نسبة العضلات بين الأجهزة (هذه الحدود حسب أجهزة Omron)، ونسبة الدهون أدق للمقارنة.')}</p>
+          </div>
         </Card>
         <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('Mifflin–St Jeor estimate of what you burn, with a target for your goal.', 'تقدير معادلة Mifflin–St Jeor لما تحرقه، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
           <label className="fc-field"><span>{t('Activity', 'النشاط')}</span><select value={activity} onChange={(e) => setActivity(e.target.value)}>
@@ -102,7 +137,7 @@ export default function Calculators() {
         <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم ٢٥٠ مل')}</span></>}>
           <Field label={t('Training today', 'مدة التمرين اليوم')} value={mins} onChange={setMins} unit={t('min', 'دقيقة')} min={0} max={300} step={5} />
         </Card>
-        <Card icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={<><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
+        <Card id="body-fat" icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={<><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
           <Field label={t('Neck', 'الرقبة')} value={neck} onChange={setNeck} unit="cm" min={20} max={70} step={0.5} />
           <Field label={t('Waist (at navel)', 'الخصر (عند السرة)')} value={waist} onChange={setWaist} unit="cm" min={40} max={200} step={0.5} />
           {sex === 'f' && <Field label={t('Hips (widest point)', 'الورك (أعرض نقطة)')} value={hip} onChange={setHip} unit="cm" min={50} max={200} step={0.5} />}
