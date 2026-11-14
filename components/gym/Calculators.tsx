@@ -41,7 +41,7 @@ export default function Calculators() {
   const [activity, setActivity] = useState('1.55');
   const [goal, setGoal] = useState<'lose' | 'keep' | 'gain'>('keep');
   const [lift, setLift] = useState('60'); const [reps, setReps] = useState('5');
-  const [neck, setNeck] = useState('33'); const [waist, setWaist] = useState('72'); const [hip, setHip] = useState('96');
+  const [neck, setNeck] = useState('33'); const [waist, setWaist] = useState(''); const [hip, setHip] = useState('96'); // waist is optional: empty until the member measures it
   const [mins, setMins] = useState('60');
   const [compKind, setCompKind] = useState<'fat' | 'muscle'>('fat');
   const [comp, setComp] = useState('');
@@ -108,7 +108,7 @@ export default function Calculators() {
         </>}>
           <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
           <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
-          <Field label={t('Waist (at the navel)', 'محيط الخصر (عند السرة)')} value={waist} onChange={setWaist} unit="cm" min={50} max={200} />
+          <Field label={t('Waist at the navel (optional)', 'محيط الخصر عند السرة (اختياري)')} value={waist} onChange={setWaist} unit="cm" min={50} max={200} />
           <div className="fc-comp">
             <span className="fc-comp-title">{t('Have a body-scan reading? (optional)', 'لديك قراءة من جهاز تحليل الجسم؟ (اختياري)')}</span>
             <Seg label={t('Reading type', 'نوع القراءة')} value={compKind} onChange={(v) => setCompKind(v)} options={[['fat', t('Body fat %', 'نسبة الدهون %')], ['muscle', t('Muscle %', 'نسبة العضلات %')]]} />
