@@ -50,3 +50,14 @@ html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-foot{display:none}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-tour>span:first-child{display:none}
 html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-tour>strong{margin-top:0;font-size:19px}
 }
+
+/* Banner motion (HeroMotion.tsx): lights on, then walk in on scroll */
+.hx-motion{display:contents}
+.hx-lights{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center;opacity:0;pointer-events:none}
+html.hx-hero-dark .hp3-hero-main-photo>img{filter:brightness(.12);animation:hx-dark-failsafe .5s 9s forwards}
+@keyframes hx-dark-failsafe{to{filter:none}}
+.hp3-home-hero.hx-walking .hp3-hero-main-photo>img,.hp3-home-hero.hx-walking .hx-lights{transform-origin:var(--hx-vp,50% 50%);transform:scale(calc(1 + var(--hx-walk,0) * .32));will-change:transform}
+/* the two cards slide apart like doors and lag behind, so the track opens up as you walk in */
+.hp3-home-hero.hx-walking .hp3-hero-pool{transform:translate3d(calc(var(--hx-walk,0) * 30%),calc(var(--hx-walk,0) * 26px),0)}
+.hp3-home-hero.hx-walking .hp3-hero-tour{transform:translate3d(calc(var(--hx-walk,0) * -30%),calc(var(--hx-walk,0) * 20px),0)}
+@media (prefers-reduced-motion:reduce){html.hx-hero-dark .hp3-hero-main-photo>img{filter:none}}
