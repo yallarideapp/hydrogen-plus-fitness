@@ -107,7 +107,7 @@ export function ChooseDialog({ choice, onClose }: { choice: Choice | null; onClo
                 </label>
               ))}
             </fieldset>
-            <label className="pl-consent"><input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} /><span>{t('I agree to the', 'أوافق على')} <a href="/privacy" target="_blank">{t('Privacy Policy', 'سياسة الخصوصية')}</a> {t('and', 'و')} <a href="/terms" target="_blank">{t('Terms', 'الشروط')}</a></span></label>
+            <label className="pl-consent"><input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} /><span>{t('I agree to the', 'أوافق على')} <a href={lang === 'ar' ? '/ar/privacy' : '/privacy'} target="_blank">{t('Privacy Policy', 'سياسة الخصوصية')}</a> {t('and', 'و')} <a href={lang === 'ar' ? '/ar/terms' : '/terms'} target="_blank">{t('Terms', 'الشروط')}</a></span></label>
             {state.error && <p className="pl-error" role="alert"><CircleAlert size={16} />{state.error}</p>}
             <button className="hp3-button hp3-red pl-submit" disabled={state.busy}>{state.busy ? t('Sending…', 'جارٍ الإرسال…') : t('Request this plan', 'اطلب هذا الاشتراك')}<ArrowUpRight size={17} /></button>
           </form>

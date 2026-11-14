@@ -1,15 +1,8 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/gym/LegalPage";
-import { legalText, type Lang } from "@/lib/legal";
+import { legalText } from "@/lib/legal";
 
-type Props = { searchParams: Promise<{ lang?: string }> };
-const language = (value?: string): Lang => value === "ar" ? "ar" : "en";
-
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const lang = language((await searchParams).lang);
-  return { title: `${legalText[lang].terms.title} | Hydrogen Plus Fitness`, alternates: { canonical: lang === "ar" ? "/ar/terms" : "/terms", languages: { en: "/terms", ar: "/ar/terms" } } };
-}
-
-export default async function Terms({ searchParams }: Props) {
-  return <LegalPage lang={language((await searchParams).lang)} kind="terms" />;
-}
+// Static page: the Arabic version lives at /ar/terms. (Reading the query string made this page
+// dynamic, which cannot load on the static host.)
+export const metadata: Metadata = { title: `${legalText.en.terms.title} | Hydrogen Plus Fitness`, alternates: { canonical: "/terms", languages: { en: "/terms", ar: "/ar/terms" } } };
+export default function Terms() { return <LegalPage lang="en" kind="terms" />; }
