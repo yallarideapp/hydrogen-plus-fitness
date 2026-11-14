@@ -90,8 +90,8 @@ export const services: Service[] = [
     ],
     cta: { kind: 'membership', interest: 'Ladies’ club', label: ['Ask about the ladies’ club', 'استفسري عن نادي السيدات'] },
     related: ['group-classes', 'pilates', 'pool-spa'],
-    schedule: 'all',
-    coaches: timetableCoaches,
+    // The timetable and coaches live on the Group classes page; this page is about the ladies' club itself.
+    links: [{ label: ['Women’s class timetable & coaches', 'جدول حصص السيدات والمدربات'], href: '/services/group-classes' }],
     featured: ['DI1jIyKIbUa', 'DfZrJukouow', 'DTu30XxFehD', 'DfH7vdhuRhA', 'DbDntDTFYk4', 'DavPdFvAppE'],
   },
   {

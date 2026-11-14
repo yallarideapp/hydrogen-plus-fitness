@@ -7,8 +7,8 @@ import './feature-pages.css';
 
 export default function CareersPage() {
   const { contact } = useSiteInfo();
-  const { t } = useGymLanguage();
-  const cvText = encodeURIComponent('Hello, I would like to apply to work at Hydrogen Plus Fitness. My CV is attached.');
+  const { t, lang } = useGymLanguage();
+  const cvText = encodeURIComponent(lang === 'ar' ? 'مرحباً، أودّ التقدّم للعمل في هايدروجين بلس فتنس. أرفقت سيرتي الذاتية.' : 'Hello, I would like to apply to work at Hydrogen Plus Fitness. My CV is attached.');
   return (
     <div className="sp">
       <section className="sv-hero">

@@ -38,7 +38,7 @@ function PostMedia({ media, post, lang, full = false }: { media: SocialPost["med
  useEffect(() => setFailed(false), [media.src]);
  const t = useWords(text);
  if (failed) return <div className="hp-social-media-error"><Camera size={25} /><span>{t.unavailable}</span><ArrowUpRight size={16} /></div>;
- return media.kind === "video" ? <video controls preload="metadata" poster={media.poster} playsInline aria-label={t.videoLabel} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} style={mediaStyle(media)} onError={() => setFailed(true)}><source src={media.src} />{t.unavailable}</video> : <img src={media.src} alt={post.caption ? `${t.imageAlt}: ${post.caption.slice(0, 150)}` : t.imageAlt} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} loading={full ? "eager" : "lazy"} decoding="async" style={mediaStyle(media)} onError={() => setFailed(true)} />;
+ return media.kind === "video" ? <video controls preload="none" poster={media.poster} playsInline aria-label={t.videoLabel} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} style={mediaStyle(media)} onError={() => setFailed(true)}><source src={media.src} />{t.unavailable}</video> : <img src={media.src} alt={post.caption ? `${t.imageAlt}: ${post.caption.slice(0, 150)}` : t.imageAlt} width={media.width > 0 ? media.width : undefined} height={media.height > 0 ? media.height : undefined} loading={full ? "eager" : "lazy"} decoding="async" style={mediaStyle(media)} onError={() => setFailed(true)} />;
 }
 
 export default function SocialArchive({ posts, lang, compact = false }: Props) {
@@ -47,7 +47,7 @@ export default function SocialArchive({ posts, lang, compact = false }: Props) {
  const [source, setSource] = useState("all");
  const [kind, setKind] = useState("all");
  const [query, setQuery] = useState("");
- const [count, setCount] = useState(12);
+ const [count, setCount] = useState(6);
  const [expanded, setExpanded] = useState<Set<string>>(new Set());
  const [selected, setSelected] = useState<{ post: SocialPost; index: number } | null>(null);
  const dialog = useRef<HTMLDialogElement>(null);

@@ -2,6 +2,7 @@
 // "Send us a message" page. No visit booking: people just come during opening hours (see /contact).
 // Links can pass ?kind=training|class|membership&interest=… so the staff inbox shows what it's about.
 import { useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
+import { formatClock } from '@/lib/site-info';
 import { ArrowUpRight, CheckCircle2, Clock3, MapPin, Phone, ShieldCheck, Tag, X } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
 import { useSiteInfo } from '@/lib/admin/overrides';
@@ -14,11 +15,8 @@ const KINDS: Kind[] = ['tour', 'membership', 'class', 'training', 'contact'];
 const noSub = () => () => {};
 const readSearch = () => window.location.search;
 
-function clock(hm: string, lang: 'en' | 'ar') {
-  const [h, m] = hm.split(':').map(Number);
-  const d = new Date(Date.UTC(2000, 0, 1, h, m));
-  return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-US', { hour: 'numeric', minute: m ? '2-digit' : undefined, timeZone: 'UTC' }).format(d);
-}
+// Same wording as the hours page (e.g. «منتصف الليل»), not the browser's own clock format.
+const clock = (hm: string, lang: 'en' | 'ar') => formatClock(hm, lang);
 
 export default function VisitForm({ initialKind = '', initialInterest = '', initialDate = '', initialMessage = '' }: { initialKind?: string; initialInterest?: string; initialDate?: string; initialMessage?: string }) {
   const { lang, t } = useGymLanguage();

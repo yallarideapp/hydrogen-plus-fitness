@@ -2997,6 +2997,13 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .sp-menu-pages a {
         background: #eeeeee
     }
+    :scope:is(html.hx-light) .sp-media-tabs button {
+        border-color: var(--line)
+    }
+    :scope:is(html.hx-light) .sp-media-tabs button.is-on {
+        background: var(--red);
+        border-color: var(--red)
+    }
     :scope:is(html.hx-light) .hx-services>button.is-active {
         color: var(--hp3-red)
     }
@@ -4484,6 +4491,9 @@ html.hx-light.hp-ar-pending body {
         color: #fff
     }
     :scope:is(html.hx-light) .sp-play.sp-play {
+        color: #fff
+    }
+    :scope:is(html.hx-light) .sp-media-tabs button.is-on.is-on {
         color: #fff
     }
     :scope:is(html.hx-light) .hx-float-btn.hx-float-btn {

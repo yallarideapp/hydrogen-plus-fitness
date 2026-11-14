@@ -1,5 +1,6 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState, type ComponentType } from 'react';
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore, type ComponentType } from 'react';
+import { ammanToday } from '@/lib/schedule';
 import { fmtDate } from '@/lib/fmt-date';
 import {
   ArrowUpRight, Baby, CalendarDays, Camera, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Dumbbell, ExternalLink, Flower2,
@@ -28,10 +29,21 @@ export function useDate() {
   }, [lang]);
 }
 
+// Captions come from Instagram as posted; in Arabic, an English-only caption is left out.
+const hasArabic = (s: string) => /[\u0600-\u06FF]/.test(s);
+
+const noSub = () => () => {};
+const num = (n: number, lang: string) => lang === 'ar' ? String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]) : String(n);
+const daysSince = (iso: string, today: string) => (Date.parse(today) - Date.parse(iso.slice(0, 10))) / 86400000;
+/** An offer counts as current for this many days after the club posts it. */
+const OFFER_DAYS = 30;
+/** Timelines show this many items; older ones sit in the archive below. */
+const RECENT_ITEMS = 6;
+
 type GalleryItem = { post: ServicePost; media: ServiceMedia; index: number };
 
 function Lightbox({ items, start, onClose }: { items: GalleryItem[]; start: number; onClose: () => void }) {
-  const { t } = useGymLanguage();
+  const { t, lang } = useGymLanguage();
   const fmt = useDate();
   const [i, setI] = useState(start);
   const item = items[i];
@@ -54,7 +66,7 @@ function Lightbox({ items, start, onClose }: { items: GalleryItem[]; start: numb
         </div>
         <aside className="sp-lightbox-side">
           <span className="sp-meta"><Camera size={13} /> Instagram · {fmt(post.date)}</span>
-          <p dir="auto">{post.caption}</p>
+          <p dir="auto">{lang === 'ar' && !hasArabic(post.caption) ? 'منشور من إنستغرام النادي.' : post.caption}</p>
           <a href={post.url} target="_blank" rel="noopener noreferrer" className="sp-link">{t('View on Instagram', 'عرض على إنستغرام')}<ExternalLink size={14} /></a>
           <span className="sp-count">{i + 1} / {items.length}</span>
         </aside>
@@ -68,12 +80,13 @@ function Lightbox({ items, start, onClose }: { items: GalleryItem[]; start: numb
 }
 
 function VideoCard({ post }: { post: ServicePost }) {
-  const { t } = useGymLanguage();
+  const { t, lang } = useGymLanguage();
   const fmt = useDate();
   const [playing, setPlaying] = useState(false);
   const video = post.media.find((m) => m.kind === 'video');
   const poster = video?.posterThumb || post.media[0]?.thumb;
-  const caption = post.caption.split('\n').find((l) => l.trim().length > 2)?.replace(/#\S+/g, '').trim() ?? '';
+  const first = post.caption.split('\n').find((l) => l.trim().length > 2)?.replace(/#\S+/g, '').trim() ?? '';
+  const caption = lang === 'ar' && !hasArabic(first) ? '' : first;
   return (
     <figure className="sp-video">
       <div className="sp-video-frame">
@@ -85,31 +98,6 @@ function VideoCard({ post }: { post: ServicePost }) {
       </div>
       <figcaption><span dir="auto">{caption.slice(0, 90)}</span><small>{fmt(post.date)}</small></figcaption>
     </figure>
-  );
-}
-
-function PostCard({ post }: { post: ServicePost }) {
-  const { t } = useGymLanguage();
-  const fmt = useDate();
-  const [open, setOpen] = useState(false);
-  const first = post.media[0];
-  const long = post.caption.length > 220;
-  return (
-    <article className="sp-post">
-      <a className="sp-post-media" href={post.url} target="_blank" rel="noopener noreferrer" aria-label={t('Open on Instagram', 'افتح على إنستغرام')}>
-        {first && <img src={first.thumb || first.src} alt="" loading="lazy" />}
-        {post.media.some((m) => m.kind === 'video') && <span className="sp-post-flag"><Play size={12} fill="currentColor" /></span>}
-        {post.media.length > 1 && <span className="sp-post-flag is-count"><Images size={12} />{post.media.length}</span>}
-      </a>
-      <div className="sp-post-body">
-        <span className="sp-meta"><Camera size={12} /> {fmt(post.date)}{post.collab?.length ? ` · @${post.collab.join(' @')}` : ''}</span>
-        <p dir="auto" className={open ? 'is-open' : ''}>{post.caption || t('Photo post', 'منشور صورة')}</p>
-        <div className="sp-post-actions">
-          {long && <button onClick={() => setOpen(!open)}>{open ? t('Show less', 'عرض أقل') : t('Read more', 'اقرأ المزيد')}</button>}
-          <a href={post.url} target="_blank" rel="noopener noreferrer">{t('Original post', 'المنشور الأصلي')}<ArrowUpRight size={13} /></a>
-        </div>
-      </div>
-    </article>
   );
 }
 
@@ -142,8 +130,11 @@ export default function ServicePage({ service: published, posts, related, childr
   const priceCat = usePlans().find((c) => c.service === published.slug);
   const Icon = serviceIcons[service.icon];
   const [box, setBox] = useState<number | null>(null);
-  const [shown, setShown] = useState(6);
-  const [photosShown, setPhotosShown] = useState(16);
+  const [mediaTab, setMediaTab] = useState<'video' | 'photo'>('video');
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const today = useSyncExternalStore(noSub, () => ammanToday(), () => '');
+  const isOffers = service.slug === 'offers';
+  const [mediaShown, setMediaShown] = useState(6);
   const [tag, setTag] = useState<TimelineTag | 'all'>('all');
   const [menuTab, setMenuTab] = useState(0);
   const phone = service.phone ?? { ...contact.phones[0], label: ['Call the club', 'اتصل بالنادي'] as Bi };
@@ -151,6 +142,10 @@ export default function ServicePage({ service: published, posts, related, childr
   const videos = useMemo(() => posts.filter((p) => p.media.some((m) => m.kind === 'video') || p.kind === 'video'), [posts]);
   const gallery = useMemo<GalleryItem[]>(() => posts.flatMap((post) => post.media.filter((m) => m.kind === 'image').map((media, index) => ({ post, media, index }))), [posts]);
   const timeline = useMemo(() => (service.timeline ?? []).filter((i) => tag === 'all' || i.tag === tag), [service.timeline, tag]);
+  const currentOffers = useMemo(() => isOffers && today ? (service.timeline ?? []).filter((i) => i.tag === 'offer' && daysSince(i.date, today) <= OFFER_DAYS) : [], [isOffers, today, service.timeline]);
+  const recent = timeline.slice(0, RECENT_ITEMS);
+  const archive = timeline.slice(RECENT_ITEMS);
+  const tab = videos.length === 0 ? 'photo' : gallery.length === 0 ? 'video' : mediaTab;
   const tags = useMemo(() => Array.from(new Set((service.timeline ?? []).map((i) => i.tag))), [service.timeline]);
   const enquire = `/join?kind=${service.cta.kind}&interest=${encodeURIComponent(service.cta.interest)}`;
   const wa = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(lang === 'ar' ? `مرحباً، أود الاستفسار عن ${service.name[1]}` : `Hello, I'd like to ask about ${service.name[0]}`)}`;
@@ -185,7 +180,22 @@ export default function ServicePage({ service: published, posts, related, childr
             {service.body?.map((b, k) => <p key={k}>{L(b)}</p>)}
             {service.links && <div className="sp-links">{service.links.map((l) => <a key={l.href} href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{L(l.label)}<ArrowUpRight size={14} /></a>)}</div>}
           </div>
-          {service.facts.length > 0 && (
+          {isOffers ? (
+            <div className="sp-facts sp-today-offer">
+              <h3><Tag size={16} />{t('Today’s offer', 'عرض اليوم')}</h3>
+              {currentOffers.length > 0 ? (
+                <dl>{currentOffers.map((o, k) => (
+                  <div key={k}><dt>{L(o.title)}</dt>{o.text && <dd>{L(o.text)}</dd>}<small>{t('Published', 'منشور')} · {fmt(o.date)} · <a href={o.source} target="_blank" rel="noopener noreferrer">{t('source', 'المصدر')}</a></small></div>
+                ))}</dl>
+              ) : (
+                <p className="sp-today-none">{t('There’s no offer on the club’s page right now. Ask the team — there may be one today.', 'لا يوجد عرض منشور حالياً. اسأل الفريق، فقد يكون هناك عرض اليوم.')}</p>
+              )}
+              <div className="sp-today-actions">
+                <a className="sp-btn sp-btn-red" href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(lang === 'ar' ? 'مرحباً، هل يوجد عرض على الاشتراكات اليوم؟' : 'Hello, is there an offer on memberships today?')}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={15} />{t('Ask on WhatsApp', 'اسأل على واتساب')}</a>
+                <a className="sp-btn" href={`tel:${phone.tel}`}><Phone size={15} /><span dir="ltr">{phone.display}</span></a>
+              </div>
+            </div>
+          ) : service.facts.length > 0 && (
             <div className="sp-facts">
               <h3><Clock size={16} />{t('As published by the club', 'كما نشرها النادي')}</h3>
               <dl>{service.facts.map((f, k) => (
@@ -217,7 +227,7 @@ export default function ServicePage({ service: published, posts, related, childr
           <div className="sp-head"><div><span className="sp-eyebrow">{t('TIMELINE', 'الخط الزمني')}</span><h2>{service.slug === 'offers' ? t('Announcements & offers', 'الإعلانات والعروض') : t('What’s happened', 'أبرز ما حدث')}</h2></div>
             {tags.length > 1 && <div className="sp-chips" role="group" aria-label={t('Filter', 'تصفية')}><button className={tag === 'all' ? 'is-on' : ''} onClick={() => setTag('all')}>{t('All', 'الكل')}</button>{tags.map((g) => <button key={g} className={tag === g ? 'is-on' : ''} onClick={() => setTag(g)}>{L(tagLabels[g])}</button>)}</div>}
           </div>
-          <ol className="sp-timeline">{timeline.map((item, k) => (
+          <ol className="sp-timeline">{recent.map((item, k) => (
             <li key={k}>
               <time dateTime={item.date}>{fmt(item.date)}</time>
               <div className="sp-tl-card">
@@ -225,6 +235,17 @@ export default function ServicePage({ service: published, posts, related, childr
                 <div><span className={`sp-tag is-${item.tag}`}>{L(tagLabels[item.tag])}</span><h3>{L(item.title)}</h3>{item.text && <p>{L(item.text)}</p>}<a href={item.source} target="_blank" rel="noopener noreferrer" className="sp-link">{t('See the post', 'شاهد المنشور')}<ArrowUpRight size={13} /></a></div>
               </div>
             </li>))}</ol>
+          {archive.length > 0 && <>
+            <button type="button" className="sp-more sp-archive-toggle" aria-expanded={archiveOpen} onClick={() => setArchiveOpen((v) => !v)}>{archiveOpen ? t('Hide the archive', 'إخفاء الأرشيف') : isOffers ? t('Offers & news archive', 'أرشيف العروض والمستجدات') : t('Earlier events', 'فعاليات سابقة')} ({num(archive.length, lang)})<ChevronDown size={16} /></button>
+            {archiveOpen && <ol className="sp-timeline sp-timeline-archive">{archive.map((item, k) => (
+            <li key={k}>
+              <time dateTime={item.date}>{fmt(item.date)}</time>
+              <div className="sp-tl-card">
+                {item.image && <a href={item.source} target="_blank" rel="noopener noreferrer" className="sp-tl-img"><img src={`/images/thumbs/${item.image}.webp`} alt="" loading="lazy" /></a>}
+                <div><span className={`sp-tag is-${item.tag}`}>{L(tagLabels[item.tag])}</span><h3>{L(item.title)}</h3>{item.text && <p>{L(item.text)}</p>}<a href={item.source} target="_blank" rel="noopener noreferrer" className="sp-link">{t('See the post', 'شاهد المنشور')}<ArrowUpRight size={13} /></a></div>
+              </div>
+            </li>))}</ol>}
+          </>}
         </div></section>
       )}
 
@@ -232,23 +253,6 @@ export default function ServicePage({ service: published, posts, related, childr
         <section className="sp-section"><div className="sp-container">
           <div className="sp-head"><div><span className="sp-eyebrow">{t('THIS WEEK', 'هذا الأسبوع')}</span><h2>{t('Women’s class timetable', 'جدول حصص السيدات')}</h2></div><a className="sp-link" href="/classes">{t('Filter, save and request classes', 'تصفية الحصص وحفظها وطلبها')}<ArrowUpRight size={14} /></a></div>
           <WeekSchedule />
-        </div></section>
-      )}
-
-      {videos.length > 0 && (
-        <section className="sp-section sp-dark2"><div className="sp-container">
-          <div className="sp-head"><div><span className="sp-eyebrow">{t('WATCH', 'شاهد')}</span><h2>{t('Videos & reels', 'الفيديوهات والريلز')}</h2></div><span className="sp-sub">{t('Real clips from the club’s Instagram', 'مقاطع حقيقية من إنستغرام النادي')}</span></div>
-          <div className="sp-videos">{videos.slice(0, 12).map((p) => <VideoCard key={p.id} post={p} />)}</div>
-        </div></section>
-      )}
-
-      {gallery.length > 0 && (
-        <section className="sp-section"><div className="sp-container">
-          <div className="sp-head"><div><span className="sp-eyebrow">{t('GALLERY', 'المعرض')}</span><h2>{t('Photos', 'الصور')}</h2></div><span className="sp-sub">{gallery.length} {t('photos and posters', 'صورة وملصق')}</span></div>
-          <div className="sp-gallery">{gallery.slice(0, photosShown).map((g, k) => (
-            <button key={g.post.id + g.index} onClick={() => setBox(k)} aria-label={t('Open photo', 'فتح الصورة')} style={{ aspectRatio: `${g.media.width} / ${g.media.height}` }}><img src={g.media.thumb || g.media.src} alt="" loading="lazy" width={g.media.width} height={g.media.height} /></button>
-          ))}</div>
-          {photosShown < gallery.length && <button className="sp-more" onClick={() => setPhotosShown((n) => n + 16)}>{t('More photos', 'المزيد من الصور')}<ChevronDown size={16} /></button>}
         </div></section>
       )}
 
@@ -260,11 +264,21 @@ export default function ServicePage({ service: published, posts, related, childr
         </div></section>
       )}
 
-      {posts.length > 0 && service.slug !== 'offers' && (
-        <section className="sp-section"><div className="sp-container">
-          <div className="sp-head"><div><span className="sp-eyebrow">{t('FROM INSTAGRAM', 'من إنستغرام')}</span><h2>{t('Posts about', 'منشورات عن')} {L(service.name)}</h2></div><a className="sp-link" href={contact.instagram} target="_blank" rel="noopener noreferrer">@hydrogenplusfitness<ArrowUpRight size={14} /></a></div>
-          <div className="sp-posts">{posts.slice(0, shown).map((p) => <PostCard key={p.id} post={p} />)}</div>
-          {shown < posts.length && <button className="sp-more" onClick={() => setShown((n) => n + 6)}>{t('More posts', 'المزيد من المنشورات')} ({posts.length - shown})<ChevronDown size={16} /></button>}
+      {(videos.length > 0 || gallery.length > 0) && (
+        <section className="sp-section sp-media" id="media"><div className="sp-container">
+          <div className="sp-head"><div><span className="sp-eyebrow">{t('FROM INSTAGRAM', 'من إنستغرام')}</span><h2>{t('Videos & photos', 'فيديوهات وصور')}</h2></div><a className="sp-link" href={contact.instagram} target="_blank" rel="noopener noreferrer">@hydrogenplusfitness<ArrowUpRight size={14} /></a></div>
+          {videos.length > 0 && gallery.length > 0 && (
+            <div className="sp-chips sp-media-tabs" role="tablist" aria-label={t('Videos or photos', 'فيديوهات أو صور')}>
+              <button role="tab" aria-selected={mediaTab === 'video'} className={mediaTab === 'video' ? 'is-on' : ''} onClick={() => { setMediaTab('video'); setMediaShown(6); }}><Play size={13} fill="currentColor" />{t('Videos', 'فيديو')} <small>{num(videos.length, lang)}</small></button>
+              <button role="tab" aria-selected={mediaTab === 'photo'} className={mediaTab === 'photo' ? 'is-on' : ''} onClick={() => { setMediaTab('photo'); setMediaShown(6); }}><Images size={13} />{t('Photos', 'صور')} <small>{num(gallery.length, lang)}</small></button>
+            </div>
+          )}
+          {tab === 'video'
+            ? <div className="sp-videos sp-media-grid" role="tabpanel">{videos.slice(0, mediaShown).map((p) => <VideoCard key={p.id} post={p} />)}</div>
+            : <div className="sp-gallery sp-media-grid" role="tabpanel">{gallery.slice(0, mediaShown).map((g, k) => (
+                <button key={g.post.id + g.index} onClick={() => setBox(k)} aria-label={t('Open photo', 'فتح الصورة')} style={{ aspectRatio: `${g.media.width} / ${g.media.height}` }}><img src={g.media.thumb || g.media.src} alt="" loading="lazy" width={g.media.width} height={g.media.height} /></button>
+              ))}</div>}
+          {mediaShown < (tab === 'video' ? videos.length : gallery.length) && <button className="sp-more" onClick={() => setMediaShown((n) => n + 6)}>{t('Show more', 'عرض المزيد')} ({num((tab === 'video' ? videos.length : gallery.length) - mediaShown, lang)})<ChevronDown size={16} /></button>}
         </div></section>
       )}
 
