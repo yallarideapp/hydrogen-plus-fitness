@@ -107,6 +107,8 @@ function timeline(rtl: boolean): [string, Keyframe[]][] {
 }
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** Set once the visitor has scrolled to the end of the film; after that the home page opens on the plain banner. */
+const SEEN_KEY = 'hp-film-seen';
 
 export default function HomeCinema() {
   const { t, lang } = useGymLanguage();
@@ -114,9 +116,13 @@ export default function HomeCinema() {
   const [on, setOn] = useState(false);
   const [lights, setLights] = useState(false);
 
-  // After hydration: switch the film on, and the lights intro if the splash is still up.
+  // After hydration: switch the film on (first time on this device only), and the lights intro if the
+  // splash is still up. Returning visitors get the plain banner. Add ?film to the address to see it again.
   useEffect(() => {
     if (reduced()) return;
+    let seen = false;
+    try { seen = localStorage.getItem(SEEN_KEY) === '1'; } catch { /* storage blocked: show it */ }
+    if (seen && !/[?&]film\b/.test(location.search)) return;
     const splashing = document.documentElement.classList.contains('hx-splashing');
     const id = requestAnimationFrame(() => { setOn(true); if (splashing) setLights(true); });
     return () => cancelAnimationFrame(id);
@@ -163,16 +169,18 @@ export default function HomeCinema() {
         }
       }
     }
-    let raf = 0;
+    let raf = 0, marked = false;
     const tick = () => {
       raf = 0;
       const r = sec.getBoundingClientRect();
       const run = sec.offsetHeight - sec.querySelector<HTMLElement>('.hx-cine-stage')!.offsetHeight;
       const p = Math.min(Math.max(-r.top / Math.max(run, 1), 0), 1);
-      for (const a of anims) a.currentTime = p * 1000;
+      if (!scrollDriven) for (const a of anims) a.currentTime = p * 1000;
+      if (!marked && p > 0.95) { marked = true; try { localStorage.setItem(SEEN_KEY, '1'); } catch { /* ignore */ } }
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick); };
-    if (!scrollDriven) { tick(); addEventListener('scroll', onScroll, { passive: true }); }
+    tick();
+    addEventListener('scroll', onScroll, { passive: true });
     return () => { anims.forEach((a) => a.cancel()); removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
   }, [on, lang]);
 
