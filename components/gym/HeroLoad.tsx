@@ -2,18 +2,21 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-// Home banner intro: "load the bar". Plays once per visit, right as the splash lifts (first page = home).
+// Home banner intro: "load the bar". Plays once per visit, as soon as the splash has faded (first page = home).
 //   - A steel bar slides in over the banner photos (above the two cards), then three pairs of plates slam on from the sides:
 //     the big ones first, like a real lift. Each impact shakes the photo, bumps the KG counter
 //     (20 → 70 → 110 → 140) and slams one word of the heading into place.
 //   - The red plus pops in the middle: the loaded bar is the Hydrogen+ logo.
 //   - The power bar under the heading fills, the overlay clears, and the banner is back to normal.
+//     Then it fires 'hx-intro-done' and HeroPulse draws its heartbeat line.
 // The plates and plus use the logo's own geometry (the splash screen draws the same shapes).
 // Skipped with reduced motion. Before the script runs nothing is hidden, so a failure leaves the plain banner.
 
 const IMPACTS = [600, 900, 1200]; // ms after start: inner, middle, outer pair lands
 const KG = [70, 110, 140];
 const SLAM_MS = 250;
+const WORD_MS = 460;
+const done = () => dispatchEvent(new Event('hx-intro-done')); // HeroPulse starts its line after this
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -47,7 +50,8 @@ export default function HeroLoad() {
     };
 
     // Build every animation now, paused at 0, so the hidden start state is in place under the splash.
-    add(load.querySelector('.hx-load-scrim'), [{ opacity: 0 }, { opacity: 1 }], { duration: 260 });
+    // (The scrim is simply there from the start, so the photos stay dark while the splash fades.)
+    const h1 = hero.querySelector('h1');
     add(q('.hx-bar'), [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 300, delay: 120, easing: 'cubic-bezier(.2,.8,.2,1)' });
     add(load.querySelector('.hx-kg'), [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, delay: 260 });
     ([['.hx-p1', 0], ['.hx-p2', 1], ['.hx-p3', 2]] as const).forEach(([sel, i]) => {
@@ -64,11 +68,21 @@ export default function HeroLoad() {
         { transform: 'none' }, { transform: `translate(${i % 2 ? -5 : 5}px,${2 + i}px)`, offset: 0.25 },
         { transform: `translate(${i % 2 ? 4 : -4}px,-2px)`, offset: 0.55 }, { transform: 'none' },
       ], { duration: 170, delay: land, fill: 'none', composite: 'add' });
+      // The word falls from 3x (4x for the last one) out of a blur, hits with a red flash, bounces once.
+      // Its impact (offset .6) is the moment the plates land, and the heading shakes with it.
+      const big = i === IMPACTS.length - 1;
       if (words[i]) add(words[i], [
-        { opacity: 0, transform: 'translateY(-.4em) scale(1.55)' },
-        { opacity: 1, transform: 'translateY(.04em) scale(.97)', offset: 0.7 },
-        { opacity: 1, transform: 'none' },
-      ], { duration: 260, delay: land - 200, easing: 'cubic-bezier(.5,0,.75,0)' });
+        { opacity: 0, transform: `translateY(-.2em) scale(${big ? 4 : 3.2})`, filter: 'blur(3px)', textShadow: '0 0 0 rgba(231,52,52,0)', easing: 'cubic-bezier(.55,0,.9,.35)' },
+        { opacity: 1, offset: 0.1 }, // seen big from the start of the fall, not only at the landing
+        { opacity: 1, transform: 'translateY(.03em) scale(.9)', filter: 'blur(0px)', textShadow: `0 0 ${big ? 44 : 30}px rgba(231,52,52,.95)`, offset: 0.6, easing: 'cubic-bezier(.2,.7,.3,1)' },
+        { transform: 'scale(1.06)', offset: 0.78 },
+        { opacity: 1, transform: 'none', filter: 'blur(0px)', textShadow: '0 0 0 rgba(231,52,52,0)' },
+      ], { duration: WORD_MS, delay: land - WORD_MS * 0.6 });
+      const k = big ? 9 : 6;
+      add(h1, [
+        { transform: 'none' }, { transform: `translate(${i % 2 ? -k : k}px,${k * 0.6}px)`, offset: 0.2 },
+        { transform: `translate(${i % 2 ? k * 0.7 : -k * 0.7}px,${-k * 0.4}px)`, offset: 0.5 }, { transform: 'none' },
+      ], { duration: 240, delay: land, fill: 'none', composite: 'add' });
     });
     for (const w of words.slice(IMPACTS.length)) add(w, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: IMPACTS[2] });
     add(q('.hx-plus'), [
@@ -81,8 +95,14 @@ export default function HeroLoad() {
     anims.push(out);
 
     let cancelled = false;
+    let ended = false;
+    const end = () => { if (!ended) { ended = true; done(); } };
     (async () => {
-      while (!cancelled && d.classList.contains('hx-splashing')) await new Promise((r) => setTimeout(r, 50));
+      // Start once the splash has fully faded (it fades for ~0.5 s after hx-splashing goes), so the first hit is seen.
+      // Capped, in case the splash element is ever left behind.
+      const t0 = performance.now();
+      const covered = () => d.classList.contains('hx-splashing') || !!document.getElementById('hx-splash');
+      while (!cancelled && covered() && performance.now() - t0 < 8000) await new Promise((r) => setTimeout(r, 40));
       if (cancelled) return;
       anims.forEach((a) => a.play());
       IMPACTS.forEach((ms, i) => timers.push(window.setTimeout(() => setKg(KG[i]), ms)));
@@ -90,8 +110,9 @@ export default function HeroLoad() {
       if (cancelled) return;
       anims.forEach((a) => a.cancel());
       setRun(false);
+      end();
     })();
-    return () => { cancelled = true; timers.forEach(clearTimeout); anims.forEach((a) => a.cancel()); };
+    return () => { end(); cancelled = true; timers.forEach(clearTimeout); anims.forEach((a) => a.cancel()); };
   }, [run]);
 
   if (!run) return null;
