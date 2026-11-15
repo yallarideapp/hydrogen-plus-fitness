@@ -113,7 +113,6 @@ const inIsland = (sel) => sel.split(',').every((part) => compounds(part.trim()).
 ISLANDS.push(['legal-page']);
 ISLANDS.push(['hx-events-archive']);
 ISLANDS.push(['hx-life']);
-ISLANDS.push(['hx-cine']);
 const islandList = [...new Set(ISLANDS.map((i) => '.' + i.join('.')))];
 const ISL = islandList.join(',');
 
