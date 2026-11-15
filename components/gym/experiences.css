@@ -86,3 +86,8 @@ html.hx-hero-tight .hp3 .hp3-home-hero .hp3-hero-tour>strong{margin-top:0;font-s
 .hx-bpm b{font-size:19px;font-weight:700;letter-spacing:0;color:var(--hp3-red,#e73434);font-variant-numeric:tabular-nums;min-width:2ch;text-align:right}
 .hx-bpm small{font-size:11px;opacity:.6}
 @media(max-width:600px){.hx-pulse-base path{stroke-width:1.4}.hx-pulse-trace path{stroke-width:2.1}}
+
+/* Smaller damma on «تُصنع» (SmallDamma in HomeExperience.tsx): a 0x0 box on the baseline at the start of the word;
+   em values measured from Noto Sans Arabic Bold (ت dots top at .69em; the font's damma centre .222em into the word). */
+.hx-damma{display:inline-block;width:0;height:0;vertical-align:baseline;position:relative}
+.hx-damma>svg{position:absolute;left:-.302em;top:-.948em;width:.16em;height:.158em;fill:currentColor;overflow:visible}

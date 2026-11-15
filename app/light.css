@@ -1772,6 +1772,9 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .hx-bpm b {
         color: var(--hp3-red,#e73434)
     }
+    :scope:is(html.hx-light) .hx-damma>svg {
+        fill: currentColor
+    }
     :scope:is(html.hx-light) .fp-map {
         background: #e2e5e3;
         border: 1px solid rgba(18,18,18,0.122)
