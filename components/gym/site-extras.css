@@ -270,7 +270,8 @@ dialog:focus,dialog:focus-visible,.cx-experience dialog:focus-visible,.cb-experi
 }
 @media(min-width:821px) and (max-width:1000px){.hp3-menu-toggle{padding:0 12px}.hx-menu-label{display:none}}
 @media(min-width:821px){.hp3:has(#hx-menu) .hx-float{display:none}.hp3-header-tour{white-space:nowrap}}
-@media(min-width:821px) and (max-width:900px){.hp3-header-actions .hp3-account{display:none}}
+@media(min-width:821px) and (max-width:860px){.hp3-header{padding-inline:18px;gap:12px}}
+@media(min-width:821px) and (max-width:1060px){.hp3-header-actions .hp3-account{display:none}.hp3-desktop-nav{gap:14px;font-size:12px}.hp3-header-actions{gap:8px}}
 @keyframes hx-drawer-in{from{transform:translateX(100%)}}
 @keyframes hx-drawer-in-rtl{from{transform:translateX(-100%)}}
 @keyframes hx-fade-in{from{opacity:0}}
