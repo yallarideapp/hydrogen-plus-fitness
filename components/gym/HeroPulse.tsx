@@ -139,7 +139,7 @@ export default function HeroPulse() {
     const tick = (now: number) => {
       const dt = last ? Math.min(0.1, (now - last) / 1000) : 1 / 60;
       last = now;
-      effort *= Math.exp(-dt / 2.4); // recovery
+      effort *= Math.exp(-dt / 3); // recovery
       const target = Math.min(MAX, REST + effort);
       bpm += (target - bpm) * (1 - Math.exp(-dt / 0.4));
       if (effort < 0.4 && bpm - REST < 0.4) { bpm = REST; raf = 0; last = 0; apply(); return; }
@@ -149,7 +149,7 @@ export default function HeroPulse() {
     const kick = () => { if (!raf && shown) raf = requestAnimationFrame(tick); };
     const onScroll = () => {
       const y = scrollY;
-      effort = Math.min(MAX - REST + 25, effort + Math.abs(y - lastY) * 0.2);
+      effort = Math.min(MAX - REST + 25, effort + Math.abs(y - lastY) * 0.32);
       lastY = y;
       kick();
     };
