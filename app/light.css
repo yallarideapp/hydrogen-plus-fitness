@@ -1729,6 +1729,12 @@ html.hx-light.hp-ar-pending body {
     }
 }
 @scope (html.hx-light) to (.skip-link,.header,.round-arrow,.classes-section,.memberships-section,.membership-rule,.gym-dialog,.plan-progress,.navigation,.cx-finder,.cx-timetable-note,.cx-day-tabs,.cx-filter-panel,.cx-search,.cx-class-card,.cx-class-image,.cx-category,.cx-category-cardio,.cx-category-strength,.cx-category-balance,.cx-empty,.cx-dialog,.cx-detail-source,.cx-already-planned,.cx-error,.cx-notice,.cb-spaces,.cb-tabs,.cb-first-visit,.hp3-hero-tour,.hp3-quick-actions,.hp3-home-classes,.hp3-home-class,.hp3-class-bubble,.hp3-class-bubble.balance,.hp3-visit-form,.hp3-visit-disclaimer,.hp3-advisor-panel,.hp3-member-full,.hp3-archive-paper,.fc-coach,.fc-job,.hp-help-service,.hp-help-checklist,.hp-help-check-box,.member-area,.member-empty,.member-empty-icon,.member-row-icon,.member-feedback,.member-feedback-error,.member-form,.member-chart,.member-status,.member-status-contacted,.member-status-confirmed,.member-status-cancelled,.member-status-rejected,.pl-dialog-card,.pl-dialog-x,.pl-cliq,.pl-cliq-alias,.fd-main,.fd-extra,.sp-paper,.sp-tl-card,.sp-tl-img,.sp-tag,.sp-play.is-external,.sp-lightbox-close,.hp3-skip,.hp3-white,.hp-social-search,.hp-social-card,.hp-social-source-instagram,.hp-social-source-facebook,.hp-social-media,.hp-social-empty,.hp-community,.hp-social-source-only,.staff-page,.staff-inbox,.staff-search,.staff-status,.staff-status-contacted,.staff-status-confirmed,.staff-status-cancelled,.staff-feedback,.staff-error,.staff-access,.staff-access-icon,.staff-empty,.hp3-studio,.hp3-studio-library,.hp3-studio-session,.hp3-studio-search,.hp3-studio-rest-clock,.hp3-studio-save,.hp3-studio-hero,.adm,.adm-btn,.adm-icon,.adm-section,.adm-tip,.adm-chip,.adm-row-card,.adm-notice,.adm-day,.adm-photo,.adm-photo-img,.adm-nav,.legal-page,.hx-events-archive,.hx-life) {
+    :scope:is(html.hx-light) .hx-veil {
+        background: #f8f9f9
+    }
+    :scope:is(html.hx-light) .hp3-home-hero .hp3-hero-main-photo .hp3-image-label {
+        text-shadow: 0 1px 3px #f9f9f9,0 0 12px rgba(249,249,249,0.8)
+    }
     :scope:is(html.hx-light) .fp-map {
         background: #e2e5e3;
         border: 1px solid rgba(18,18,18,0.122)
