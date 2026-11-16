@@ -269,8 +269,9 @@ dialog:focus,dialog:focus-visible,.cx-experience dialog:focus-visible,.cb-experi
   .hx-menu-backdrop{position:fixed;inset:var(--hx-menu-top,122px) 0 0;background:#000000a6;z-index:48;animation:hx-fade-in .25s ease}
 }
 @media(min-width:821px) and (max-width:1000px){.hp3-menu-toggle{padding:0 12px}.hx-menu-label{display:none}}
-@media(min-width:821px){.hp3:has(#hx-menu) .hx-float{display:none}.hp3-header-tour{white-space:nowrap}}
-@media(min-width:821px) and (max-width:860px){.hp3-header{padding-inline:18px;gap:12px}}
+@media(min-width:821px){.hp3:has(#hx-menu) .hx-float{display:none}.hp3-header-tour{white-space:nowrap}.hp3-header-actions .hp3-account{display:none}}
+@media(min-width:821px) and (max-width:860px){.hp3-header{padding-inline:18px;gap:12px}.hp3-desktop-nav a[href$="/offers"]{display:none}}
+@media(min-width:821px) and (max-width:940px){.hp3-desktop-nav{gap:9px;font-size:11.5px}.hp3-logo{zoom:.8}.hp3-header-tour svg{display:none}.hp3-header-tour{padding-inline:14px}}
 @media(min-width:821px) and (max-width:1060px){.hp3-header-actions .hp3-account{display:none}.hp3-desktop-nav{gap:14px;font-size:12px}.hp3-header-actions{gap:8px}}
 @keyframes hx-drawer-in{from{transform:translateX(100%)}}
 @keyframes hx-drawer-in-rtl{from{transform:translateX(-100%)}}

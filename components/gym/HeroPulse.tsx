@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Home banner heartbeat: a red ECG line at the height of the heading, in the empty part of the banner beside it.
-// It stops (with a soft fade) just short of the words, so it never crosses any text, and only just enters the photo.
+// It stops (with a soft fade) just short of the words, so it never crosses any text.
 //   - The first sweep draws the line in: right after the load-the-bar intro ('hx-intro-done'), or straight away
 //     when there is no intro (later visits in the same session).
 //   - Then a bright pulse keeps sweeping along it at a resting 72 BPM. The heart next to the power bar beats at the
@@ -23,7 +23,6 @@ type Geo = { w: number; top: number; h: number; d: string; win: number; period: 
 
 const GAP = 14; // clear space between the line and the nearest letter
 const FADE = 44; // the line fades out over this distance before that gap
-const INTO = 110; // how far the line may run into the banner photo
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -68,22 +67,22 @@ export default function HeroPulse() {
         const w = hero.clientWidth;
         const hb = pos(h1);
         if (!w || !hb.h) return;
-        const a = Math.round(Math.min(110, Math.max(34, hb.h * 0.42)));
+        let a = Math.round(Math.min(110, Math.max(34, hb.h * 0.42)));
         const pad = 16;
-        const mid = hb.y + hb.h / 2;
+        let mid = hb.y + hb.h / 2;
+        // Computer layout (photo beside the heading): level with the heading's last line (MORE. / القوة.), which is
+        // the shorter one, so the line starts right beside it; spikes stay within that line's height.
+        const last = [...h1.querySelectorAll<HTMLElement>('.hx-w')].pop();
+        if (w > 820 && last) {
+          const lb = pos(last);
+          mid = lb.y + lb.h / 2;
+          a = Math.round(Math.min(110, Math.max(26, lb.h / 2 - 8)));
+        }
         const band = [mid - a - 6, mid + a * 0.42 + 6]; // spike top to dip bottom, plus glow
         // Text that sits at that height: the heading words, plus anything else that could share the band.
         const blocked = [...hero.querySelectorAll<HTMLElement>('.hx-w, .hp3-home-hero-copy>.hp3-kicker, .hx-power, .hx-bpm, .hp3-image-label, .hp3-hero-mark')]
           .map(pos).filter((o) => o.w && o.y < band[1] && o.y + o.h > band[0])
           .map((o) => [o.x - GAP, o.x + o.w + GAP]);
-        // The banner photo (computer layout, beside the heading): the line may run a little way into it and fade
-        // there, but not across it.
-        const photo = hero.querySelector<HTMLElement>('.hp3-hero-main-photo');
-        if (photo) {
-          const o = pos(photo);
-          const into = Math.min(INTO, o.w * 0.2);
-          if (o.w && o.y < band[1] && o.y + o.h > band[0]) blocked.push([o.x + into, o.x + o.w - into]);
-        }
         blocked.sort((p, q) => p[0] - q[0]);
         let s0 = 0;
         let best: [number, number] = [0, 0];

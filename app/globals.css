@@ -69,3 +69,6 @@ html.hx-splashing,html.hx-splashing body{overflow:hidden}
 @keyframes hxs-bubble{0%{opacity:0;transform:translateY(0)}20%{opacity:.55}100%{opacity:0;transform:translateY(-118px)}}
 @keyframes hxs-up{to{opacity:1;transform:none}}
 @keyframes hxs-track{from{opacity:0;letter-spacing:.7em}to{opacity:.9;letter-spacing:.32em}}
+
+/* Keep the scrollbar's space even when the menu locks scrolling, so the page never jumps sideways. */
+html{scrollbar-gutter:stable}
