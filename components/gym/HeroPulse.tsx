@@ -23,6 +23,7 @@ type Geo = { w: number; top: number; h: number; d: string; win: number; period: 
 
 const GAP = 14; // clear space between the line and the nearest letter
 const FADE = 44; // the line fades out over this distance before that gap
+const MAX_LEN = 520; // computer layout: the longest the line runs from the heading
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -90,8 +91,13 @@ export default function HeroPulse() {
           if (l - s0 > best[1] - best[0]) best = [s0, l];
           s0 = Math.max(s0, r);
         }
-        const s = Math.max(0, Math.round(best[0]));
-        const e = Math.min(w, Math.round(best[1]));
+        let s = Math.max(0, Math.round(best[0]));
+        let e = Math.min(w, Math.round(best[1]));
+        // Computer layout: a shorter line, running MAX_LEN from the heading (whichever end touches text).
+        if (w > 820 && e - s > MAX_LEN) {
+          if (s > 0) e = s + MAX_LEN;
+          else s = e - MAX_LEN;
+        }
         if (e - s < 80) { setGeo(null); return; }
         const period = Math.round(Math.min(260, Math.max(90, (e - s) * 0.45)));
         const win = Math.round(Math.min(520, Math.max(90, (e - s) * 0.55)));
