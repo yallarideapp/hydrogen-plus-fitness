@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore, type ComponentType } from 'react';
+import { rs } from '@/lib/responsive';
 import { ammanToday } from '@/lib/schedule';
 import { fmtDate } from '@/lib/fmt-date';
 import {
@@ -167,7 +168,7 @@ export default function ServicePage({ service: published, posts, related, childr
           </div>
           {posts.length > 0 && <p className="sp-stats"><b>{posts.length}</b> {t('posts', 'منشوراً')} · <b>{gallery.length}</b> {t('photos', 'صورة')} · <b>{videos.length}</b> {t('videos', 'فيديو')} <span>{t('from the club’s Instagram', 'من إنستغرام النادي')}</span></p>}
         </div>
-        <figure className="sp-hero-img"><img src={service.hero.src} width={service.hero.width} height={service.hero.height} alt={L(service.hero.alt)} fetchPriority="high" /></figure>
+        <figure className="sp-hero-img"><img src={service.hero.src} {...rs(service.hero.src, '(max-width: 820px) 100vw, 55vw')} width={service.hero.width} height={service.hero.height} alt={L(service.hero.alt)} fetchPriority="high" /></figure>
       </section>
 
       {service.highlights.length > 0 && <section className="sp-band"><div className="sp-container"><ul className="sp-highlights">{service.highlights.map((h, k) => <li key={k}><Check size={15} />{L(h)}</li>)}</ul></div></section>}
@@ -276,7 +277,7 @@ export default function ServicePage({ service: published, posts, related, childr
           {tab === 'video'
             ? <div className="sp-videos sp-media-grid" role="tabpanel">{videos.slice(0, mediaShown).map((p) => <VideoCard key={p.id} post={p} />)}</div>
             : <div className="sp-gallery sp-media-grid" role="tabpanel">{gallery.slice(0, mediaShown).map((g, k) => (
-                <button key={g.post.id + g.index} onClick={() => setBox(k)} aria-label={t('Open photo', 'فتح الصورة')} style={{ aspectRatio: `${g.media.width} / ${g.media.height}` }}><img src={g.media.thumb || g.media.src} alt="" loading="lazy" width={g.media.width} height={g.media.height} /></button>
+                <button key={g.post.id + g.index} onClick={() => setBox(k)} aria-label={t('Open photo', 'فتح الصورة')} style={{ aspectRatio: `${g.media.width} / ${g.media.height}` }}><img src={g.media.thumb || g.media.src} {...rs(g.media.thumb || g.media.src, '(max-width: 820px) 50vw, 25vw')} alt="" loading="lazy" width={g.media.width} height={g.media.height} /></button>
               ))}</div>}
           {mediaShown < (tab === 'video' ? videos.length : gallery.length) && <button className="sp-more" onClick={() => setMediaShown((n) => n + 6)}>{t('Show more', 'عرض المزيد')} ({num((tab === 'video' ? videos.length : gallery.length) - mediaShown, lang)})<ChevronDown size={16} /></button>}
         </div></section>
@@ -310,7 +311,7 @@ export function ServiceTile({ card: published, large = false }: { card: ServiceC
   const L = (b: Bi) => t(b[0], b[1]);
   return (
     <a href={card.path} className={`sp-tile${large ? ' is-large' : ''}`}>
-      <img src={card.hero.src} alt="" loading="lazy" />
+      <img src={card.hero.src} {...rs(card.hero.src, '(max-width: 820px) 100vw, 33vw')} alt="" loading="lazy" />
       <span className="sp-tile-shade" />
       <span className="sp-tile-body">
         <span className="sp-kicker"><Icon size={13} />{L(card.kicker)}</span>

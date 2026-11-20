@@ -277,3 +277,20 @@ dialog:focus,dialog:focus-visible,.cx-experience dialog:focus-visible,.cb-experi
 @keyframes hx-drawer-in-rtl{from{transform:translateX(-100%)}}
 @keyframes hx-fade-in{from{opacity:0}}
 @media(prefers-reduced-motion:reduce){.hp3-mobile-menu,.hx-menu-backdrop{animation:none!important}}
+
+/* ===== Readable contrast (WCAG AA 4.5:1 for small text) =====
+   White text on the brand red #e73434 was 4.25:1, so buttons, chips and badges that carry white text use a slightly
+   deeper red (#d92b2b, 4.85:1). Headings, icons and accents keep the brand red. Small red text on near-black gets a
+   lighter red, and a few greys are nudged. */
+.hp3 .hp3-red:not(:hover),.hp3 .pl-badge,.hp3 .pl-choose.is-red:not(:hover),.hp3 .pl-chips button.is-active,
+.hp3 .cx-button-red:not(:hover),.hp3 .cb-button-red:not(:hover),.hp3 .hp3-chip.is-active,
+.hp3 .fc-seg button.is-on,.hp3 .hp3-goal-selector>button.is-active,.hp3 .hp3-purpose-grid>button.is-active,
+.hp3 .hp3-visit-frequency button.is-active,.hp3 .hp3-member-nav>button.is-active,.hp3 .vv-chip.is-on,
+.hp3 .hp3-advisor-progress>button.is-active,.hp3 .hx-announce{background-color:#d92b2b}
+html:not(.hx-light) .hp3 .fp-state,html:not(.hx-light) .hp3 .sp-tag.is-offer{background-color:#d92b2b} /* light mode gives these a pale background */
+.hp3 .pl-chips button.is-active small{color:#fff}
+.hp3 .pl-teaser-others a b,.hp3 .hx-admin span{color:#f25555}
+.hp3 .hp3-hero-scroll span{color:#8a9281}
+.hp3 .hp3-home-club small{color:#86956f}
+.hp3 .hp3-trademark{color:#8a957f}
+.hp3 .hp3-quick-actions p{color:#5c6353}

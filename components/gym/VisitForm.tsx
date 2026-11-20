@@ -2,6 +2,7 @@
 // "Send us a message" page. No visit booking: people just come during opening hours (see /contact).
 // Links can pass ?kind=training|class|membership&interest=… so the staff inbox shows what it's about.
 import { useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
+import { rs } from '@/lib/responsive';
 import { formatClock } from '@/lib/site-info';
 import { ArrowUpRight, CheckCircle2, Clock3, MapPin, Phone, ShieldCheck, Tag, X } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
@@ -121,7 +122,7 @@ export default function VisitForm({ initialKind = '', initialInterest = '', init
         </form>
 
         <aside className="vv-aside">
-          <img src="/images/display/gym-03.webp" alt={t('The Hydrogen Plus training floor', 'صالة التدريب في هايدروجين بلس')} />
+          <img src="/images/display/gym-03.webp" {...rs("/images/display/gym-03.webp", '(max-width: 820px) 100vw, 45vw')} alt={t('The Hydrogen Plus training floor', 'صالة التدريب في هايدروجين بلس')} />
           <div>
             <p><MapPin size={16} />{t(contact.address.en, contact.address.ar)}</p>
             {hours.filter((h) => h.id === 'men' || h.id === 'women').map((h) => <p key={h.id}><Clock3 size={16} /><span>{t(h.en, h.ar)} · <span dir={lang === 'ar' ? 'rtl' : 'ltr'}>{clock(h.open, lang)} – {clock(h.close, lang)}</span></span></p>)}

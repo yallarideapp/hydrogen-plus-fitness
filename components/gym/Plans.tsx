@@ -127,7 +127,7 @@ function PlanCard({ cat, plan, onChoose }: { cat: PlanCategory; plan: Plan; onCh
   return (
     <article className={`pl-card${plan.popular ? ' is-popular' : ''}`}>
       {plan.popular && <span className="pl-badge"><Sparkles size={13} />{t('Most popular', 'الأكثر طلباً')}</span>}
-      <h4>{L(plan.label)}</h4>
+      <h3 className="pl-plan-name">{L(plan.label)}</h3>
       <p className="pl-price"><b>{fmtJD(plan.price, lang)}</b>{plan.example && <sup title={t('Example price', 'سعر تقريبي')}>*</sup>}</p>
       <p className="pl-sub">{plan.unit ? L(plan.unit) : pm ? `${t('≈', '≈')} ${fmtJD(pm.each, lang)} ${t('a month', 'بالشهر')}` : plan.months === 1 ? t('one month', 'لمدة شهر') : ' '}</p>
       {pm && pm.save > 0 ? <p className="pl-save">{t('Save', 'وفّر')} {fmtJD(pm.save, lang)}</p> : plan.note ? <p className="pl-note">{L(plan.note)}</p> : <p className="pl-note">&nbsp;</p>}

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { rs } from '@/lib/responsive';
 import { fmtDate } from '@/lib/fmt-date';
 import { useNow } from './SiteExtras';
 import { ArrowUpRight, Camera, Clock, Mail, MapPin, MessageCircle, Navigation, Phone, Send } from 'lucide-react';
@@ -31,7 +32,7 @@ export default function ContactPage() {
         <div className="fp-map">
           {map
             ? <iframe title={t('Map of Hydrogen Plus Fitness', 'خريطة هايدروجين بلس')} src={contact.mapEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
-            : <button onClick={() => setMap(true)} className="fp-map-load"><img src="/images/display/exterior-entrance.webp" alt="" /><span><MapPin size={20} />{t('Show the map', 'اعرض الخريطة')}<small>{t('Loads Google Maps', 'يتم تحميل خرائط Google')}</small></span></button>}
+            : <button onClick={() => setMap(true)} className="fp-map-load"><img src="/images/display/exterior-entrance.webp" {...rs("/images/display/exterior-entrance.webp", '(max-width: 820px) 100vw, 50vw')} alt="" /><span><MapPin size={20} />{t('Show the map', 'اعرض الخريطة')}<small>{t('Loads Google Maps', 'يتم تحميل خرائط Google')}</small></span></button>}
         </div>
       </section>
 

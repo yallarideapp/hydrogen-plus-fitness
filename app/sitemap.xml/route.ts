@@ -1,12 +1,14 @@
 import { LAST_UPDATED } from "@/lib/legal";
+import { SITE_URL } from "@/lib/site-url";
 
-const origin = "https://hydrogen-plus-fitness.abdullahqudah19.chatgpt.site";
+const origin = SITE_URL;
+const slash = (p: string) => (p.endsWith("/") ? p : p + "/"); // same form as the pages' canonical addresses
 
 export function GET() {
   const entries = ["/", "/services", ...["gym","ladies","group-classes","pilates","martial-arts","pool-spa","swimming-academy","kids","personal-training","hydro-rest","lounge","events"].map((s) => `/services/${s}`), "/prices", "/offers", "/classes", "/club", "/memberships", "/coaches", "/calculators", "/contact", "/careers", "/support", "/join", "/community", "/privacy", "/terms", "/ar/privacy", "/ar/terms"].map((path) => {
     const kind = path.endsWith("privacy") ? "privacy" : path.endsWith("terms") ? "terms" : null;
-    const alternate = kind ? `<xhtml:link rel="alternate" hreflang="en" href="${origin}/${kind}"/><xhtml:link rel="alternate" hreflang="ar" href="${origin}/ar/${kind}"/>` : "";
-    return `<url><loc>${origin}${path}</loc><lastmod>${LAST_UPDATED}</lastmod>${alternate}</url>`;
+    const alternate = kind ? `<xhtml:link rel="alternate" hreflang="en" href="${origin}/${kind}/"/><xhtml:link rel="alternate" hreflang="ar" href="${origin}/ar/${kind}/"/>` : "";
+    return `<url><loc>${origin}${slash(path)}</loc><lastmod>${LAST_UPDATED}</lastmod>${alternate}</url>`;
   }).join("");
   return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${entries}</urlset>`, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
 }

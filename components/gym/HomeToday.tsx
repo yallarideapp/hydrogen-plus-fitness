@@ -1,6 +1,7 @@
 'use client';
 // Home page: "Today at the club" (open now, nutritionist, today's classes) and "Find us".
 import { useMemo, useState } from 'react';
+import { rs } from '@/lib/responsive';
 import { ArrowUpRight, CalendarDays, Clock3, MapPin, MessageCircle, Navigation, Phone, Salad } from 'lucide-react';
 import { useGymLanguage } from './SiteShell';
 import { useNow } from './SiteExtras';
@@ -107,7 +108,7 @@ export function HomeFindUs() {
       <div className="hx-findus-map">
         {map
           ? <iframe title={t('Map of Hydrogen Plus Fitness', 'خريطة هايدروجين بلس')} src={contact.mapEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
-          : <button type="button" onClick={() => setMap(true)}><img src="/images/display/exterior-entrance.webp" alt="" loading="lazy" /><span><MapPin size={20} />{t('Show the map', 'اعرض الخريطة')}</span></button>}
+          : <button type="button" onClick={() => setMap(true)}><img src="/images/display/exterior-entrance.webp" {...rs("/images/display/exterior-entrance.webp", '(max-width: 820px) 100vw, 40vw')} alt="" loading="lazy" /><span><MapPin size={20} />{t('Show the map', 'اعرض الخريطة')}</span></button>}
       </div>
     </section>
   );
