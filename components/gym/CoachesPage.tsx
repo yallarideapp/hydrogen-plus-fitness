@@ -15,12 +15,12 @@ const team: Coach[] = [
     const extra: Record<string, [string, string][]> = { MARWA: [['Aqua aerobics', 'أكوا إيروبيك'], ['Pilates', 'بيلاتس']], ABEER: [['Belly dance (outdoor)', 'رقص شرقي (خارجي)']], SVITLANA: [['Yoga (outdoor)', 'يوغا (خارجي)']], FARAH: [['Zumba (outdoor)', 'زومبا (خارجي)']] };
     return { key, en: key.charAt(0) + key.slice(1).toLowerCase(), ar, roleEn: 'Group classes · women’s timetable', roleAr: 'الحصص الجماعية · جدول السيدات', tags: extra[key] ?? [], source: ig('DfZrJukouow') };
   }),
-  { key: 'YAZID', en: 'Captain Yazid Abu Laila', ar: 'الكابتن يزيد أبو ليلى', roleEn: 'Joined the coaching team in December 2025', roleAr: 'انضم إلى فريق التدريب في كانون الأول ٢٠٢٥', tags: [], source: ig('DS7NMeoCI0n') },
-  { key: 'MAHMOUD', en: 'Captain Mahmoud Al-Kawamleh', ar: 'الكابتن محمود الكواملة', roleEn: 'Joined the coaching team in December 2025', roleAr: 'انضم إلى فريق التدريب في كانون الأول ٢٠٢٥', tags: [], source: ig('DS7NMeoCI0n') },
+  { key: 'YAZID', en: 'Captain Yazid Abu Laila', ar: 'الكابتن يزيد أبو ليلى', roleEn: 'Joined the coaching team in December 2025', roleAr: 'انضم إلى فريق التدريب في ديسمبر 2025', tags: [], source: ig('DS7NMeoCI0n') },
+  { key: 'MAHMOUD', en: 'Captain Mahmoud Al-Kawamleh', ar: 'الكابتن محمود الكواملة', roleEn: 'Joined the coaching team in December 2025', roleAr: 'انضم إلى فريق التدريب في ديسمبر 2025', tags: [], source: ig('DS7NMeoCI0n') },
 ];
 const guests: Coach[] = [
-  { key: 'MOHAMMAD', en: 'Coach Mohammad Al-Talawi', ar: 'الكوتش محمد التلاوي', roleEn: 'Jordanian national boxing team — led a kids’ boxing day (Sep 2026)', roleAr: 'لاعب المنتخب الوطني للملاكمة — قاد يوم بوكسينج للأطفال (أيلول ٢٠٢٦)', tags: [['Boxing', 'بوكسينج']], source: ig('Ddt1NIhsgq4'), guest: true },
-  { key: 'SANAD', en: 'Coach Sanad Al-Talawi', ar: 'الكوتش سند التلاوي', roleEn: 'Took part in the kids’ boxing day (Sep 2026)', roleAr: 'شارك في يوم البوكسينج للأطفال (أيلول ٢٠٢٦)', tags: [['Boxing', 'بوكسينج']], source: ig('Ddt1NIhsgq4'), guest: true },
+  { key: 'MOHAMMAD', en: 'Coach Mohammad Al-Talawi', ar: 'الكوتش محمد التلاوي', roleEn: 'Jordanian national boxing team — led a kids’ boxing day (Sep 2026)', roleAr: 'لاعب المنتخب الوطني للملاكمة — قاد يوم بوكسينج للأطفال (سبتمبر 2026)', tags: [['Boxing', 'بوكسينج']], source: ig('Ddt1NIhsgq4'), guest: true },
+  { key: 'SANAD', en: 'Coach Sanad Al-Talawi', ar: 'الكوتش سند التلاوي', roleEn: 'Took part in the kids’ boxing day (Sep 2026)', roleAr: 'شارك في يوم البوكسينج للأطفال (سبتمبر 2026)', tags: [['Boxing', 'بوكسينج']], source: ig('Ddt1NIhsgq4'), guest: true },
 ];
 
 export default function CoachesPage() {

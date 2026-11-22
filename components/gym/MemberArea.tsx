@@ -44,7 +44,7 @@ export function ammanToday() {
   const get = (type: string) => parts.find((p) => p.type === type)?.value;
   return `${get("year")}-${get("month")}-${get("day")}`;
 }
-export const locale = (lang: Lang) => (lang === "ar" ? "ar-JO-u-nu-arab" : "en-GB");
+export const locale = (lang: Lang) => (lang === "ar" ? "ar-u-nu-latn" : "en-GB");
 const utc = (date: string) => new Date(`${date}T12:00:00Z`);
 export const fmtNum = (n: number, lang: Lang, digits = 0) => n.toLocaleString(locale(lang), { maximumFractionDigits: digits });
 export const fmtDate = (date: string, lang: Lang, opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", year: "numeric" }) => {

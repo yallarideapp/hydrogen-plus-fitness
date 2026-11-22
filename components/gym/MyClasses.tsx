@@ -25,7 +25,7 @@ const shift = (date: string, days: number) => { const d = new Date(`${date}T12:0
 export function clock(t24: string, lang: Lang) {
   const [h, m] = t24.split(':').map(Number);
   const text = `${h % 12 || 12}:${String(m).padStart(2, '0')}`;
-  return lang === 'ar' ? `${text.replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)])} ${h < 12 ? 'ص' : 'م'}` : `${text} ${h < 12 ? 'AM' : 'PM'}`;
+  return lang === 'ar' ? `${text} ${h < 12 ? 'ص' : 'م'}` : `${text} ${h < 12 ? 'AM' : 'PM'}`;
 }
 
 const copy = {

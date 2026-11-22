@@ -26,12 +26,12 @@ const ACTS: [Act, string, string, string, string, typeof Dumbbell][] = [
 const CAT_OF: Record<Exclude<Act, 'gym'>, string> = { classes: 'group-classes', boxing: 'boxing', pilates: 'pilates', swimming: 'swimming', coach: 'personal-training', nutrition: 'meal-plans' };
 const LENGTHS: [number, string, string, string, string][] = [
   [1, '1 month', 'شهر واحد', 'Try it first', 'للتجربة أولاً'],
-  [3, '3 months', '٣ أشهر', 'Best balance of price and commitment', 'أفضل توازن بين السعر والالتزام'],
-  [6, '6 months', '٦ أشهر', 'Save more', 'توفير أكبر'],
-  [12, '12 months', '١٢ شهراً', 'Lowest price per month', 'أقل سعر شهرياً'],
+  [3, '3 months', '3 أشهر', 'Best balance of price and commitment', 'أفضل توازن بين السعر والالتزام'],
+  [6, '6 months', '6 أشهر', 'Save more', 'توفير أكبر'],
+  [12, '12 months', '12 شهراً', 'Lowest price per month', 'أقل سعر شهرياً'],
 ];
 
-const fmt = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${Math.round(n).toLocaleString('ar-JO')} د.أ` : `${Math.round(n).toLocaleString('en-US')} JD`);
+const fmt = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${Math.round(n).toLocaleString('ar-u-nu-latn')} د.أ` : `${Math.round(n).toLocaleString('en-US')} JD`);
 // Best plan in a category for the chosen length: same months if there is one, else the closest shorter, else the first.
 function pickPlan(cat: PlanCategory, months: number): Plan {
   const monthly = cat.plans.filter((p) => p.months && !p.unit);
@@ -92,7 +92,7 @@ export default function MembershipAdvisor() {
         </div>
         <div className="hp3-advisor-panel">
           {step === 0 && <>
-            <span className="hp3-kicker">{t('01 · YOUR CLUB', '٠١ · القسم')}</span>
+            <span className="hp3-kicker">{t('01 · YOUR CLUB', '01 · القسم')}</span>
             <h3>{t('Which side of the club?', 'أي قسم يناسبك؟')}</h3>
             <div className="hp3-goal-grid">
               {([['men', 'Men’s gym', 'جيم الرجال', 'Gym, boxing and personal training', 'الجيم والملاكمة والتدريب الشخصي'], ['women', 'Ladies’ club', 'نادي السيدات', 'Separate gym, classes and Pilates with women coaches', 'جيم مستقل وحصص وبيلاتس مع مدرّبات']] as const).map(([v, en, ar, den, dar]) => (
@@ -104,7 +104,7 @@ export default function MembershipAdvisor() {
           </>}
 
           {step === 1 && <>
-            <span className="hp3-kicker">{t('02 · WHAT YOU WANT', '٠٢ · ما تريده')}</span>
+            <span className="hp3-kicker">{t('02 · WHAT YOU WANT', '02 · ما تريده')}</span>
             <h3>{t('What would you like to do?', 'ماذا تريد أن تمارس؟')}</h3>
             <p className="hp3-muted">{t('Pick one or more.', 'اختر واحداً أو أكثر.')}</p>
             <div className="hp3-goal-grid fd-acts">
@@ -117,7 +117,7 @@ export default function MembershipAdvisor() {
           </>}
 
           {step === 2 && <>
-            <span className="hp3-kicker">{t('03 · HOW LONG', '٠٣ · المدة')}</span>
+            <span className="hp3-kicker">{t('03 · HOW LONG', '03 · المدة')}</span>
             <h3>{t('How long do you want to sign up for?', 'ما المدة التي تريد الاشتراك بها؟')}</h3>
             <div className="fd-lengths">
               {LENGTHS.map(([m, en, ar, den, dar]) => (
@@ -129,7 +129,7 @@ export default function MembershipAdvisor() {
           </>}
 
           {step === 3 && main && <>
-            <span className="hp3-kicker">{t('04 · OUR SUGGESTION', '٠٤ · اقتراحنا لك')}</span>
+            <span className="hp3-kicker">{t('04 · OUR SUGGESTION', '04 · اقتراحنا لك')}</span>
             <h3>{t('This plan fits you best:', 'هذا الاشتراك هو الأنسب لك:')}</h3>
             <article className="fd-main">
               <div className="fd-main-top">

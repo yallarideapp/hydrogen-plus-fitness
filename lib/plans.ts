@@ -28,8 +28,8 @@ const month = (n: number): Bi => [n === 1 ? '1 month' : `${n} months`, n === 1 ?
 
 export const planCategories: PlanCategory[] = [
   {
-    id: 'gym-men', for: 'men', name: ['Men’s gym', 'جيم الرجال'], audience: ['Men · 16 years and over', 'للرجال · ١٦ سنة فما فوق'], service: 'gym',
-    includes: [['Full gym floor, 6 AM to midnight', 'كامل صالة الجيم من ٦ صباحاً حتى منتصف الليل'], ['Cardio, free weights and machines', 'كارديو وأوزان حرة وأجهزة'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Free first assessment with a coach', 'تقييم أول مجاني مع مدرب']],
+    id: 'gym-men', for: 'men', name: ['Men’s gym', 'جيم الرجال'], audience: ['Men · 16 years and over', 'للرجال · 16 سنة فما فوق'], service: 'gym',
+    includes: [['Full gym floor, 6 AM to midnight', 'كامل صالة الجيم من 6 صباحاً حتى منتصف الليل'], ['Cardio, free weights and machines', 'كارديو وأوزان حرة وأجهزة'], ['Lockers and changing rooms', 'خزائن وغرف تبديل'], ['Free first assessment with a coach', 'تقييم أول مجاني مع مدرب']],
     plans: [
       { id: 'gym-men-1', label: month(1), price: 50, months: 1 },
       { id: 'gym-men-2', label: month(2), price: 90, months: 2 },
@@ -40,7 +40,7 @@ export const planCategories: PlanCategory[] = [
   },
   {
     id: 'gym-ladies', for: 'women', name: ['Ladies’ club', 'نادي السيدات'], audience: ['Women only · separate floor', 'للسيدات فقط · طابق مستقل'], service: 'ladies',
-    includes: [['Private ladies’ gym, 8 AM to 11 PM', 'جيم خاص بالسيدات من ٨ صباحاً حتى ١١ ليلاً'], ['Women’s group classes timetable', 'جدول الحصص الجماعية للسيدات'], ['Female coaches', 'مدربات'], ['Lockers and changing rooms', 'خزائن وغرف تبديل']],
+    includes: [['Private ladies’ gym, 8 AM to 11 PM', 'جيم خاص بالسيدات من 8 صباحاً حتى 11 ليلاً'], ['Women’s group classes timetable', 'جدول الحصص الجماعية للسيدات'], ['Female coaches', 'مدربات'], ['Lockers and changing rooms', 'خزائن وغرف تبديل']],
     plans: [
       { id: 'ladies-1', label: month(1), price: 45, months: 1, example: true },
       { id: 'ladies-2', label: month(2), price: 80, months: 2, example: true },
@@ -58,7 +58,7 @@ export const planCategories: PlanCategory[] = [
   },
   {
     id: 'boxing', name: ['Boxing & martial arts', 'الملاكمة والفنون القتالية'], audience: ['Young men and men · groups for young girls', 'للشباب والرجال · ومجموعات للبنات الصغيرات'], service: 'martial-arts',
-    includes: [['3 sessions a week with a coach', '٣ حصص أسبوعياً مع مدرب'], ['Boxing, kickboxing and self-defence', 'ملاكمة وكيك بوكسينغ ودفاع عن النفس'], ['Gloves available at the club', 'القفازات متوفرة في النادي']],
+    includes: [['3 sessions a week with a coach', '3 حصص أسبوعياً مع مدرب'], ['Boxing, kickboxing and self-defence', 'ملاكمة وكيك بوكسينغ ودفاع عن النفس'], ['Gloves available at the club', 'القفازات متوفرة في النادي']],
     plans: [
       { id: 'boxing-1', label: month(1), price: 50, months: 1 },
       { id: 'boxing-3', label: month(3), price: 135, months: 3, popular: true, example: true },
@@ -78,9 +78,9 @@ export const planCategories: PlanCategory[] = [
     id: 'pilates', for: 'women', name: ['Reformer Pilates', 'بيلاتس ريفورمر'], audience: ['Ladies only · private and small-group sessions', 'للسيدات فقط · حصص خاصة ومجموعات صغيرة'], service: 'pilates',
     includes: [['Reformer machines with a certified coach', 'أجهزة ريفورمر مع مدربة معتمدة'], ['Book times that suit you', 'احجزي الأوقات المناسبة لك']],
     plans: [
-      { id: 'pilates-trial', label: ['Trial session', 'حصة تجريبية'], price: 15, note: ['20 JD for non-members', '٢٠ ديناراً لغير الأعضاء'] },
-      { id: 'pilates-12', label: ['12 private sessions', '١٢ حصة خاصة'], price: 160, unit: ['per month', 'شهرياً'], months: 1, popular: true },
-      { id: 'pilates-8', label: ['8 group sessions', '٨ حصص جماعية'], price: 80, unit: ['per month', 'شهرياً'], months: 1, example: true },
+      { id: 'pilates-trial', label: ['Trial session', 'حصة تجريبية'], price: 15, note: ['20 JD for non-members', '20 ديناراً لغير الأعضاء'] },
+      { id: 'pilates-12', label: ['12 private sessions', '12 حصة خاصة'], price: 160, unit: ['per month', 'شهرياً'], months: 1, popular: true },
+      { id: 'pilates-8', label: ['8 group sessions', '8 حصص جماعية'], price: 80, unit: ['per month', 'شهرياً'], months: 1, example: true },
     ],
   },
   {
@@ -97,13 +97,13 @@ export const planCategories: PlanCategory[] = [
     id: 'swimming', name: ['Swimming lessons', 'دورات السباحة'], audience: ['Kids and adults · all levels', 'أطفال وكبار · لكل المستويات'], service: 'pool-spa',
     includes: [['Certified swimming coaches', 'مدربو سباحة معتمدون'], ['Small groups by level', 'مجموعات صغيرة حسب المستوى']],
     plans: [
-      { id: 'swim-group', label: ['Group course · 10 sessions', 'دورة جماعية · ١٠ حصص'], price: 70, note: ['6–8 swimmers per group', '٦–٨ سبّاحين في المجموعة'], popular: true },
-      { id: 'swim-private', label: ['Private · 10 sessions', 'خاص · ١٠ حصص'], price: 180 },
-      { id: 'swim-therapy', label: ['Therapy swimming · 12 sessions', 'سباحة علاجية · ١٢ حصة'], price: 200 },
+      { id: 'swim-group', label: ['Group course · 10 sessions', 'دورة جماعية · 10 حصص'], price: 70, note: ['6–8 swimmers per group', '6–8 سبّاحين في المجموعة'], popular: true },
+      { id: 'swim-private', label: ['Private · 10 sessions', 'خاص · 10 حصص'], price: 180 },
+      { id: 'swim-therapy', label: ['Therapy swimming · 12 sessions', 'سباحة علاجية · 12 حصة'], price: 200 },
     ],
   },
   {
-    id: 'kids', name: ['Kids', 'الأطفال'], audience: ['Ages 5 to 14', 'من ٥ إلى ١٤ سنة'], service: 'kids',
+    id: 'kids', name: ['Kids', 'الأطفال'], audience: ['Ages 5 to 14', 'من 5 إلى 14 سنة'], service: 'kids',
     includes: [['Kids’ swimming, martial arts and fitness', 'سباحة وفنون قتالية ولياقة للأطفال'], ['Coaches experienced with children', 'مدربون أصحاب خبرة مع الأطفال']],
     plans: [
       { id: 'kids-1', label: month(1), price: 35, months: 1, example: true },
@@ -115,8 +115,8 @@ export const planCategories: PlanCategory[] = [
     includes: [['Programme built around your goal', 'برنامج مبني على هدفك'], ['Progress check every month', 'متابعة التقدم كل شهر']],
     plans: [
       { id: 'pt-1', label: ['Single session', 'حصة واحدة'], price: 20, example: true },
-      { id: 'pt-12', label: ['12 sessions', '١٢ حصة'], price: 180, popular: true, example: true },
-      { id: 'pt-24', label: ['24 sessions', '٢٤ حصة'], price: 320, example: true },
+      { id: 'pt-12', label: ['12 sessions', '12 حصة'], price: 180, popular: true, example: true },
+      { id: 'pt-24', label: ['24 sessions', '24 حصة'], price: 320, example: true },
     ],
   },
   {

@@ -54,7 +54,7 @@ export default function StaffArea() {
  }, [data, query, kind, status]);
  const dateLabel = (date: string, includeTime = false) => {
   const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(date) ? `${date}T12:00:00+03:00` : date);
-  return Number.isNaN(parsed.getTime()) ? date : new Intl.DateTimeFormat(lang === "ar" ? "ar-JO" : "en-GB", { timeZone: "Asia/Amman", day: "numeric", month: "short", year: "numeric", ...(includeTime ? { hour: "2-digit", minute: "2-digit" } as const : {}) }).format(parsed);
+  return Number.isNaN(parsed.getTime()) ? date : new Intl.DateTimeFormat(lang === "ar" ? "ar-u-nu-latn" : "en-GB", { timeZone: "Asia/Amman", day: "numeric", month: "short", year: "numeric", ...(includeTime ? { hour: "2-digit", minute: "2-digit" } as const : {}) }).format(parsed);
  };
  function clearFilters() { setQuery(""); setKind("all"); setStatus("all"); }
  async function updateStatus(request: Enquiry) {

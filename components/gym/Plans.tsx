@@ -11,7 +11,7 @@ import type { Bi } from '@/lib/services';
 import './plans.css';
 
 const noSub = () => () => {};
-const fmtJD = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${n.toLocaleString('ar-JO')} د.أ` : `${n.toLocaleString('en-US')} JD`);
+const fmtJD = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${n.toLocaleString('ar-u-nu-latn')} د.أ` : `${n.toLocaleString('en-US')} JD`);
 export const todayAmman = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Amman' }).format(new Date());
 
 function perMonth(cat: PlanCategory, p: Plan) {
@@ -266,7 +266,7 @@ export function MyMembership() {
   const load = async () => apply(await fetchSubscription());
   // Also reloads when something else in My training changes (a deleted account record, a request sent elsewhere).
   useEffect(() => { let alive = true; const go = () => { fetchSubscription().then((res) => { if (alive) apply(res); }); }; go(); window.addEventListener(MEMBER_EVENT, go); return () => { alive = false; window.removeEventListener(MEMBER_EVENT, go); }; }, []);
-  const fmtDate = (d: string) => new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`));
+  const fmtDate = (d: string) => new Intl.DateTimeFormat(lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`));
   const planLabel = (s: Sub) => { for (const c of cats) for (const p of c.plans) if (`${c.name[0]} · ${p.label[0]}` === s.planName) return `${t(c.name[0], c.name[1])} · ${t(p.label[0], p.label[1])}`; return s.planName; };
   async function act(kind: 'cancel' | 'activate') {
     if (!data?.subscription) return; setBusy(true);
@@ -316,7 +316,7 @@ export function MyMembership() {
             <h3>{planLabel(s)}</h3>
             {s.endDate ? (
               <>
-                <div className="pl-days"><b>{left.toLocaleString(lang === 'ar' ? 'ar-JO' : 'en-US')}</b><span>{t(left === 1 ? 'day left' : 'days left', 'يوم متبقي')}</span></div>
+                <div className="pl-days"><b>{left.toLocaleString(lang === 'ar' ? 'ar-u-nu-latn' : 'en-US')}</b><span>{t(left === 1 ? 'day left' : 'days left', 'يوم متبقي')}</span></div>
                 <div className="pl-bar" role="progressbar" aria-valuenow={used} aria-valuemin={0} aria-valuemax={100} aria-label={t('Plan used', 'المستخدم من الاشتراك')}><span style={{ width: `${used}%` }} /></div>
                 <dl><div><dt>{t('Started', 'بدأ')}</dt><dd>{fmtDate(s.startDate)}</dd></div><div><dt>{t('Ends', 'ينتهي')}</dt><dd>{fmtDate(s.endDate)}</dd></div><div><dt>{t('Paid', 'المدفوع')}</dt><dd>{fmtJD(s.price, lang)}</dd></div></dl>
                 {soon && <p className="pl-me-hint is-warn"><CalendarDays size={16} />{t('Your plan ends soon — renew to keep training without a break.', 'اشتراكك على وشك الانتهاء — جدّده لتواصل تمرينك دون انقطاع.')}</p>}

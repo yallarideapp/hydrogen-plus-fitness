@@ -34,7 +34,7 @@ export function useDate() {
 const hasArabic = (s: string) => /[\u0600-\u06FF]/.test(s);
 
 const noSub = () => () => {};
-const num = (n: number, lang: string) => lang === 'ar' ? String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]) : String(n);
+const num = (n: number, _lang: string) => String(n); // Latin digits in both languages
 const daysSince = (iso: string, today: string) => (Date.parse(today) - Date.parse(iso.slice(0, 10))) / 86400000;
 /** An offer counts as current for this many days after the club posts it. */
 const OFFER_DAYS = 30;

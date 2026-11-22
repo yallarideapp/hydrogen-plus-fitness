@@ -69,7 +69,7 @@ function beep() {
 export default function WorkoutStudio(_props: { embedded?: boolean } = {}) {
   const { lang, t } = useGymLanguage();
   const ar = lang === "ar";
-  const n = (v: number) => (ar ? v.toLocaleString("ar-JO-u-nu-arab") : String(v));
+  const n = (v: number) => (ar ? v.toLocaleString("ar-u-nu-latn") : String(v));
   const nameOf = (i: Item) => { const l = i.id && LIBRARY.find((x) => x.id === i.id); return l ? (ar ? l.ar : l.en) : i.name; };
   const unitShort = (u?: Unit) => (u === "seconds" ? t("s", "ث") : u === "minutes" ? t("min", "د") : "");
 
@@ -214,7 +214,7 @@ export default function WorkoutStudio(_props: { embedded?: boolean } = {}) {
         {resting ? <div className="wb-rest is-on" aria-live="polite">
           <i style={{ transform: `scaleX(${restTotal ? left / restTotal : 0})` }} aria-hidden="true" />
           <span className="wb-rest-label">{t("Rest", "راحة")}</span><b dir="ltr">{clock(left)}</b>
-          <button type="button" onClick={() => setRestEnds((e) => (e ? e + 15000 : e))}>{ar ? "+١٥ث" : "+15s"}</button>
+          <button type="button" onClick={() => setRestEnds((e) => (e ? e + 15000 : e))}>{ar ? "+15ث" : "+15s"}</button>
           <button type="button" onClick={() => setRestEnds(null)} aria-label={t("Skip the rest", "تخطَّ الراحة")}><X size={16} /></button>
         </div> : <div className="wb-rest">
           {restOver ? <span className="wb-rest-over" role="status"><Check size={15} />{t("Rest over. Next set!", "انتهت الراحة. المجموعة التالية!")}</span>

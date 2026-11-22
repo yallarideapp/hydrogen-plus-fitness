@@ -70,5 +70,5 @@ export function formatClock(hhmm: string, lang: 'en' | 'ar') {
   const pm = h >= 12; const h12 = h % 12 || 12;
   const mm = m ? `:${String(m).padStart(2, '0')}` : '';
   // Arabic uses Arabic-Indic digits, matching the dates, so the text reads in one direction.
-  return lang === 'ar' ? `${h12}${mm} ${pm ? 'م' : 'ص'}`.replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]) : `${h12}${mm} ${pm ? 'PM' : 'AM'}`;
+  return lang === 'ar' ? `${h12}${mm} ${pm ? 'م' : 'ص'}` : `${h12}${mm} ${pm ? 'PM' : 'AM'}`;
 }

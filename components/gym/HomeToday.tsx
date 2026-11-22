@@ -49,7 +49,7 @@ export function HomeToday() {
         if (first) { nx = { day, c: first }; break; }
       }
     }
-    const label = new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Amman' }).format(now);
+    const label = new Intl.DateTimeFormat(lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Amman' }).format(now);
     return { today: list, upcoming: up, next: nx, dateLabel: label };
   }, [now, days, classes, lang]);
 

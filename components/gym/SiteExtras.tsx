@@ -69,7 +69,7 @@ export function useNow(): Date | null {
 export function OpenStatus({ t, lang, compact = false }: { t: T; lang: Lang; compact?: boolean }) {
   const now = useNow();
   const { hours } = useSiteInfo();
-  if (!now) return <span className="hx-open">{t('MEN 6 AM–MIDNIGHT  /  LADIES 8 AM–11 PM', 'الرجال ٦ ص–منتصف الليل / السيدات ٨ ص–١١ م')}</span>;
+  if (!now) return <span className="hx-open">{t('MEN 6 AM–MIDNIGHT  /  LADIES 8 AM–11 PM', 'الرجال 6 ص–منتصف الليل / السيدات 8 ص–11 م')}</span>;
   const men = hours[0], women = hours[1];
   const m = sessionState(men, now), w = sessionState(women, now);
   const any = m.isOpen || w.isOpen;

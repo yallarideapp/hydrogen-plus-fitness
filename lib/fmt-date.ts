@@ -2,8 +2,8 @@
 // which breaks hydration of server-rendered pages on iPhone, so dates shown at first paint use fixed names.
 const EN_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const EN_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const AR = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
-const arDigits = (s: string) => s.replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
+// Arabic: international month names and Latin digits (the owner's choice), e.g. 22 نوفمبر 2026.
+const AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
 /** Parts of a date in Amman (UTC+3 all year). Accepts YYYY-MM-DD or any Date-parsable string. */
 function parts(input: string): [number, number, number] | null {
@@ -21,6 +21,6 @@ export function fmtDate(input: string | null | undefined, lang: 'en' | 'ar', opt
   if (!p) return null;
   const [y, mo, d] = p;
   const { day = true, long = false } = opts;
-  if (lang === 'ar') return arDigits(`${day ? d + ' ' : ''}${AR[mo]} ${y}`);
+  if (lang === 'ar') return `${day ? d + ' ' : ''}${AR[mo]} ${y}`;
   return `${day ? d + ' ' : ''}${(long ? EN_LONG : EN_SHORT)[mo]} ${y}`;
 }

@@ -234,10 +234,10 @@ function Overview({ d, go, counts }: { d: Overrides; go: (t: TabId) => void; cou
   const classes = (d.schedule?.classes ?? baseClasses).length;
   const checks: [boolean, string, string, TabId][] = [
     [!!(d.contact?.cliq && !d.contact.cliq.example), 'Enter the club’s real CliQ alias for paying plans (an example is shown now).', 'اكتب اسم CliQ الحقيقي للنادي لدفع الاشتراكات (الموجود حالياً تجريبي).', 'contact'],
-    [!!d.contact, 'Confirm the phone numbers and WhatsApp (WhatsApp on 079 215 1000 was never confirmed).', 'تأكد من أرقام الهاتف والواتساب (رقم الواتساب ٠٧٩ ٢١٥ ١٠٠٠ غير مؤكد).', 'contact'],
-    [!!(d.services?.offers || d.services?.gym), 'Update the current membership offer (the latest published one is from December 2025).', 'حدّث عرض الاشتراك الحالي (آخر عرض منشور من ديسمبر ٢٠٢٥).', 'prices'],
+    [!!d.contact, 'Confirm the phone numbers and WhatsApp (WhatsApp on 079 215 1000 was never confirmed).', 'تأكد من أرقام الهاتف والواتساب (رقم الواتساب 079 215 1000 غير مؤكد).', 'contact'],
+    [!!(d.services?.offers || d.services?.gym), 'Update the current membership offer (the latest published one is from December 2025).', 'حدّث عرض الاشتراك الحالي (آخر عرض منشور من ديسمبر 2025).', 'prices'],
     [!!d.schedule, 'Check the class timetable (the published week repeats every week until you change it).', 'راجع جدول الحصص (الأسبوع المنشور يتكرر كل أسبوع حتى تغيّره).', 'schedule'],
-    [!!d.services?.['hydro-rest']?.menu, 'Check the Hydro Rest menu prices (menu from August 2025).', 'راجع أسعار منيو هايدرو ريست (منيو أغسطس ٢٠٢٥).', 'prices'],
+    [!!d.services?.['hydro-rest']?.menu, 'Check the Hydro Rest menu prices (menu from August 2025).', 'راجع أسعار منيو هايدرو ريست (منيو أغسطس 2025).', 'prices'],
     [!!d.hours, 'Check the opening hours.', 'راجع أوقات الدوام.', 'contact'],
   ];
   const cards: [number, string, string, TabId][] = [
@@ -388,11 +388,11 @@ function PlansEditor({ plans, setPlans }: { plans: PlanCategory[]; setPlans: (v:
         <Rows items={cat.plans} onChange={(v) => setCat({ ...cat, plans: v })} make={(): Plan => ({ id: `${cat.id}-${Date.now().toString(36)}`, label: ['', ''], price: 0 })} addLabel={A('Add plan', 'إضافة اشتراك')}
           title={(p) => `${A(p.label[0] || 'New plan', p.label[1] || 'اشتراك جديد')} · ${p.price} JD${p.example ? ' *' : ''}`}
           render={(p, put) => <>
-            <BiInput label={A('Name', 'الاسم')} value={p.label} placeholder={['3 months', '٣ أشهر']} onChange={(v) => put({ ...p, label: v })} />
+            <BiInput label={A('Name', 'الاسم')} value={p.label} placeholder={['3 months', '3 أشهر']} onChange={(v) => put({ ...p, label: v })} />
             <div className="adm-grid3">
               <Field type="number" label={A('Price (JD)', 'السعر (دينار)')} value={String(p.price)} onChange={(v) => put({ ...p, price: Math.max(0, Number(v) || 0) })} />
               <Field type="number" label={A('Length in months (optional)', 'المدة بالأشهر (اختياري)')} value={p.months ? String(p.months) : ''} hint={A('Used for the end date and “per month”', 'لحساب تاريخ الانتهاء و«بالشهر»')} onChange={(v) => { const n = parseInt(v, 10); put({ ...p, months: n >= 1 && n <= 24 ? n : undefined }); }} />
-              <Field type="number" label={A('Or length in days (optional)', 'أو المدة بالأيام (اختياري)')} value={p.days ? String(p.days) : ''} hint={A('For short passes, e.g. 1 for a day pass', 'للدخول القصير، مثلاً ١ للدخول اليومي')} onChange={(v) => { const n = parseInt(v, 10); put({ ...p, days: n >= 1 && n <= 60 ? n : undefined }); }} />
+              <Field type="number" label={A('Or length in days (optional)', 'أو المدة بالأيام (اختياري)')} value={p.days ? String(p.days) : ''} hint={A('For short passes, e.g. 1 for a day pass', 'للدخول القصير، مثلاً 1 للدخول اليومي')} onChange={(v) => { const n = parseInt(v, 10); put({ ...p, days: n >= 1 && n <= 60 ? n : undefined }); }} />
               <div className="adm-checks-col"><label className="adm-check"><input type="checkbox" checked={!!p.example} onChange={(e) => put({ ...p, example: e.target.checked || undefined })} />{A('Example price (not confirmed)', 'سعر تقريبي (غير مؤكد)')}</label><label className="adm-check"><input type="checkbox" checked={!!p.popular} onChange={(e) => put({ ...p, popular: e.target.checked || undefined })} />{A('Most popular', 'الأكثر طلباً')}</label></div>
             </div>
             <BiInput label={A('Unit (optional)', 'الوحدة (اختياري)')} value={p.unit ?? ['', '']} placeholder={['per session', 'للحصة']} onChange={(v) => put({ ...p, unit: v[0] || v[1] ? v : undefined })} />
@@ -529,7 +529,7 @@ function PhotoCard({ entry, src, replaced, setPhoto, flash }: { entry: PhotoEntr
   const input = useRef<HTMLInputElement>(null);
   const pick = async (f?: File) => {
     if (!f) return;
-    if (!f.type.startsWith('image/') || f.size > 25e6) { flash?.('warn', A('Choose a JPG, PNG or WebP photo under 25 MB.', 'اختر صورة JPG أو PNG أو WebP أقل من ٢٥ ميغابايت.')); return; }
+    if (!f.type.startsWith('image/') || f.size > 25e6) { flash?.('warn', A('Choose a JPG, PNG or WebP photo under 25 MB.', 'اختر صورة JPG أو PNG أو WebP أقل من 25 ميغابايت.')); return; }
     setBusy(true);
     try { const blob = await toWebp(f, entry.path.includes('logo') ? 512 : 1920); const id = newPhotoId(); await putPhoto(id, blob); setPhoto(entry.path, id); }
     catch { flash?.('warn', A('This photo could not be read. Try another file.', 'تعذّرت قراءة الصورة. جرّب ملفاً آخر.')); }
@@ -585,7 +585,7 @@ function AppearanceTab({ d, update }: { d: Overrides; update: (fn: (o: Overrides
       </Section>
       <Section title={A('Announcement bar', 'شريط الإعلان')} icon={<Megaphone size={18} />} intro={A('A coloured bar at the very top of every page, for an offer, holiday hours or an event.', 'شريط ملوّن أعلى كل صفحة، لعرض أو دوام عطلة أو فعالية.')}>
         <label className="adm-check adm-switch"><input type="checkbox" checked={an.on} onChange={(e) => setAn({ ...an, on: e.target.checked })} />{A('Show the announcement bar', 'إظهار شريط الإعلان')}</label>
-        <BiInput label={A('Message', 'الرسالة')} value={an.text} placeholder={['New Year offer: 3 months for 100 JD', 'عرض السنة الجديدة: ٣ أشهر بـ ١٠٠ دينار']} onChange={(v) => setAn({ ...an, text: v })} />
+        <BiInput label={A('Message', 'الرسالة')} value={an.text} placeholder={['New Year offer: 3 months for 100 JD', 'عرض السنة الجديدة: 3 أشهر بـ 100 دينار']} onChange={(v) => setAn({ ...an, text: v })} />
         <Field label={A('Link when tapped (optional)', 'الرابط عند الضغط (اختياري)')} dir="ltr" value={an.href} hint="/offers · https://wa.me/962…" invalid={!urlOk(an.href)} onChange={(v) => setAn({ ...an, href: v })} />
         {an.on && (an.text[0] || an.text[1]) && <div className="adm-ann-preview" style={{ background: accent }}>{A(an.text[0] || an.text[1], an.text[1] || an.text[0])}</div>}
       </Section>

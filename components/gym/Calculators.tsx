@@ -32,7 +32,7 @@ function Card({ icon, title, intro, children, result, id }: { icon: ReactNode; t
 
 export default function Calculators() {
   const { t, lang } = useGymLanguage();
-  const n0 = (v: number, d = 0) => (Number.isFinite(v) ? v.toLocaleString(lang === 'ar' ? 'ar-JO' : 'en-GB', { maximumFractionDigits: d, minimumFractionDigits: d }) : '—');
+  const n0 = (v: number, d = 0) => (Number.isFinite(v) ? v.toLocaleString(lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB', { maximumFractionDigits: d, minimumFractionDigits: d }) : '—');
   // shared profile
   const [sex, setSex] = useState<Sex>('f');
   const [age, setAge] = useState('28');
@@ -80,7 +80,7 @@ export default function Calculators() {
   const L = num(lift), R = Math.min(num(reps), 12);
   const oneRm = R <= 1 ? L : L * (1 + R / 30);
   const maxHr = 208 - 0.7 * A;
-  const zones: [string, number, number][] = [[t('Zone 1 · easy recovery', 'المنطقة ١ · استشفاء سهل'), .5, .6], [t('Zone 2 · steady endurance', 'المنطقة ٢ · تحمّل ثابت'), .6, .7], [t('Zone 3 · tempo', 'المنطقة ٣ · إيقاع متوسط'), .7, .8], [t('Zone 4 · threshold', 'المنطقة ٤ · العتبة'), .8, .9], [t('Zone 5 · max effort', 'المنطقة ٥ · أقصى جهد'), .9, 1]];
+  const zones: [string, number, number][] = [[t('Zone 1 · easy recovery', 'المنطقة 1 · استشفاء سهل'), .5, .6], [t('Zone 2 · steady endurance', 'المنطقة 2 · تحمّل ثابت'), .6, .7], [t('Zone 3 · tempo', 'المنطقة 3 · إيقاع متوسط'), .7, .8], [t('Zone 4 · threshold', 'المنطقة 4 · العتبة'), .8, .9], [t('Zone 5 · max effort', 'المنطقة 5 · أقصى جهد'), .9, 1]];
   const water = W * 0.033 + (num(mins) / 30) * 0.35;
   const N = num(neck), Wa = num(waist), Hi = num(hip);
   const bf = sex === 'm' ? 495 / (1.0324 - 0.19077 * Math.log10(Wa - N) + 0.15456 * Math.log10(H)) - 450 : 495 / (1.29579 - 0.35004 * Math.log10(Wa + Hi - N) + 0.221 * Math.log10(H)) - 450;
@@ -101,7 +101,7 @@ export default function Calculators() {
         <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('A quick check of your weight for your height. It can’t tell muscle from fat, so a muscular member may show as overweight — the waist check below helps.', 'مقارنة سريعة بين وزنك وطولك. لا يفرّق بين العضل والدهون، لذلك قد يظهر المتدرّب صاحب العضلات الكبيرة بوزن زائد — قياس الخصر بالأسفل يوضّح الصورة.')} result={<>
           <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
           {Number.isFinite(healthyLo) && <span>{t('Healthy weight for your height', 'الوزن الصحي لطولك')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re', 'أنت أعلى بـ')} ${n0(W - healthyHi)} ${t('kg above', 'كغ')}` : W < healthyLo ? ` · ${t('you’re', 'أنت أقل بـ')} ${n0(healthyLo - W)} ${t('kg below', 'كغ')}` : ''}</span>}
-          {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من ٠٫٥)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
+          {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من 0.5)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
           {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
           {compLevel >= 2 && compKind === 'fat' && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
@@ -120,7 +120,7 @@ export default function Calculators() {
         </Card>
         <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('Mifflin–St Jeor estimate of what you burn, with a target for your goal.', 'تقدير معادلة Mifflin–St Jeor لما تحرقه، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
           <label className="fc-field"><span>{t('Activity', 'النشاط')}</span><select value={activity} onChange={(e) => setActivity(e.target.value)}>
-            <option value="1.2">{t('Mostly sitting', 'جلوس معظم الوقت')}</option><option value="1.375">{t('Training 1–3 days a week', 'تمرين ١–٣ أيام أسبوعياً')}</option><option value="1.55">{t('Training 3–5 days a week', 'تمرين ٣–٥ أيام أسبوعياً')}</option><option value="1.725">{t('Training 6–7 days a week', 'تمرين ٦–٧ أيام أسبوعياً')}</option>
+            <option value="1.2">{t('Mostly sitting', 'جلوس معظم الوقت')}</option><option value="1.375">{t('Training 1–3 days a week', 'تمرين 1–3 أيام أسبوعياً')}</option><option value="1.55">{t('Training 3–5 days a week', 'تمرين 3–5 أيام أسبوعياً')}</option><option value="1.725">{t('Training 6–7 days a week', 'تمرين 6–7 أيام أسبوعياً')}</option>
           </select></label>
           <Seg label={t('Goal', 'الهدف')} value={goal} onChange={setGoal} options={[['lose', t('Lose fat', 'خسارة دهون')], ['keep', t('Maintain', 'محافظة')], ['gain', t('Build muscle', 'بناء عضل')]]} />
         </Card>
@@ -131,10 +131,10 @@ export default function Calculators() {
           <Field label={t('Weight lifted', 'الوزن المرفوع')} value={lift} onChange={setLift} unit="kg" min={1} max={500} step={0.5} />
           <Field label={t('Reps completed', 'عدد التكرارات')} value={reps} onChange={setReps} min={1} max={12} />
         </Card>
-        <Card icon={<HeartPulse size={22} />} title={t('Heart-rate zones', 'مناطق نبض القلب')} intro={t('Estimated max heart rate (208 − 0.7 × age) and training zones.', 'تقدير أقصى نبض (٢٠٨ − ٠٫٧ × العمر) ومناطق التدريب.')} result={<><b>{n0(maxHr)} <em>bpm</em></b><ul className="fc-zones">{zones.map(([l, a, b]) => <li key={l}><span>{l}</span><b dir="ltr">{n0(maxHr * a)}–{n0(maxHr * b)}</b></li>)}</ul></>}>
+        <Card icon={<HeartPulse size={22} />} title={t('Heart-rate zones', 'مناطق نبض القلب')} intro={t('Estimated max heart rate (208 − 0.7 × age) and training zones.', 'تقدير أقصى نبض (208 − 0.7 × العمر) ومناطق التدريب.')} result={<><b>{n0(maxHr)} <em>bpm</em></b><ul className="fc-zones">{zones.map(([l, a, b]) => <li key={l}><span>{l}</span><b dir="ltr">{n0(maxHr * a)}–{n0(maxHr * b)}</b></li>)}</ul></>}>
           <p className="fc-hint">{t('Uses your age above. Great for cycling and cardio classes.', 'يستخدم عمرك أعلاه. مفيد لحصص الدراجات والكارديو.')}</p>
         </Card>
-        <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم ٢٥٠ مل')}</span></>}>
+        <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم 250 مل')}</span></>}>
           <Field label={t('Training today', 'مدة التمرين اليوم')} value={mins} onChange={setMins} unit={t('min', 'دقيقة')} min={0} max={300} step={5} />
         </Card>
         <Card id="body-fat" icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={<><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
@@ -145,7 +145,7 @@ export default function Calculators() {
       </section>
       <Nutritionist />
       <section className="sp-container fc-foot">
-        <p>{t('These are general estimates for healthy adults, not medical advice. If you are pregnant, under 18, or managing a health condition, speak with your doctor first.', 'هذه تقديرات عامة للبالغين الأصحاء وليست نصيحة طبية. إن كنتِ حاملاً أو كان عمرك أقل من ١٨ عاماً أو لديك حالة صحية، استشر طبيبك أولاً.')}</p>
+        <p>{t('These are general estimates for healthy adults, not medical advice. If you are pregnant, under 18, or managing a health condition, speak with your doctor first.', 'هذه تقديرات عامة للبالغين الأصحاء وليست نصيحة طبية. إن كنتِ حاملاً أو كان عمرك أقل من 18 عاماً أو لديك حالة صحية، استشر طبيبك أولاً.')}</p>
         <div className="sp-actions"><a className="sp-btn sp-btn-red" href="/services/personal-training">{t('Plan it with a coach', 'خطط مع مدرب')}<ArrowUpRight size={17} /></a><a className="sp-btn" href="#nutritionist">{t('Talk to the nutritionist', 'تحدث مع أخصائية التغذية')}</a><a className="sp-btn sp-btn-ghost" href="/member?tab=studio">{t('Build a workout', 'ابنِ تمرينك')}<ArrowUpRight size={15} /></a></div>
       </section>
     </div>
