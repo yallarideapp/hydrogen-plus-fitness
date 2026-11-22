@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getChatGPTUser } from "../../chatgpt-auth";
 import { getDb } from "../../../db";
 import { plannedSessions } from "../../../db/schema";
-import { apiError, consentSchema, entryIdSchema, optionalText, preferredDateSchema, privateHeaders, readBody, safeRouteError, sameOriginError } from "../../../lib/gym-api";
+import { apiError, consentSchema, entryIdSchema, historyDateSchema, optionalText, preferredDateSchema, privateHeaders, readBody, safeRouteError, sameOriginError } from "../../../lib/gym-api";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +13,16 @@ const sessionSchema = z.object({
   className: z.string().trim().min(1, "Enter a class name.").max(100),
   coach: z.string().trim().min(1, "Enter the coach name or select a class.").max(100),
   category: z.string().trim().min(1).max(60),
-  scheduledDate: preferredDateSchema,
+  // A class saved for later must be today or ahead; a class already attended ("completed") is today or before.
+  scheduledDate: z.string(),
+  status: z.enum(["planned", "completed"]).default("planned"),
   scheduledTime: timeSchema.optional(),
   scheduledTime24h: timeSchema.optional(),
   notes: optionalText(1000),
   consent: consentSchema,
+}).superRefine((value, ctx) => {
+  const check = (value.status === "completed" ? historyDateSchema : preferredDateSchema).safeParse(value.scheduledDate);
+  if (!check.success) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["scheduledDate"], message: check.error.issues[0]?.message ?? "Please choose a valid date." });
 }).refine((value) => Boolean(value.scheduledTime ?? value.scheduledTime24h), {
   message: "Choose a valid time in HH:mm format.", path: ["scheduledTime"],
 }).refine((value) => !value.scheduledTime || !value.scheduledTime24h || value.scheduledTime === value.scheduledTime24h, {
@@ -63,7 +68,7 @@ export async function POST(request: Request) {
       classKey: input.classKey, className: input.className,
       coach: input.coach, category: input.category,
       scheduledDate: input.scheduledDate, scheduledTime,
-      notes: input.notes ?? null, status: "planned", consentedAt: now, createdAt: now,
+      notes: input.notes ?? null, status: input.status, consentedAt: now, createdAt: now,
     }).onConflictDoNothing({ target: [plannedSessions.userId, plannedSessions.classKey, plannedSessions.scheduledDate, plannedSessions.scheduledTime] }).returning(sessionFields);
     if (inserted.length) {
       return Response.json({ session: inserted[0] }, { status: 201, headers: privateHeaders });
@@ -72,6 +77,12 @@ export async function POST(request: Request) {
       eq(plannedSessions.userId, user.userId), eq(plannedSessions.classKey, input.classKey),
       eq(plannedSessions.scheduledDate, input.scheduledDate), eq(plannedSessions.scheduledTime, scheduledTime),
     )).limit(1);
+    // Saved earlier as planned and now recorded as attended: mark it attended.
+    if (existing && input.status === "completed" && existing.status !== "completed") {
+      const [updated] = await db.update(plannedSessions).set({ status: "completed" })
+        .where(and(eq(plannedSessions.id, existing.id), eq(plannedSessions.userId, user.userId))).returning(sessionFields);
+      return Response.json({ session: updated ?? existing }, { headers: privateHeaders });
+    }
     return Response.json({ session: existing }, { headers: privateHeaders });
   } catch (error) { return safeRouteError(error); }
 }

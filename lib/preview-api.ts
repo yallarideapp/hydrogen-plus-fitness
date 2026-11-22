@@ -62,11 +62,12 @@ async function handle(method: string, url: URL, body: Record<string, unknown>): 
         if (body.consent !== true) return fail(CONSENT);
         const time = str(body.scheduledTime ?? body.scheduledTime24h);
         if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return fail('Choose a valid time in HH:mm format.');
-        const e = futureDateError(body.scheduledDate); if (e) return fail(e);
+        const done = body.status === 'completed'; // an attended class is today or before; a planned one today or ahead
+        const e = done ? historyDateError(body.scheduledDate) : futureDateError(body.scheduledDate); if (e) return fail(e);
         if (!str(body.classKey) || !str(body.className)) return fail('Choose a class to add to your plan.');
         const existing = d.sessions.find((s) => s.classKey === body.classKey && s.scheduledDate === body.scheduledDate && s.scheduledTime === time);
-        if (existing) return json({ session: sessionView(existing) });
-        const s: Rec = { id: uuid(), classKey: str(body.classKey), className: str(body.className), coach: str(body.coach) || '—', category: str(body.category) || 'class', scheduledDate: body.scheduledDate, scheduledTime: time, notes: opt(body.notes, 1000), status: 'planned', consentedAt: now(), createdAt: now() };
+        if (existing) { if (done && existing.status !== 'completed') { existing.status = 'completed'; write(d); } return json({ session: sessionView(existing) }); }
+        const s: Rec = { id: uuid(), classKey: str(body.classKey), className: str(body.className), coach: str(body.coach) || '—', category: str(body.category) || 'class', scheduledDate: body.scheduledDate, scheduledTime: time, notes: opt(body.notes, 1000), status: done ? 'completed' : 'planned', consentedAt: now(), createdAt: now() };
         d.sessions.push(s); write(d); return json({ session: sessionView(s) }, 201);
       }
       if (method === 'PATCH') { const s = d.sessions.find((x) => x.id === body.id); if (!s) return fail('Planned class not found.', 404); s.status = body.status === 'completed' ? 'completed' : 'planned'; write(d); return json({ session: sessionView(s) }); }

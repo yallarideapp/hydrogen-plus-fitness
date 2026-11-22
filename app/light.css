@@ -845,6 +845,58 @@ html.hx-light.hp-ar-pending body {
     :scope:is(html.hx-light) .ac-plan-foot small {
         color: var(--hp3-muted)
     }
+    :scope:is(html.hx-light) .ac-class-form {
+        border: 1px solid var(--hp3-line);
+        background: rgba(18,18,18,0.024)
+    }
+    :scope:is(html.hx-light) .ac-seg button {
+        border: 1px solid #a7aea3;
+        background: transparent;
+        color: #282d22
+    }
+    :scope:is(html.hx-light) .ac-seg button[aria-checked=true] {
+        background: #16160e;
+        border-color: #16160e;
+        color: #eceeed
+    }
+    :scope:is(html.hx-light) .ac-class-pick {
+        border: 0
+    }
+    :scope:is(html.hx-light) .ac-class-pick legend {
+        color: #3d4335
+    }
+    :scope:is(html.hx-light) .ac-class-pick label {
+        border: 1px solid #a7aea3
+    }
+    :scope:is(html.hx-light) .ac-class-pick label:hover {
+        border-color: #71786b
+    }
+    :scope:is(html.hx-light) .ac-class-pick label.is-on {
+        border-color: #d92b2b;
+        background: #d92b2b1f
+    }
+    :scope:is(html.hx-light) .ac-class-pick input {
+        accent-color: #d92b2b
+    }
+    :scope:is(html.hx-light) .ac-class-pick small {
+        color: var(--hp3-muted)
+    }
+    :scope:is(html.hx-light) .ac-mark {
+        border: 1px solid rgba(131,101,10,0.502);
+        background: transparent;
+        color: #725809
+    }
+    :scope:is(html.hx-light) .ac-mark:hover {
+        background: rgba(131,101,10,0.102)
+    }
+    :scope:is(html.hx-light) .ac-status.is-upcoming {
+        background: #d1d3cf;
+        color: #282d22
+    }
+    :scope:is(html.hx-light) .ac-tag {
+        color: #725809;
+        border: 1px solid rgba(131,101,10,0.4)
+    }
     :scope:is(html.hx-light) .ac-weight-latest span {
         color: var(--hp3-muted)
     }

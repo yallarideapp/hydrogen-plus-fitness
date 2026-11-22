@@ -1,26 +1,26 @@
 'use client';
 
 // My training, arranged like an account page: a compact head (days left on the plan, three numbers at a glance),
-// then three tabs. Membership = the plan card and requests. Workouts = the month log, then the workout builder, saved
-// classes and weekly goal as fold-out sections. Body = weight and the fitness calculators.
+// then three tabs. Membership = the plan card and requests. Workouts = the month log (logged workouts and attended
+// classes), then the workout builder, my classes and the weekly goal as fold-out sections. Body = weight and the fitness calculators.
 // The tools themselves are the same ones as before (MyMembership, WorkoutStudio, TrainingJourney, the class plan);
 // this file loads the member's data once and places them. Old links (?tab=studio, ?tab=journal, ?tab=plan,
 // ?tab=goals) still land on the right spot.
 
 import {useCallback,useEffect,useRef,useState,type KeyboardEvent,type ReactNode} from 'react';
-import {ArrowUpRight,BadgeCheck,CalendarDays,CalendarX,Check,CheckCircle2,ChevronDown,Clock3,Dumbbell,Goal,LoaderCircle,Scale,Timer,Trash2,UserRound} from 'lucide-react';
+import {ArrowUpRight,BadgeCheck,CalendarDays,CalendarX,Check,ChevronDown,Clock3,Dumbbell,Goal,LoaderCircle,Scale,Timer,UserRound} from 'lucide-react';
 import WorkoutStudio from './WorkoutStudio';
 import {useGymLanguage} from './SiteShell';
 import {WorkoutLog,WeightLog,RequestList,DataControls,ammanToday,arCount,fmtDate,fmtNum,weekStartOf,type MemberData} from './MemberArea';
 import TrainingJourney from './TrainingJourney';
 import {MyMembership,fetchSubscription,daysBetween,type Sub} from './Plans';
 import {InstallApp} from './SiteExtras';
-import {usePlans} from '@/lib/admin/overrides';
-import {MEMBER_EVENT,memberChanged} from '@/lib/member-events';
+import {usePlans,useSchedule} from '@/lib/admin/overrides';
+import MyClasses,{classesSummary,classKey,clock,type Session} from './MyClasses';
+import {MEMBER_EVENT} from '@/lib/member-events';
 import './experiences.css';
 import './account.css';
 
-type Session={id:string;className:string;coach:string;scheduledDate:string;scheduledTime:string;status:string};
 type SavedGoal={focus:string;weeklyTarget:number};
 type TabId='membership'|'workouts'|'body';
 type MoreId='studio'|'plan'|'goals';
@@ -37,14 +37,14 @@ export default function MemberExperience(){
  const [tab,setTab]=useState<TabId>('membership');const [seen,setSeen]=useState<TabId[]>(['membership']);
  const [today,setToday]=useState('');// set after mount: the static page is built on another day
  const [member,setMember]=useState<Member>({status:'loading',data:null});const [subs,setSubs]=useState<Subs>({kind:'loading'});
- const [sessions,setSessions]=useState<Session[]>([]);const [planAuth,setPlanAuth]=useState<boolean|null>(null);const [planError,setPlanError]=useState(false);const [busy,setBusy]=useState('');
+ const [sessions,setSessions]=useState<Session[]>([]);const [planState,setPlanState]=useState<'loading'|'ready'|'guest'|'error'>('loading');
  const [goal,setGoal]=useState<SavedGoal|null>(null);
  const [open,setOpen]=useState<Record<MoreId,boolean>>({studio:false,plan:false,goals:false});const [built,setBuilt]=useState<MoreId[]>([]);
  const jump=useRef<string>('');
 
  const loadMember=useCallback(async()=>{try{const r=await fetch('/api/member',{cache:'no-store'});if(r.status===401){setMember({status:'signedOut',data:null});return}if(!r.ok)throw new Error();const p=await r.json() as MemberData;if(!p.user){setMember({status:'signedOut',data:null});return}setMember({status:'ready',data:{user:p.user,workouts:p.workouts??[],measurements:p.measurements??[],requests:p.requests??[]}})}catch{setMember(m=>m.data?m:{status:'error',data:null})}},[]);
  const loadSubs=useCallback(async()=>{const r=await fetchSubscription();setSubs(r.kind==='ok'?{kind:'ok',subscription:r.data.subscription,history:r.data.history??[]}:{kind:r.kind})},[]);
- const loadPlan=useCallback(async()=>{try{const r=await fetch('/api/planner',{cache:'no-store'});if(r.status===401){setPlanAuth(false);return}if(!r.ok)throw new Error();const d=await r.json() as {sessions:Session[]};setSessions(d.sessions??[]);setPlanAuth(true);setPlanError(false)}catch{setPlanError(true)}},[]);
+ const loadPlan=useCallback(async()=>{try{const r=await fetch('/api/planner',{cache:'no-store'});if(r.status===401){setPlanState('guest');return}if(!r.ok)throw new Error();const d=await r.json() as {sessions:Session[]};setSessions(d.sessions??[]);setPlanState('ready')}catch{setPlanState('error')}},[]);
  const loadGoal=useCallback(async()=>{try{const r=await fetch('/api/goals',{cache:'no-store'});if(!r.ok)return;const d=await r.json() as {goal:SavedGoal|null};setGoal(d.goal??null)}catch{/* the goal is only a hint in the head */}},[]);
 
  const show=useCallback((id:TabId,more?:MoreId)=>{setTab(id);setSeen(s=>s.includes(id)?s:[...s,id]);if(more){setOpen(o=>({...o,[more]:true}));setBuilt(b=>b.includes(more)?b:[...b,more]);jump.current=more}},[]);
@@ -61,7 +61,6 @@ export default function MemberExperience(){
 
  function pick(id:TabId,more?:MoreId){show(id,more);const u=new URL(location.href);u.searchParams.set('tab',more??id);u.hash='';history.replaceState(null,'',u)}
  function onTabKey(e:KeyboardEvent<HTMLDivElement>){const i=TABS.findIndex(x=>x[0]===tab);const step=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;const next=e.key==='Home'?0:e.key==='End'?TABS.length-1:step?(i+(lang==='ar'?-step:step)+TABS.length)%TABS.length:-1;if(next<0)return;e.preventDefault();pick(TABS[next][0]);document.getElementById('ac-tab-'+TABS[next][0])?.focus()}
- async function planAction(s:Session,remove=false){setBusy(s.id);setPlanError(false);try{const r=await fetch(remove?'/api/planner?id='+s.id:'/api/planner',{method:remove?'DELETE':'PATCH',headers:remove?undefined:{'Content-Type':'application/json'},body:remove?undefined:JSON.stringify({id:s.id,status:s.status==='completed'?'planned':'completed'})});if(!r.ok)throw new Error();memberChanged()}catch{setPlanError(true)}finally{setBusy('')}}
 
  // ---- the head: what the plan says today ----
  const sub=subs.kind==='ok'?subs.subscription:null;const past=subs.kind==='ok'?subs.history:[];
@@ -92,10 +91,13 @@ export default function MemberExperience(){
 
  // ---- three numbers at a glance ----
  const data=member.data;const workouts=data?.workouts??[];
- const monthCount=today?workouts.filter(w=>w.date.slice(0,7)===today.slice(0,7)).length:0;
- const weekCount=today?workouts.filter(w=>w.date>=weekStartOf(today)&&w.date<=today).length:0;
+ // Attended classes count as workouts here, in the month view and toward the weekly goal.
+ const attended=sessions.filter(s=>s.status==='completed');
+ const {classes:timetable}=useSchedule();
+ const classLog=attended.map(s=>{const c=timetable.find(x=>classKey(x)===s.classKey);return {id:s.id,date:s.scheduledDate,time:s.scheduledTime,name:c?t(c.name,c.ar):s.className,detail:[clock(s.scheduledTime,lang),s.coach&&s.coach!=='—'?s.coach:''].filter(Boolean).join(' · ')}});
+ const monthCount=today?workouts.filter(w=>w.date.slice(0,7)===today.slice(0,7)).length+attended.filter(s=>s.scheduledDate.slice(0,7)===today.slice(0,7)).length:0;
+ const weekCount=today?[...workouts.map(w=>w.date),...attended.map(s=>s.scheduledDate)].filter(d=>d>=weekStartOf(today)&&d<=today).length:0;
  const weight=data?.measurements.length?[...data.measurements].sort((a,b)=>b.date.localeCompare(a.date))[0]:null;
- const upcoming=today?sessions.filter(s=>s.status!=='completed'&&s.scheduledDate>=today).length:0;
 
  const needsAccount=(node:()=>ReactNode)=>member.status==='ready'?node()
   :member.status==='loading'?<p className="ac-loading"><LoaderCircle size={20} className="ac-spin"/>{t('Getting your space ready…','نجهّز مساحتك…')}</p>
@@ -137,15 +139,9 @@ export default function MemberExperience(){
   </section>
 
   {seen.includes('workouts')&&<section className="ac-panel" id="ac-panel-workouts" role="tabpanel" aria-labelledby="ac-tab-workouts" hidden={tab!=='workouts'}>
-   {needsAccount(()=><WorkoutLog lang={lang} workouts={workouts} onSignedOut={signedOut}/>)}
+   {needsAccount(()=><WorkoutLog lang={lang} workouts={workouts} classes={classLog} onSignedOut={signedOut}/>)}
    {more('studio',Timer,t('Build your next workout','ابنِ تمرينك القادم'),t('Exercises, sets and timers','تمارين ومجموعات ومؤقّت'),()=><WorkoutStudio embedded/>,true)}
-   {more('plan',CalendarDays,t('My saved classes','حصصي المحفوظة'),planAuth&&today?(upcoming?(lang==='ar'?arCount(upcoming,'حصة واحدة قادمة','حصتان قادمتان','حصص قادمة','حصة قادمة'):`${upcoming} coming up`):t('None coming up','لا حصص قادمة')):'',()=><div className="ac-plan-list">
-    {planError&&<p className="hp3-error" role="alert">{t('We couldn’t load or update your class plan. Try again.','تعذّر تحميل خطة حصصك أو تحديثها. حاول مجدداً.')}</p>}
-    {planAuth===false?<p className="ac-empty">{t('Sign in to save classes to your personal plan. This does not reserve a place in a gym class.','سجّل الدخول لحفظ الحصص في خطتك الشخصية. لا يعني ذلك حجز مكان في الحصة.')} <a href="/signin-with-chatgpt?return_to=%2Fmember" target="_top">{t('Sign in','تسجيل الدخول')}</a></p>
-    :sessions.length?<div className="hp3-member-planned-list">{sessions.map(s=><article key={s.id}><span className={'hp3-plan-status '+(s.status==='completed'?'is-done':'')}>{s.status==='completed'?<CheckCircle2 size={19}/>:<CalendarDays size={19}/>}</span><div><h3>{s.className}</h3><p>{s.coach} · <span dir="ltr">{s.scheduledDate} / {s.scheduledTime}</span></p><small>{s.status==='completed'?t('Completed','مكتملة'):t('In your personal plan','في خطتك الشخصية')}</small></div><button type="button" disabled={!!busy} className="hp3-chip" onClick={()=>void planAction(s)}><Check size={14}/>{s.status==='completed'?t('Mark planned','اجعلها مخططة'):t('Mark complete','اجعلها مكتملة')}</button><button type="button" disabled={!!busy} aria-label={t('Remove '+s.className,'حذف '+s.className)} className="hp3-plan-delete" onClick={()=>void planAction(s,true)}><Trash2 size={17}/></button></article>)}</div>
-    :<p className="ac-empty">{t('An open calendar. Find a class and save it to make room for movement in your week.','جدول مفتوح. اكتشف حصة واحفظها لتمنح الحركة مكاناً في أسبوعك.')}</p>}
-    <div className="ac-plan-foot"><a href="/classes" className="hp3-text-link">{t('Find classes','اكتشف الحصص')}<ArrowUpRight size={16}/></a><small>{t('Your personal plan is a training organiser. Class places are confirmed directly by the gym.','خطتك الشخصية أداة لتنظيم التدريب. يؤكد النادي أماكن الحصص مباشرة.')}</small></div>
-   </div>)}
+   {more('plan',CalendarDays,t('My classes','حصصي'),planState==='ready'?classesSummary(sessions,today,lang):'',()=><MyClasses lang={lang} today={today} sessions={sessions} state={planState} onRetry={()=>void loadPlan()}/>)}
    {more('goals',Goal,t('My weekly goal','هدفي الأسبوعي'),goal?(lang==='ar'?arCount(goal.weeklyTarget,'جلسة واحدة أسبوعياً','جلستان أسبوعياً','جلسات أسبوعياً','جلسة أسبوعياً'):`${goal.weeklyTarget} a week`):t('Not set yet','لم يُحدَّد بعد'),()=><TrainingJourney returnTo="/member?tab=goals"/>,true)}
   </section>}
 

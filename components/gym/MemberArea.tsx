@@ -19,14 +19,14 @@ export type MemberData = { user: { displayName: string; email: string } | null; 
 const copy = {
   en: {
     addWorkout: "Log a workout", quick: "Quick picks", workoutName: "What did you train?", workoutPlaceholder: "e.g. Chest and triceps", duration: "Duration (minutes)", date: "Date", notes: "Notes (optional)", notesPlaceholder: "What went well today?", saveWorkout: "Save workout", saving: "Saving…", workoutSaved: "Workout saved. Keep showing up.", weightSaved: "Weight saved.", deleted: "Entry deleted.", allDeleted: "Your saved records have been deleted.", saveError: "We couldn't save that. Please try again.", deleteError: "We couldn't delete that. Please try again.", privacy: "Privacy Policy", terms: "Terms & Conditions", deleteEntry: "Delete entry",
-    prevMonth: "Previous month", nextMonth: "Next month", statSessions: "Workouts", statTime: "Time", statDays: "Training days", statAvg: "Average", calLabel: "Days of the month. Choose a day to log its workout.", monthWorkouts: "This month's workouts", emptyMonth: "No workouts logged this month.", showAllRows: "Show all", showLess: "Show fewer", moreThanLast: "more than last month", fewerThanLast: "fewer than last month", sameAsLast: "Same as last month", workoutsOn: "workouts",
+    prevMonth: "Previous month", nextMonth: "Next month", statSessions: "Workouts", statTime: "Time", statDays: "Training days", statAvg: "Average", calLabel: "Days of the month. Choose a day to log its workout.", monthWorkouts: "This month's workouts", emptyMonth: "No workouts logged this month.", showAllRows: "Show all", showLess: "Show fewer", moreThanLast: "more than last month", fewerThanLast: "fewer than last month", sameAsLast: "Same as last month", workoutsOn: "workouts", classTag: "Class",
     weightTitle: "My weight", weightIntro: "Record your weight every so often and see how it changes. These are personal records, not a health assessment.", weightLabel: "Today's weight (kg)", saveWeight: "Add weight", emptyWeights: "Add a weight to start your chart.", allEntries: "All entries", chartLabel: "Weight history in kilograms", kg: "kg", since: "since",
     requests: "My requests", requestIntro: "Tour, membership and class requests you send appear here. The club confirms availability and prices with you directly.", emptyRequests: "No requests yet.", pending: "Awaiting confirmation", contacted: "Contacted by the team", confirmed: "Confirmed", cancelled: "Cancelled", rejected: "Not available", preferred: "Preferred date", tour: "Club tour", membership: "Membership request", class: "Class enquiry", training: "Personal training", contact: "Contact enquiry",
     privacyText: "Your records are private to your account.", signedInAs: "Signed in as", help: "Help centre", signOut: "Sign out", deleteData: "Delete my saved data", deleteConfirm: "Delete all saved records? This cannot be undone.", confirmDelete: "Yes, delete my data", cancel: "Cancel", deleteBusy: "Deleting…",
   },
   ar: {
     addWorkout: "سجّل تمريناً", quick: "اختيارات سريعة", workoutName: "ماذا تمرّنت؟", workoutPlaceholder: "مثال: صدر وترايسبس", duration: "المدة (بالدقائق)", date: "التاريخ", notes: "ملاحظات (اختياري)", notesPlaceholder: "كيف كان تمرينك اليوم؟", saveWorkout: "حفظ التمرين", saving: "جارٍ الحفظ…", workoutSaved: "تم حفظ التمرين. واصل التقدم.", weightSaved: "تم حفظ الوزن.", deleted: "تم حذف الإدخال.", allDeleted: "تم حذف سجلاتك المحفوظة.", saveError: "تعذّر الحفظ. يُرجى المحاولة مرة أخرى.", deleteError: "تعذّر الحذف. يُرجى المحاولة مرة أخرى.", privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", deleteEntry: "حذف الإدخال",
-    prevMonth: "الشهر السابق", nextMonth: "الشهر التالي", statSessions: "التمارين", statTime: "الوقت", statDays: "أيام التمرين", statAvg: "معدل التمرين", calLabel: "أيام الشهر. اختر يوماً لتسجيل تمرينه.", monthWorkouts: "تمارين الشهر", emptyMonth: "لا توجد تمارين مسجّلة في هذا الشهر.", showAllRows: "عرض الكل", showLess: "عرض أقل", moreThanLast: "أكثر من الشهر الماضي", fewerThanLast: "أقل من الشهر الماضي", sameAsLast: "مثل الشهر الماضي", workoutsOn: "تمارين",
+    prevMonth: "الشهر السابق", nextMonth: "الشهر التالي", statSessions: "التمارين", statTime: "الوقت", statDays: "أيام التمرين", statAvg: "معدل التمرين", calLabel: "أيام الشهر. اختر يوماً لتسجيل تمرينه.", monthWorkouts: "تمارين الشهر", emptyMonth: "لا توجد تمارين مسجّلة في هذا الشهر.", showAllRows: "عرض الكل", showLess: "عرض أقل", moreThanLast: "أكثر من الشهر الماضي", fewerThanLast: "أقل من الشهر الماضي", sameAsLast: "مثل الشهر الماضي", workoutsOn: "تمارين", classTag: "حصة",
     weightTitle: "وزني", weightIntro: "سجّل وزنك بين فترة وأخرى وتابع تغيّره. هذه سجلات شخصية وليست تقييماً صحياً.", weightLabel: "وزن اليوم (كغ)", saveWeight: "أضف الوزن", emptyWeights: "أضف وزناً لبدء مخططك.", allEntries: "كل القياسات", chartLabel: "سجل الوزن بالكيلوغرام", kg: "كغ", since: "منذ",
     requests: "طلباتي", requestIntro: "تظهر هنا طلبات الزيارة والاشتراك والحصص التي ترسلها. يؤكد النادي التوفر والأسعار معك مباشرة.", emptyRequests: "لا توجد طلبات بعد.", pending: "بانتظار التأكيد", contacted: "تم التواصل", confirmed: "مؤكد", cancelled: "ملغى", rejected: "غير متاح", preferred: "التاريخ المفضّل", tour: "زيارة النادي", membership: "طلب اشتراك", class: "استفسار عن حصة", training: "تدريب شخصي", contact: "طلب تواصل",
     privacyText: "سجلاتك خاصة بحسابك.", signedInAs: "الحساب:", help: "مركز المساعدة", signOut: "تسجيل الخروج", deleteData: "حذف بياناتي المحفوظة", deleteConfirm: "هل تريد حذف جميع السجلات؟ لا يمكن التراجع عن هذا الإجراء.", confirmDelete: "نعم، احذف بياناتي", cancel: "إلغاء", deleteBusy: "جارٍ الحذف…",
@@ -88,7 +88,12 @@ async function send(path: string, init: RequestInit) {
 const json = (body: unknown): RequestInit => ({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
 
 // ===== Workout log: the month at a glance, the form, and that month's list =====
-export function WorkoutLog({ lang, workouts, onSignedOut }: { lang: Lang; workouts: Workout[]; onSignedOut: () => void }) {
+// An attended group class, shown in the month alongside logged workouts (it has a time, not a duration).
+export type ClassEntry = { id: string; date: string; time: string; name: string; detail: string };
+type Item = { kind: "workout"; w: Workout } | { kind: "class"; c: ClassEntry };
+const itemDate = (i: Item) => (i.kind === "workout" ? i.w.date : i.c.date);
+
+export function WorkoutLog({ lang, workouts, classes = [], onSignedOut }: { lang: Lang; workouts: Workout[]; classes?: ClassEntry[]; onSignedOut: () => void }) {
   const t = copy[lang];
   const today = ammanToday();
   const thisMonth = today.slice(0, 7);
@@ -99,10 +104,12 @@ export function WorkoutLog({ lang, workouts, onSignedOut }: { lang: Lang; workou
   const [fb, setFb] = useState<Feedback>(quiet);
   const [all, setAll] = useState(false);
 
-  const inMonth = useMemo(() => workouts.filter((w) => w.date.slice(0, 7) === month).sort((a, b) => b.date.localeCompare(a.date)), [workouts, month]);
-  const before = useMemo(() => workouts.filter((w) => w.date.slice(0, 7) === shiftMonth(month, -1)).length, [workouts, month]);
-  const perDay = useMemo(() => { const m = new Map<string, number>(); inMonth.forEach((w) => m.set(w.date, (m.get(w.date) ?? 0) + 1)); return m; }, [inMonth]);
-  const total = inMonth.reduce((sum, w) => sum + Number(w.duration), 0);
+  const items = useMemo<Item[]>(() => [...workouts.map((w) => ({ kind: "workout" as const, w })), ...classes.map((c) => ({ kind: "class" as const, c }))], [workouts, classes]);
+  const inMonth = useMemo(() => items.filter((i) => itemDate(i).slice(0, 7) === month).sort((a, b) => itemDate(b).localeCompare(itemDate(a)) || (b.kind === "class" ? b.c.time : "").localeCompare(a.kind === "class" ? a.c.time : "")), [items, month]);
+  const before = useMemo(() => items.filter((i) => itemDate(i).slice(0, 7) === shiftMonth(month, -1)).length, [items, month]);
+  const perDay = useMemo(() => { const m = new Map<string, number>(); inMonth.forEach((i) => m.set(itemDate(i), (m.get(itemDate(i)) ?? 0) + 1)); return m; }, [inMonth]);
+  const timed = inMonth.flatMap((i) => (i.kind === "workout" ? [i.w] : [])); // classes have no published length
+  const total = timed.reduce((sum, w) => sum + Number(w.duration), 0);
   const diff = inMonth.length - before;
   const gap = Math.abs(diff);
   const compare = before === 0 ? "" : diff === 0 ? t.sameAsLast : `${lang === "ar" ? arCount(gap, "تمرين واحد", "تمرينان", "تمارين", "تمريناً") : gap} ${diff > 0 ? t.moreThanLast : t.fewerThanLast}`;
@@ -124,9 +131,10 @@ export function WorkoutLog({ lang, workouts, onSignedOut }: { lang: Lang; workou
     if (result !== "ok") { setFb({ error: t.saveError, notice: "" }); return; }
     form.reset(); setName(""); setMonth(date.slice(0, 7)); setFb({ error: "", notice: t.workoutSaved }); memberChanged();
   }
-  async function remove(w: Workout) {
-    setBusy(`del-${w.id}`); setFb(quiet);
-    const result = await send(`/api/workouts?id=${encodeURIComponent(String(w.id))}`, { method: "DELETE" });
+  async function remove(i: Item) {
+    const id = i.kind === "workout" ? i.w.id : i.c.id;
+    setBusy(`del-${id}`); setFb(quiet);
+    const result = await send(i.kind === "workout" ? `/api/workouts?id=${encodeURIComponent(String(id))}` : `/api/planner?id=${encodeURIComponent(String(id))}`, { method: "DELETE" });
     setBusy("");
     if (result !== "ok") { setFb({ error: t.deleteError, notice: "" }); return; }
     setFb({ error: "", notice: t.deleted }); memberChanged();
@@ -143,9 +151,9 @@ export function WorkoutLog({ lang, workouts, onSignedOut }: { lang: Lang; workou
         </div>
         <dl className="ac-stats">
           <div className="is-main"><dd>{fmtNum(inMonth.length, lang)}</dd><dt>{t.statSessions}</dt></div>
-          <div><dd>{inMonth.length ? fmtDuration(total, lang) : "—"}</dd><dt>{t.statTime}</dt></div>
+          <div><dd>{timed.length ? fmtDuration(total, lang) : "—"}</dd><dt>{t.statTime}</dt></div>
           <div><dd>{inMonth.length ? fmtNum(perDay.size, lang) : "—"}</dd><dt>{t.statDays}</dt></div>
-          <div><dd>{inMonth.length ? fmtDuration(total / inMonth.length, lang) : "—"}</dd><dt>{t.statAvg}</dt></div>
+          <div><dd>{timed.length ? fmtDuration(total / timed.length, lang) : "—"}</dd><dt>{t.statAvg}</dt></div>
         </dl>
         {compare && <p className="ac-compare">{compare}</p>}
         <div className="ac-cal" role="group" aria-label={t.calLabel}>
@@ -174,12 +182,15 @@ export function WorkoutLog({ lang, workouts, onSignedOut }: { lang: Lang; workou
     </div>
     <section className="ac-sessions">
       <h3>{t.monthWorkouts}</h3>
-      {inMonth.length ? <ul className="ac-list">{rows.map((w) => <li className="ac-row" key={w.id}>
-        <span className="ac-row-day"><b>{fmtDate(w.date, lang, { day: "numeric" })}</b><small>{fmtDate(w.date, lang, { weekday: "short" })}</small></span>
-        <div><strong>{w.name}</strong>{w.notes && <span>{w.notes}</span>}</div>
-        <b className="ac-row-min">{fmtDuration(Number(w.duration), lang)}</b>
-        <button type="button" className="ac-remove" disabled={busy !== ""} aria-label={`${t.deleteEntry}: ${w.name}`} onClick={() => void remove(w)}><X size={17} /></button>
-      </li>)}</ul> : <p className="ac-empty">{t.emptyMonth}</p>}
+      {inMonth.length ? <ul className="ac-list">{rows.map((i) => {
+        const date = itemDate(i); const name = i.kind === "workout" ? i.w.name : i.c.name;
+        return <li className={`ac-row${i.kind === "class" ? " is-class" : ""}`} key={`${i.kind}-${i.kind === "workout" ? i.w.id : i.c.id}`}>
+          <span className="ac-row-day"><b>{fmtDate(date, lang, { day: "numeric" })}</b><small>{fmtDate(date, lang, { weekday: "short" })}</small></span>
+          <div><strong>{name}</strong>{i.kind === "workout" ? i.w.notes && <span>{i.w.notes}</span> : <span>{i.c.detail}</span>}</div>
+          {i.kind === "workout" ? <b className="ac-row-min">{fmtDuration(Number(i.w.duration), lang)}</b> : <span className="ac-tag">{t.classTag}</span>}
+          <button type="button" className="ac-remove" disabled={busy !== ""} aria-label={`${t.deleteEntry}: ${name}`} onClick={() => void remove(i)}><X size={17} /></button>
+        </li>;
+      })}</ul> : <p className="ac-empty">{t.emptyMonth}</p>}
       {inMonth.length > 6 && <button type="button" className="ac-link ac-more-rows" onClick={() => setAll(!all)}>{all ? t.showLess : `${t.showAllRows} (${fmtNum(inMonth.length, lang)})`}</button>}
     </section>
   </div>;

@@ -146,6 +146,33 @@ html.hx-light .ac-page input[type=date]{color-scheme:light}
 .ac-plan-foot .hp3-text-link{margin:0}
 .ac-plan-foot small{font-size:12.5px;color:var(--hp3-muted);line-height:1.7}
 
+/* --- my classes (MyClasses.tsx) --- */
+.ac-classes{display:grid;gap:14px}
+.ac-add{justify-self:start;gap:12px;margin:0;min-height:44px}
+.ac-class-form{display:grid;gap:14px;max-width:720px;border:1px solid var(--hp3-line);background:#ffffff06;padding:16px}
+.ac-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ac-seg button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid #555c51;background:transparent;color:#d8ddd2;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.ac-seg button[aria-checked=true]{background:#f4f4ee;border-color:#f4f4ee;color:#111312}
+.ac-class-form .hp3-field{max-width:280px}
+.ac-class-pick{border:0;margin:0;padding:0;display:grid;gap:6px;min-width:0}
+.ac-class-pick legend{font-size:12px;color:#c4cabc;margin-bottom:8px;padding:0}
+.ac-class-pick label{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:12px;border:1px solid #555c51;padding:11px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.ac-class-pick label:hover{border-color:#8d9487}
+.ac-class-pick label.is-on{border-color:#d92b2b;background:#d92b2b1f}
+.ac-class-pick input{accent-color:#d92b2b;margin:0;width:16px;height:16px}
+.ac-class-pick b{font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ac-class-pick span{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.ac-class-pick small{font-size:12px;color:var(--hp3-muted)}
+.ac-class-actions{display:flex;flex-wrap:wrap;gap:10px}
+.ac-class-actions .hp3-button{margin:0;min-height:44px;gap:12px}
+.ac-mark{display:inline-flex;align-items:center;gap:6px;border:1px solid #f5d77c80;background:transparent;color:#f5d77c;padding:5px 11px;font:inherit;font-size:12.5px;font-weight:700;white-space:nowrap;cursor:pointer}
+.ac-mark:hover{background:#f5d77c1a}
+.ac-mark:disabled{opacity:.4;cursor:wait}
+.ac-status svg{margin-inline-end:4px}
+.ac-status.is-upcoming{background:#2e302c;color:#d8ddd2}
+.ac-row.is-class .ac-row-day small{white-space:nowrap}
+.ac-tag{font-size:12px;font-weight:700;color:#f5d77c;border:1px solid #f5d77c66;padding:2px 9px;white-space:nowrap}
+
 /* --- body tab --- */
 .ac-body-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
 .ac-weight-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
@@ -211,6 +238,13 @@ html.hx-light .ac-page input[type=date]{color-scheme:light}
  .ac-more summary{padding:14px}
  .ac-more summary small{display:none}
  .ac-more-body{padding:14px}
+ .ac-class-form{padding:12px}
+ .ac-class-form .hp3-field{max-width:none}
+ .ac-class-pick label{grid-template-columns:auto auto minmax(0,1fr);gap:10px}
+ .ac-class-pick small{grid-column:3}
+ .ac-classes .ac-row.is-class{grid-template-columns:auto minmax(0,1fr) auto;row-gap:8px}
+ .ac-classes .ac-row.is-class>.ac-status,.ac-classes .ac-row.is-class>.ac-mark{grid-column:2;grid-row:2;justify-self:start}
+ .ac-classes .ac-row.is-class>.ac-remove{grid-column:3;grid-row:1/3}
  .ac-weight-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
  .ac-weight-form .hp3-button{grid-column:1/-1;justify-self:stretch}
  .ac-weight-latest b{font-size:44px}
