@@ -4,8 +4,9 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import {
   ArrowDown, ArrowUp, CalendarDays, CircleAlert, CircleCheck, Clock3, Download, ExternalLink, FileText, ImageIcon,
-  LayoutGrid, ListChecks, Megaphone, Palette, Phone, Plus, RotateCcw, Save, Search, Settings, Tag, Trash2, Undo2, Upload, X,
+  LayoutGrid, ListChecks, Megaphone, Palette, Phone, Plus, RotateCcw, Save, Search, Settings, Tag, Trash2, Undo2, Upload, Users, X,
 } from 'lucide-react';
+import MembersTab, { useMembersBadge } from './MembersTab';
 import { EMPTY, readOverrides, sanitize, textKey, useOverrides, writeOverrides, type Contact, type Overrides, type ServicePatch } from '@/lib/admin/overrides';
 import { blobToDataUrl, dataUrlToBlob, deletePhoto, getPhoto, newPhotoId, photoIds, putPhoto, toWebp } from '@/lib/admin/photos';
 import { services as baseServices, newsPage, type Bi, type MenuSection, type Service, type ServiceFact, type ServiceFaq, type TimelineItem, type TimelineTag } from '@/lib/services';
@@ -19,7 +20,7 @@ import './admin.css';
 type Lang = 'en' | 'ar';
 type Entry = { en: string; ar: string; area: string; top?: boolean };
 type PhotoEntry = { path: string; group: string; label: [string, string] };
-type TabId = 'overview' | 'texts' | 'services' | 'prices' | 'schedule' | 'contact' | 'photos' | 'appearance' | 'settings';
+type TabId = 'overview' | 'members' | 'texts' | 'services' | 'prices' | 'schedule' | 'contact' | 'photos' | 'appearance' | 'settings';
 
 const catalog = textCatalog as Entry[];
 const photos = photoCatalog as PhotoEntry[];
@@ -127,7 +128,8 @@ export default function AdminPanel() {
   const dirty = draft !== null && !same({ ...draft, savedAt: 0 }, { ...saved, savedAt: 0 });
   const [tab, setTab] = useState<TabId>('overview');
   const [toast, setToast] = useState<{ kind: 'ok' | 'warn'; text: string } | null>(null);
-  const flash = (kind: 'ok' | 'warn', text: string) => { setToast({ kind, text }); window.setTimeout(() => setToast(null), 4200); };
+  const toastTimer = useRef(0);
+  const flash = (kind: 'ok' | 'warn', text: string) => { setToast({ kind, text }); window.clearTimeout(toastTimer.current); toastTimer.current = window.setTimeout(() => setToast(null), 4200); };
   const update = (fn: (o: Overrides) => Overrides) => setDraft((prev) => fn(prev ?? readOverrides()));
 
   useEffect(() => {
@@ -180,8 +182,10 @@ export default function AdminPanel() {
   const editedPages = Object.keys(d.services ?? {}).length;
   const replacedPhotos = Object.keys(d.photos ?? {}).length;
 
+  const membersBadge = useMembersBadge();
   const nav: [TabId, ReactNode, string, string, number?][] = [
     ['overview', <LayoutGrid key="i" size={17} />, 'Overview', 'نظرة عامة'],
+    ['members', <Users key="i" size={17} />, 'Members', 'المشتركون', membersBadge],
     ['texts', <FileText key="i" size={17} />, 'Website texts', 'نصوص الموقع', editedTexts],
     ['services', <ListChecks key="i" size={17} />, 'Service pages', 'صفحات الخدمات', editedPages],
     ['prices', <Tag key="i" size={17} />, 'Prices & offers', 'الأسعار والعروض'],
@@ -212,6 +216,7 @@ export default function AdminPanel() {
           </nav>
           <main className="adm-main">
             {tab === 'overview' && <Overview d={d} go={setTab} counts={{ editedTexts, editedPages, replacedPhotos }} />}
+            {tab === 'members' && <MembersTab lang={lang} A={A} flash={flash} />}
             {tab === 'texts' && <TextsTab d={d} setText={setText} />}
             {tab === 'services' && <ServicesTab svcOf={svcOf} setSvc={setSvc} d={d} setPhoto={setPhoto} base={base} />}
             {tab === 'prices' && <><PlansEditor plans={d.plans ?? planCategories} setPlans={(v) => update((o) => ({ ...o, plans: same(v, planCategories) ? undefined : v }))} /><PricesTab svcOf={svcOf} setSvc={setSvc} /></>}
