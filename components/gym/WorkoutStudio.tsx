@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { ArrowDown, ArrowUp, ArrowUpRight, Check, Clock3, Download, Dumbbell, LoaderCircle, Pause, Play, Plus, Printer, RotateCcw, Search, Timer, Trash2 } from "lucide-react";
 import { legalConsent, legalError } from "@/lib/legal";
+import { memberChanged } from "@/lib/member-events";
 import { useGymLanguage, useWords } from "./SiteShell";
 import "./workout-studio.css";
 
@@ -172,7 +173,7 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
       const response = await fetch("/api/workouts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), duration, date: ammanDate(), notes: exerciseLines().join("\n").slice(0, 1000), consent: true }) });
       if (response.status === 401) { setNeedsSignIn(true); setFeedback(t.signInfo); return; }
       if (!response.ok) { setFeedback(t.failed); return; }
-      setFeedback(t.saved); setConsent(false); setLogged(true);
+      setFeedback(t.saved); setConsent(false); setLogged(true); memberChanged();
     } catch { setFeedback(t.failed); } finally { setSaving(false); }
   }
 

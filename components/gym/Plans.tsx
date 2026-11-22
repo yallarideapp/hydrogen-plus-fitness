@@ -5,13 +5,14 @@ import { ArrowUpRight, BadgeCheck, Banknote, CalendarDays, Check, CircleAlert, C
 import { useGymLanguage } from './SiteShell';
 import { usePlans, useSiteInfo } from '@/lib/admin/overrides';
 import { isPreviewHost } from '@/lib/preview-api';
+import { MEMBER_EVENT, memberChanged } from '@/lib/member-events';
 import type { Plan, PlanCategory } from '@/lib/plans';
 import type { Bi } from '@/lib/services';
 import './plans.css';
 
 const noSub = () => () => {};
 const fmtJD = (n: number, lang: 'en' | 'ar') => (lang === 'ar' ? `${n.toLocaleString('ar-JO')} د.أ` : `${n.toLocaleString('en-US')} JD`);
-const todayAmman = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Amman' }).format(new Date());
+export const todayAmman = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Amman' }).format(new Date());
 
 function perMonth(cat: PlanCategory, p: Plan) {
   if (!p.months || p.months < 2) return null;
@@ -242,10 +243,10 @@ export function PricesTeaser() {
 }
 
 // ---------------------------------------------------------------- My membership
-type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; days?: number | null; payment?: Pay; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
-const daysBetween = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86400000);
+export type Sub = { id: string; reference: string; planName: string; categoryName: string; price: number; months: number | null; days?: number | null; payment?: Pay; startDate: string; endDate: string | null; status: string; example?: boolean; createdAt: string };
+export const daysBetween = (a: string, b: string) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 86400000);
 
-async function fetchSubscription(): Promise<{ kind: 'ok'; data: { subscription: Sub | null; history: Sub[] } } | { kind: 'offline' | 'load' }> {
+export async function fetchSubscription(): Promise<{ kind: 'ok'; data: { subscription: Sub | null; history: Sub[] } } | { kind: 'offline' | 'load' }> {
   try {
     const r = await fetch('/api/subscription', { cache: 'no-store' });
     if (r.status === 404 || r.status === 405) return { kind: 'offline' };
@@ -263,12 +264,13 @@ export function MyMembership() {
   const [busy, setBusy] = useState(false);
   const apply = (res: Awaited<ReturnType<typeof fetchSubscription>>) => { if (res.kind === 'ok') { setData(res.data); setError(''); } else setError(res.kind); };
   const load = async () => apply(await fetchSubscription());
-  useEffect(() => { let alive = true; fetchSubscription().then((res) => { if (alive) apply(res); }); return () => { alive = false; }; }, []);
+  // Also reloads when something else in My training changes (a deleted account record, a request sent elsewhere).
+  useEffect(() => { let alive = true; const go = () => { fetchSubscription().then((res) => { if (alive) apply(res); }); }; go(); window.addEventListener(MEMBER_EVENT, go); return () => { alive = false; window.removeEventListener(MEMBER_EVENT, go); }; }, []);
   const fmtDate = (d: string) => new Intl.DateTimeFormat(lang === 'ar' ? 'ar-JO' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${d}T12:00:00Z`));
   const planLabel = (s: Sub) => { for (const c of cats) for (const p of c.plans) if (`${c.name[0]} · ${p.label[0]}` === s.planName) return `${t(c.name[0], c.name[1])} · ${t(p.label[0], p.label[1])}`; return s.planName; };
   async function act(kind: 'cancel' | 'activate') {
     if (!data?.subscription) return; setBusy(true);
-    try { await fetch(kind === 'cancel' ? `/api/subscription?id=${data.subscription.id}` : '/api/subscription', kind === 'cancel' ? { method: 'DELETE' } : { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: data.subscription.id, action: 'activate-demo' }) }); await load(); }
+    try { await fetch(kind === 'cancel' ? `/api/subscription?id=${data.subscription.id}` : '/api/subscription', kind === 'cancel' ? { method: 'DELETE' } : { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: data.subscription.id, action: 'activate-demo' }) }); memberChanged(); }
     finally { setBusy(false); }
   }
   const popular = useMemo(() => cats.flatMap((c) => c.plans.filter((p) => p.popular).map((p) => ({ c, p }))).slice(0, 3), [cats]);

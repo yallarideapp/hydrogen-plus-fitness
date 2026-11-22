@@ -285,7 +285,7 @@ dialog:focus,dialog:focus-visible,.cx-experience dialog:focus-visible,.cb-experi
 .hp3 .hp3-red:not(:hover),.hp3 .pl-badge,.hp3 .pl-choose.is-red:not(:hover),.hp3 .pl-chips button.is-active,
 .hp3 .cx-button-red:not(:hover),.hp3 .cb-button-red:not(:hover),.hp3 .hp3-chip.is-active,
 .hp3 .fc-seg button.is-on,.hp3 .hp3-goal-selector>button.is-active,.hp3 .hp3-purpose-grid>button.is-active,
-.hp3 .hp3-visit-frequency button.is-active,.hp3 .hp3-member-nav>button.is-active,.hp3 .vv-chip.is-on,
+.hp3 .hp3-visit-frequency button.is-active,.hp3 .vv-chip.is-on,
 .hp3 .hp3-advisor-progress>button.is-active,.hp3 .hx-announce{background-color:#d92b2b}
 html:not(.hx-light) .hp3 .fp-state,html:not(.hx-light) .hp3 .sp-tag.is-offer{background-color:#d92b2b} /* light mode gives these a pale background */
 .hp3 .pl-chips button.is-active small{color:#fff}
