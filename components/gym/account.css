@@ -2,7 +2,11 @@
    Head: days-left ring, title, plan line, three numbers. Then three tabs and their panels.
    Dark values only; app/light.css is generated from this file by scripts/build-light.mjs. */
 .ac-page{display:block;padding-bottom:70px}
-.ac-page input[type=date]{color-scheme:dark}
+.ac-page input[type=date]{color-scheme:dark;-webkit-appearance:none;appearance:none;display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.ac-page .hp3-input{min-height:46px}
+.ac-page input[type=date]::-webkit-date-and-time-value{text-align:start;margin:0}
+.hp3[dir=rtl] .ac-page input[type=date]{direction:ltr;text-align:right}
+.hp3[dir=rtl] .ac-page input[type=date]::-webkit-date-and-time-value{text-align:right}
 html.hx-light .ac-page input[type=date]{color-scheme:light}
 .ac-spin{animation:ac-spin 1s linear infinite}
 @keyframes ac-spin{to{transform:rotate(360deg)}}
@@ -172,6 +176,71 @@ html.hx-light .ac-page input[type=date]{color-scheme:light}
 .ac-status.is-upcoming{background:#2e302c;color:#d8ddd2}
 .ac-row.is-class .ac-row-day small{white-space:nowrap}
 .ac-tag{font-size:12px;font-weight:700;color:#f5d77c;border:1px solid #f5d77c66;padding:2px 9px;white-space:nowrap}
+
+/* --- workout builder (WorkoutStudio.tsx) --- */
+.wb{display:grid;gap:14px;min-width:0}
+.wb-add{display:grid;gap:10px}
+.wb-add-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.wb-add-row .hp3-button{margin:0;gap:10px;min-height:46px;padding-inline:18px}
+.wb-suggest{display:flex;flex-wrap:wrap;gap:6px}
+.wb-suggest button{display:inline-flex;align-items:center;gap:5px;border:1px solid #555c51;background:transparent;color:#d8ddd2;padding:7px 11px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.wb-suggest button:hover{border-color:#e7e9df80}
+.wb-suggest button svg{color:#f25555}
+.wb-hint{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#c4c9bd;margin:4px 0 0}
+.wb-hint svg{flex:none;color:#7ee2a3}
+.wb-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.wb-item{border:1px solid var(--hp3-line);background:var(--hp3-panel);padding:14px 16px;display:grid;gap:12px}
+.wb-item.is-done{border-color:#2f6b45}
+.wb-item-head{display:flex;align-items:center;gap:12px}
+.wb-num{display:grid;place-items:center;flex:none;width:28px;height:28px;border:1px solid #555c51;font-size:13px}
+.wb-item.is-done .wb-num{background:#1f3a29;border-color:#2f6b45;color:#7ee2a3}
+.wb-item-head strong{flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}
+.wb-steps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wb-step{display:grid;gap:6px;min-width:0}
+.wb-step>span{font-size:12px;color:var(--hp3-muted)}
+.wb-step>div{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;border:1px solid #555c51;height:44px;direction:ltr} /* − on the left, + on the right in both languages */
+.wb-step button{display:grid;place-items:center;border:0;background:transparent;color:inherit;cursor:pointer}
+.wb-step button:hover:not(:disabled){background:#ffffff0d}
+.wb-step button:disabled{opacity:.3;cursor:default}
+.wb-step input{min-width:0;width:100%;border:0;border-inline:1px solid #555c51;background:transparent;color:inherit;text-align:center;font:inherit;font-size:16px;font-weight:700;-moz-appearance:textfield;appearance:textfield}
+.wb-step input::-webkit-outer-spin-button,.wb-step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.wb-sets{display:flex;flex-wrap:wrap;gap:8px}
+.wb-sets button{display:grid;place-items:center;width:46px;height:46px;border:1px solid #8d9487;border-radius:50%;background:transparent;color:inherit;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s}
+.wb-sets button:hover{border-color:#e7e9df}
+.wb-sets button[aria-pressed=true]{background:#d92b2b;border-color:#d92b2b;color:#fff}
+/* the bar stays at the bottom of the screen (above the phone's menu) while the builder is in view */
+.wb-bar{position:sticky;bottom:calc(var(--wb-dock,0px) + 8px);z-index:6;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px 16px;border:1px solid #555c51;background:#151814f5;padding:10px 12px;box-shadow:0 10px 30px #0008;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.wb-clock{display:flex;align-items:center;gap:12px}
+.wb-play{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:50%;border:0;background:#f4f4ee;color:#111312;cursor:pointer}
+.wb-clock span{display:grid;line-height:1.15}
+.wb-clock small{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--hp3-muted)}
+.wb-clock b{font-size:19px;font-variant-numeric:tabular-nums}
+.wb-rest{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0;flex-wrap:wrap}
+.wb-rest-label{font-size:12px;color:var(--hp3-muted);margin-inline-end:2px}
+.wb-rest button{border:1px solid #555c51;background:transparent;color:#d8ddd2;font:inherit;font-size:12.5px;padding:7px 10px;cursor:pointer;white-space:nowrap}
+.wb-rest button[aria-pressed=true]{background:#f4f4ee;border-color:#f4f4ee;color:#111312}
+.wb-rest .wb-rest-go{display:inline-flex;align-items:center;gap:6px;background:#d92b2b;border-color:#d92b2b;color:#fff;font-weight:700}
+.wb-rest.is-on{justify-content:flex-end;overflow:hidden;padding:2px 0}
+.wb-rest.is-on>i{position:absolute;inset:auto 0 -10px;height:3px;background:#f25555;transform-origin:left center;transition:transform .25s linear}
+.hp3[dir=rtl] .wb-rest.is-on>i{transform-origin:right center}
+.wb-rest.is-on b{font-size:34px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;color:#fff;margin-inline-end:6px}
+.wb-bar.is-resting{border-color:#d92b2b;background:#2a1513f5}
+.wb-rest-over{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#7ee2a3}
+.wb-bar.is-over{border-color:#2f6b45}
+.wb-finish{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px}
+.wb-finish .hp3-button{margin:0;gap:12px;min-height:46px}
+.wb-note{font-size:12px;line-height:1.8;color:var(--hp3-muted);margin:0}
+@media(max-width:600px){
+ .wb-suggest{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-14px;padding:0 14px 2px}
+ .wb-suggest::-webkit-scrollbar{display:none}
+ .wb-bar{grid-template-columns:minmax(0,1fr);padding:9px 10px;gap:8px}
+ .wb-rest{justify-content:flex-start}
+ .wb-rest .wb-rest-go{margin-inline-start:auto}
+ .wb-rest.is-on b{font-size:30px}
+ .wb-rest.is-on button{margin-inline-start:0}
+ .wb-rest.is-on .wb-rest-label+b{margin-inline-end:auto}
+ .wb-clock .wb-progress{margin-inline-start:auto;text-align:end}
+}
 
 /* --- body tab --- */
 .ac-body-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}

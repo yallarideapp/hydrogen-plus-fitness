@@ -1,199 +1,246 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { ArrowDown, ArrowUp, ArrowUpRight, Check, Clock3, Download, Dumbbell, Pause, Play, Plus, Printer, RotateCcw, Search, Timer, Trash2 } from "lucide-react";
+// My training → Workouts → Build your next workout. Kept simple for use on the gym floor:
+//   - Type any exercise name (or tap a suggestion) and add it.
+//   - Each exercise has sets × reps (− / +), and a row of set buttons: tap one when you finish that set and the rest
+//     timer starts by itself.
+//   - A bar stays at the bottom of the screen while you are in the builder: the session clock, and the rest countdown
+//     in large numbers when resting (+15 s, skip). A beep and a vibration when rest is over.
+//   - "Add to my workout log" fills the Log a workout form with this session (see lib/member-events.ts).
+// The draft is kept in this browser (localStorage), so a reload or a locked phone does not lose it.
+
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { Check, Clock3, Minus, Pause, Play, Plus, Timer, Trash2, X } from "lucide-react";
 import { prefillLog } from "@/lib/member-events";
-import { useGymLanguage, useWords } from "./SiteShell";
-import "./workout-studio.css";
+import { useGymLanguage } from "./SiteShell";
 
-type Group = "all" | "upper" | "lower" | "core" | "full" | "cardio";
-type Exercise = { id: string; en: string; ar: string; group: Exclude<Group, "all">; equipment: "bodyweight" | "dumbbell" | "barbell" | "machine" | "kettlebell" | "cardio"; unit?: "minutes" | "seconds" };
-type PlannedExercise = { key: string; exerciseId: string; sets: number; reps: number; rest: number };
+type Unit = "seconds" | "minutes";
+type LibraryItem = { id: string; en: string; ar: string; unit?: Unit };
+type Item = { key: string; id?: string; name: string; sets: number; reps: number; unit?: Unit; done: number };
+type Draft = { items: Item[]; rest: number; base: number; startedAt: number | null };
 
-const exercises: Exercise[] = [
-  { id: "squat", en: "Bodyweight squat", ar: "القرفصاء بوزن الجسم", group: "lower", equipment: "bodyweight" },
-  { id: "goblet", en: "Goblet squat", ar: "قرفصاء الغوبلت", group: "lower", equipment: "dumbbell" },
-  { id: "legpress", en: "Leg press", ar: "دفع الأرجل", group: "lower", equipment: "machine" },
-  { id: "rdl", en: "Romanian deadlift", ar: "الرفعة الرومانية", group: "lower", equipment: "barbell" },
-  { id: "lunge", en: "Reverse lunge", ar: "الاندفاع الخلفي", group: "lower", equipment: "bodyweight" },
-  { id: "glutebridge", en: "Glute bridge", ar: "جسر الورك", group: "lower", equipment: "bodyweight" },
-  { id: "calfraise", en: "Standing calf raise", ar: "رفع الساق واقفاً", group: "lower", equipment: "bodyweight" },
-  { id: "pushup", en: "Push-up", ar: "تمرين الضغط", group: "upper", equipment: "bodyweight" },
-  { id: "chestpress", en: "Dumbbell chest press", ar: "ضغط الصدر بالدمبل", group: "upper", equipment: "dumbbell" },
-  { id: "latpull", en: "Lat pulldown", ar: "السحب العلوي", group: "upper", equipment: "machine" },
-  { id: "row", en: "Seated cable row", ar: "التجديف بالكابل جلوساً", group: "upper", equipment: "machine" },
-  { id: "shoulderpress", en: "Dumbbell shoulder press", ar: "ضغط الكتف بالدمبل", group: "upper", equipment: "dumbbell" },
-  { id: "lateralraise", en: "Lateral raise", ar: "الرفع الجانبي", group: "upper", equipment: "dumbbell" },
-  { id: "curl", en: "Biceps curl", ar: "ثني العضلة ذات الرأسين", group: "upper", equipment: "dumbbell" },
-  { id: "triceps", en: "Triceps pushdown", ar: "دفع العضلة ثلاثية الرؤوس", group: "upper", equipment: "machine" },
-  { id: "plank", en: "Forearm plank", ar: "البلانك على الساعدين", group: "core", equipment: "bodyweight", unit: "seconds" },
-  { id: "deadbug", en: "Dead bug", ar: "تمرين الحشرة الميتة", group: "core", equipment: "bodyweight" },
-  { id: "birddog", en: "Bird dog", ar: "تمرين الطائر والكلب", group: "core", equipment: "bodyweight" },
-  { id: "carry", en: "Farmer's carry", ar: "حمل الأوزان مع المشي", group: "full", equipment: "kettlebell", unit: "seconds" },
-  { id: "treadmill", en: "Treadmill walk", ar: "المشي على جهاز السير", group: "cardio", equipment: "cardio", unit: "minutes" },
-  { id: "bike", en: "Stationary cycling", ar: "الدراجة الثابتة", group: "cardio", equipment: "cardio", unit: "minutes" },
-  { id: "rowing", en: "Rowing machine", ar: "جهاز التجديف", group: "cardio", equipment: "cardio", unit: "minutes" },
+const LIBRARY: LibraryItem[] = [
+  { id: "chestpress", en: "Dumbbell chest press", ar: "ضغط الصدر بالدمبل" },
+  { id: "bench", en: "Bench press", ar: "ضغط البنش" },
+  { id: "latpull", en: "Lat pulldown", ar: "السحب العلوي" },
+  { id: "row", en: "Seated cable row", ar: "التجديف بالكابل جلوساً" },
+  { id: "legpress", en: "Leg press", ar: "دفع الأرجل" },
+  { id: "squat", en: "Squat", ar: "القرفصاء" },
+  { id: "goblet", en: "Goblet squat", ar: "قرفصاء الغوبلت" },
+  { id: "rdl", en: "Romanian deadlift", ar: "الرفعة الرومانية" },
+  { id: "lunge", en: "Lunge", ar: "الاندفاع" },
+  { id: "shoulderpress", en: "Shoulder press", ar: "ضغط الكتف" },
+  { id: "lateralraise", en: "Lateral raise", ar: "الرفع الجانبي" },
+  { id: "curl", en: "Biceps curl", ar: "تمرين البايسبس" },
+  { id: "triceps", en: "Triceps pushdown", ar: "دفع الترايسبس بالكابل" },
+  { id: "pushup", en: "Push-up", ar: "تمرين الضغط" },
+  { id: "pullup", en: "Pull-up", ar: "العقلة" },
+  { id: "legcurl", en: "Leg curl", ar: "ثني الساق" },
+  { id: "calfraise", en: "Calf raise", ar: "رفع السمانة" },
+  { id: "glutebridge", en: "Glute bridge", ar: "جسر الورك" },
+  { id: "plank", en: "Plank", ar: "البلانك", unit: "seconds" },
+  { id: "crunch", en: "Crunch", ar: "تمرين البطن" },
+  { id: "treadmill", en: "Treadmill", ar: "جهاز المشي", unit: "minutes" },
+  { id: "bike", en: "Stationary bike", ar: "الدراجة الثابتة", unit: "minutes" },
 ];
+const RESTS = [60, 90, 120];
+const KEY = "hp-workout-draft";
+const empty: Draft = { items: [], rest: 60, base: 0, startedAt: null };
 
-const copy = {
-  en: {
-    eyebrow: "THE WORKOUT STUDIO", title: "MAKE IT\nYOUR SESSION.", intro: "Build a session that fits your day. Set your pace, keep your time, and save the work you put in.", tag: "PLAN. MOVE. REPEAT.", library: "Exercise library", libraryText: "22 movements. Your choices.", search: "Find an exercise…", all: "All", upper: "Upper body", lower: "Lower body", core: "Core", full: "Full body", cardio: "Cardio", bodyweight: "Bodyweight", dumbbell: "Dumbbells", barbell: "Barbell", machine: "Machine / cable", kettlebell: "Kettlebells", add: "Add", noResults: "No exercises match. Try another search.", session: "Your session", sessionText: "Arrange the movements. Make the numbers your own.", empty: "A blank page. A fresh session.", emptyText: "Choose a movement from the library to start planning.", exercises: "Exercises", sets: "Sets", reps: "Reps", rest: "Rest · sec", seconds: "seconds", minutes: "minutes", restButton: "Start rest", remove: "Remove exercise", moveUp: "Move up", moveDown: "Move down", timer: "SESSION CLOCK", start: "Start", pause: "Pause", resume: "Resume", reset: "Reset", restTimer: "REST TIMER", startRest: "Start rest", stop: "Stop", restDone: "Rest timer finished.", restHelp: "Choose a break or use the rest button on any movement.", saveTitle: "DONE FOR TODAY?", saveHeading: "Put it in your journal.", saveIntro: "Send this session to Log a workout with its exercises and time filled in, then check it there and save.", name: "Session name", placeholder: "e.g. Monday strength", duration: "Completed minutes", log: "Add to my workout log", saving: "Saving…", saved: "Session saved to your workout journal.", failed: "We couldn't save your session. Please try again.", noPlan: "Add at least one exercise before saving.", signIn: "Sign in to save", signInfo: "Sign in to keep a workout log, then add this session to it.", privacy: "Privacy Policy", terms: "Terms", print: "Print session", download: "Download plan", exportJson: "Export JSON", printTitle: "My workout plan", draftNote: "Your draft stays on this page. Download it to keep a copy before leaving.", planningNote: "The starting numbers are editable planning suggestions. Choose movements, loads and rest with your coach to suit your ability.", maxExercises: "Your plan can hold up to 20 exercises.", moveCount: "movements", maxTime: "Enter a completed duration between 1 and 600 minutes.", controls: "Session controls", exportEmpty: "Add an exercise to export your session.", logDate: "Logged for today in Jordan", signInNewTab: "Sign in (opens a new tab)",
-  },
-  ar: {
-    eyebrow: "استوديو التمرين", title: "صمّم حصتك\nعلى طريقتك.", intro: "خطّط لحصة تناسب يومك. اختر إيقاعك، وتابع وقتك، واحفظ ما أنجزته.", tag: "خطّط. تحرّك. كرّر.", library: "مكتبة التمارين", libraryText: "٢٢ حركة. والاختيار لك.", search: "ابحث عن تمرين…", all: "الكل", upper: "الجزء العلوي", lower: "الجزء السفلي", core: "الجذع", full: "الجسم كاملاً", cardio: "الكارديو", bodyweight: "وزن الجسم", dumbbell: "الدمبل", barbell: "البار", machine: "جهاز / كابل", kettlebell: "الكيتلبيل", add: "إضافة", noResults: "لا توجد تمارين مطابقة. جرّب بحثاً آخر.", session: "حصتك التدريبية", sessionText: "رتّب الحركات وعدّل الأرقام بما يناسبك.", empty: "صفحة جديدة. وحصة جديدة.", emptyText: "اختر حركة من المكتبة لتبدأ التخطيط.", exercises: "التمارين", sets: "المجموعات", reps: "التكرارات", rest: "الراحة · ث", seconds: "ثوانٍ", minutes: "دقائق", restButton: "بدء الراحة", remove: "حذف التمرين", moveUp: "نقل للأعلى", moveDown: "نقل للأسفل", timer: "وقت الحصة", start: "بدء", pause: "إيقاف مؤقت", resume: "متابعة", reset: "إعادة الضبط", restTimer: "مؤقّت الراحة", startRest: "بدء الراحة", stop: "إيقاف", restDone: "انتهى وقت الراحة.", restHelp: "اختر مدة الراحة أو استخدم زر الراحة بجانب أي تمرين.", saveTitle: "أنهيت حصة اليوم؟", saveHeading: "أضفها إلى سجلك.", saveIntro: "أرسل هذه الحصة إلى «سجّل تمريناً» مع تمارينها ووقتها، ثم راجعها هناك واحفظها.", name: "اسم الحصة", placeholder: "مثال: تمارين القوة يوم الإثنين", duration: "الدقائق المكتملة", log: "أضفها إلى سجل تماريني", saving: "جارٍ الحفظ…", saved: "حُفظت الحصة في سجل تمارينك.", failed: "تعذّر حفظ الحصة. يرجى المحاولة مرة أخرى.", noPlan: "أضف تمريناً واحداً على الأقل قبل الحفظ.", signIn: "سجّل الدخول للحفظ", signInfo: "سجّل الدخول لتحتفظ بسجل تمارينك، ثم أضف هذه الحصة إليه.", privacy: "سياسة الخصوصية", terms: "الشروط", print: "طباعة الحصة", download: "تنزيل الخطة", exportJson: "تصدير JSON", printTitle: "خطة تمريني", draftNote: "تبقى المسودة في هذه الصفحة فقط. نزّل نسخة منها للاحتفاظ بها قبل المغادرة.", planningNote: "الأرقام الأولية مقترحات قابلة للتعديل للتخطيط. اختر الحركات والأوزان والراحة مع مدربك بما يناسب قدرتك.", maxExercises: "تتسع الخطة لعشرين تمريناً كحد أقصى.", moveCount: "حركات", maxTime: "أدخل مدة مكتملة بين دقيقة واحدة و٦٠٠ دقيقة.", controls: "أدوات الحصة", exportEmpty: "أضف تمريناً لتصدير حصتك.", logDate: "يُحفظ بتاريخ اليوم في الأردن", signInNewTab: "تسجيل الدخول (يفتح علامة تبويب جديدة)",
-  },
-};
+const read = (): Draft => { try { const d = JSON.parse(localStorage.getItem(KEY) ?? "null"); return d && Array.isArray(d.items) ? { ...empty, ...d } : empty; } catch { return empty; } };
+const write = (d: Draft) => { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch { /* private mode: the draft just isn't kept */ } };
+const clock = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const uid = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : String(Date.now() + Math.random()));
 
-function ammanDate() {
-  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Amman", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
-  const get = (type: string) => parts.find((part) => part.type === type)?.value;
-  return `${get("year")}-${get("month")}-${get("day")}`;
+// A short double beep, and a buzz where the phone supports it. The audio context is opened on a tap (browsers only
+// allow sound after one), then reused.
+let audio: AudioContext | null = null;
+function unlockSound() {
+  try { const A = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext; if (!audio && A) audio = new A(); if (audio?.state === "suspended") void audio.resume(); } catch { /* no sound */ }
+}
+function beep() {
+  try {
+    navigator.vibrate?.([180, 90, 180]);
+    if (!audio) return;
+    [0, 0.25].forEach((at) => { const o = audio!.createOscillator(); const g = audio!.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(0.0001, audio!.currentTime + at); g.gain.exponentialRampToValueAtTime(0.3, audio!.currentTime + at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, audio!.currentTime + at + 0.18); o.connect(g).connect(audio!.destination); o.start(audio!.currentTime + at); o.stop(audio!.currentTime + at + 0.2); });
+  } catch { /* silent */ }
 }
 
-function formatClock(total: number) {
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = total % 60;
-  return [hours > 0 ? String(hours).padStart(2, "0") : null, String(minutes).padStart(2, "0"), String(seconds).padStart(2, "0")].filter(Boolean).join(":");
-}
+export default function WorkoutStudio(_props: { embedded?: boolean } = {}) {
+  const { lang, t } = useGymLanguage();
+  const ar = lang === "ar";
+  const n = (v: number) => (ar ? v.toLocaleString("ar-JO-u-nu-arab") : String(v));
+  const nameOf = (i: Item) => { const l = i.id && LIBRARY.find((x) => x.id === i.id); return l ? (ar ? l.ar : l.en) : i.name; };
+  const unitShort = (u?: Unit) => (u === "seconds" ? t("s", "ث") : u === "minutes" ? t("min", "د") : "");
 
-export default function WorkoutStudio({ embedded = false }: { embedded?: boolean } = {}) {
-  const { lang, t: tr } = useGymLanguage();
-  const t = useWords(copy);
-  const [search, setSearch] = useState("");
-  const [group, setGroup] = useState<Group>("all");
-  const [plan, setPlan] = useState<PlannedExercise[]>([]);
-  const [feedback, setFeedback] = useState("");
-  const [elapsedBase, setElapsedBase] = useState(0);
-  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [draft, setDraft] = useState<Draft>(empty);
+  const [ready, setReady] = useState(false);
+  const [text, setText] = useState("");
   const [now, setNow] = useState(0);
-  const [restSeconds, setRestSeconds] = useState(60);
-  const [restEndsAt, setRestEndsAt] = useState<number | null>(null);
-  const [restMessage, setRestMessage] = useState("");
-  const running = startedAt !== null;
-  const elapsed = elapsedBase + (startedAt !== null ? Math.max(0, Math.floor((now - startedAt) / 1000)) : 0);
-  const remainingRest = restEndsAt !== null ? Math.max(0, Math.ceil((restEndsAt - now) / 1000)) : 0;
-  const totalSets = plan.reduce((sum, item) => sum + item.sets, 0);
-  const filtered = useMemo(() => exercises.filter((exercise) => (group === "all" || exercise.group === group) && `${exercise.en} ${exercise.ar} ${t[exercise.equipment]}`.toLowerCase().includes(search.trim().toLowerCase())), [group, search, t]);
+  const [restEnds, setRestEnds] = useState<number | null>(null);
+  const [restTotal, setRestTotal] = useState(0);
+  const [restOver, setRestOver] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [sureClear, setSureClear] = useState(false);
+  const [dock, setDock] = useState(0);
+  const lock = useRef<{ release: () => Promise<void> } | null>(null);
 
+  useEffect(() => { setDraft(read()); setReady(true); setNow(Date.now()); }, []);
+  useEffect(() => { if (ready) write(draft); }, [draft, ready]);
+  const update = (fn: (d: Draft) => Draft) => setDraft((d) => fn(d));
 
+  const running = draft.startedAt !== null;
+  const elapsed = draft.base + (running && now ? Math.max(0, Math.floor((now - draft.startedAt!) / 1000)) : 0);
+  const left = restEnds !== null ? Math.max(0, Math.ceil((restEnds - now) / 1000)) : 0;
+  const resting = restEnds !== null;
+
+  // Tick while the clock runs or a rest counts down; end the rest with a beep.
   useEffect(() => {
-    if (!running && restEndsAt === null) return;
-    const interval = window.setInterval(() => setNow(Date.now()), 250);
-    return () => window.clearInterval(interval);
-  }, [running, restEndsAt]);
-
+    if (!running && !resting) return;
+    const id = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, [running, resting]);
   useEffect(() => {
-    if (restEndsAt !== null && now >= restEndsAt) {
-      setRestEndsAt(null);
-      setRestMessage(t.restDone);
-    }
-  }, [now, restEndsAt, t.restDone]);
+    if (restEnds !== null && now >= restEnds) { setRestEnds(null); setRestOver(true); beep(); }
+  }, [now, restEnds]);
+  useEffect(() => { if (!restOver) return; const id = window.setTimeout(() => setRestOver(false), 5000); return () => window.clearTimeout(id); }, [restOver]);
 
-  function addExercise(exercise: Exercise) {
-    if (plan.length >= 20) return;
-    setPlan((current) => [...current, { key: crypto.randomUUID(), exerciseId: exercise.id, sets: exercise.group === "cardio" ? 1 : 3, reps: exercise.unit === "seconds" ? 30 : exercise.unit === "minutes" ? 10 : 8, rest: 60 }]);
-    setFeedback("");
+  // Keep the screen on while the session clock runs (where the browser allows it).
+  useEffect(() => {
+    let cancelled = false;
+    const nav = navigator as Navigator & { wakeLock?: { request: (k: "screen") => Promise<{ release: () => Promise<void> }> } };
+    const want = () => { if (!running || !nav.wakeLock || document.visibilityState !== "visible") return; nav.wakeLock.request("screen").then((l) => { if (cancelled) void l.release(); else lock.current = l; }).catch(() => {}); };
+    want();
+    document.addEventListener("visibilitychange", want);
+    return () => { cancelled = true; document.removeEventListener("visibilitychange", want); void lock.current?.release().catch(() => {}); lock.current = null; };
+  }, [running]);
+
+  // The bar sits just above the phone's bottom menu when that menu is showing.
+  useEffect(() => {
+    const measure = () => { const d = document.querySelector<HTMLElement>(".hp3-mobile-dock"); setDock(d && getComputedStyle(d).display !== "none" ? d.offsetHeight : 0); };
+    measure(); window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const q = text.trim().toLowerCase();
+  const suggestions = useMemo(() => (q ? LIBRARY.filter((l) => `${l.en} ${l.ar}`.toLowerCase().includes(q)) : LIBRARY).slice(0, 8 + (q ? 0 : LIBRARY.length)), [q]);
+
+  function add(item: { id?: string; name: string; unit?: Unit }) {
+    if (draft.items.length >= 20) { setFeedback(t("A workout can hold up to 20 exercises.", "يتسع التمرين لعشرين تمريناً كحد أقصى.")); return; }
+    const reps = item.unit === "seconds" ? 30 : item.unit === "minutes" ? 10 : 10;
+    update((d) => ({ ...d, items: [...d.items, { key: uid(), id: item.id, name: item.name, sets: item.unit === "minutes" ? 1 : 3, reps, unit: item.unit, done: 0 }] }));
+    setText(""); setFeedback("");
   }
-
-  function updateExercise(key: string, field: "sets" | "reps" | "rest", value: string) {
-    const max = field === "sets" ? 12 : field === "rest" ? 600 : 120;
-    const min = field === "rest" ? 0 : 1;
-    const number = Number(value);
-    if (!Number.isFinite(number)) return;
-    setPlan((current) => current.map((item) => item.key === key ? { ...item, [field]: Math.max(min, Math.min(max, Math.round(number))) } : item));
+  function submit(e: FormEvent) {
+    e.preventDefault();
+    const name = text.trim().replace(/\s+/g, " ").slice(0, 60);
+    if (name.length < 2) { setFeedback(t("Type the exercise name first.", "اكتب اسم التمرين أولاً.")); return; }
+    const same = LIBRARY.find((l) => l.en.toLowerCase() === name.toLowerCase() || l.ar === name);
+    add(same ? { id: same.id, name: same.en, unit: same.unit } : { name });
   }
+  const set = (key: string, patch: Partial<Item>) => update((d) => ({ ...d, items: d.items.map((i) => (i.key === key ? { ...i, ...patch, done: Math.min(patch.sets ?? i.sets, patch.done ?? i.done) } : i)) }));
+  // − / + work from the current value (two quick taps give two steps)
+  const bump = (key: string, field: "sets" | "reps", by: number, min: number, max: number) => update((d) => ({ ...d, items: d.items.map((i) => { if (i.key !== key) return i; const v = Math.max(min, Math.min(max, i[field] + by)); return { ...i, [field]: v, done: Math.min(field === "sets" ? v : i.sets, i.done) }; }) }));
+  const remove = (key: string) => update((d) => ({ ...d, items: d.items.filter((i) => i.key !== key) }));
 
-  function moveExercise(index: number, direction: number) {
-    setPlan((current) => {
-      const next = [...current];
-      const other = index + direction;
-      if (other < 0 || other >= next.length) return current;
-      [next[index], next[other]] = [next[other], next[index]];
-      return next;
-    });
-  }
-
+  function startClock() { const at = Date.now(); setNow(at); update((d) => (d.startedAt === null ? { ...d, startedAt: at } : d)); }
   function toggleClock() {
-    if (running) {
-      setElapsedBase(elapsed);
-      setStartedAt(null);
-    } else {
-      const timestamp = Date.now();
-      setNow(timestamp);
-      setStartedAt(timestamp);
-    }
+    unlockSound();
+    if (running) update((d) => ({ ...d, base: elapsed, startedAt: null }));
+    else startClock();
   }
-
-  function startRest(seconds: number) {
-    if (seconds <= 0) return;
-    const timestamp = Date.now();
-    setNow(timestamp);
-    setRestEndsAt(timestamp + seconds * 1000);
-    setRestMessage("");
+  function startRest(seconds = draft.rest) {
+    unlockSound();
+    const at = Date.now(); setNow(at); setRestEnds(at + seconds * 1000); setRestTotal(seconds); setRestOver(false);
   }
-
-  function exerciseLines() {
-    return plan.map((item, index) => {
-      const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
-      const unit = exercise.unit ? t[exercise.unit] : t.reps;
-      return `${index + 1}. ${tr(exercise.en, exercise.ar)} — ${item.sets} ${t.sets} × ${item.reps} ${unit}; ${t.rest}: ${item.rest}`;
-    });
+  function tapSet(item: Item, k: number) {
+    unlockSound();
+    if (k < item.done) { set(item.key, { done: k }); return; } // tap a finished set to undo it
+    set(item.key, { done: k + 1 });
+    if (!running) startClock();
+    const remaining = draft.items.reduce((sum, i) => sum + (i.key === item.key ? item.sets - (k + 1) : i.sets - i.done), 0);
+    if (remaining > 0) startRest();
   }
-
-  function download(format: "txt" | "json") {
-    if (!plan.length) { setFeedback(t.exportEmpty); return; }
-    const draft = { title: t.printTitle, date: ammanDate(), exercises: plan.map((item) => {
-      const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
-      return { name: tr(exercise.en, exercise.ar), equipment: t[exercise.equipment], sets: item.sets, quantity: item.reps, unit: exercise.unit ?? "reps", restSeconds: item.rest };
-    }) };
-    const content = format === "json" ? JSON.stringify(draft, null, 2) : [draft.title, draft.date, "", ...exerciseLines(), "", t.planningNote].join("\n");
-    const url = URL.createObjectURL(new Blob([content], { type: format === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8" }));
-    const link = document.createElement("a");
-    link.href = url; link.download = `hydrogen-workout-${draft.date}.${format}`; link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-
-  // "Add to my workout log": fill the Log a workout form above with this session; the member checks it and saves there.
   function toLog() {
     setFeedback("");
-    if (!plan.length) { setFeedback(t.noPlan); return; }
-    const names = plan.map((item) => { const e = exercises.find((x) => x.id === item.exerciseId)!; return tr(e.en, e.ar); });
-    const more = names.length > 2 ? ` +${lang === "ar" ? (names.length - 2).toLocaleString("ar-JO-u-nu-arab") : names.length - 2}` : "";
-    const taken = prefillLog({ name: `${names.slice(0, 2).join(" · ")}${more}`.slice(0, 100), duration: elapsed >= 60 ? Math.min(600, Math.ceil(elapsed / 60)) : null, notes: exerciseLines().join("\n").slice(0, 1000) });
-    if (!taken) setFeedback(t.signInfo);
+    if (!draft.items.length) return;
+    const names = draft.items.map(nameOf);
+    const more = names.length > 2 ? ` +${n(names.length - 2)}` : "";
+    const lines = draft.items.map((i, k) => `${k + 1}. ${nameOf(i)} — ${i.sets} × ${i.reps}${unitShort(i.unit)}${i.done ? ` (${i.done}/${i.sets} ✓)` : ""}`);
+    const taken = prefillLog({ name: `${names.slice(0, 2).join(" · ")}${more}`.slice(0, 100), duration: elapsed >= 60 ? Math.min(600, Math.ceil(elapsed / 60)) : null, notes: lines.join("\n").slice(0, 1000) });
+    if (!taken) setFeedback(t("Sign in to keep a workout log, then add this session to it.", "سجّل الدخول لتحتفظ بسجل تمارينك، ثم أضف هذه الحصة إليه."));
+  }
+  function clearAll() {
+    if (!sureClear) { setSureClear(true); window.setTimeout(() => setSureClear(false), 3500); return; }
+    setDraft(empty); setRestEnds(null); setRestOver(false); setSureClear(false); setFeedback("");
   }
 
-  return <div className="hp3-studio" dir={lang === "ar" ? "rtl" : "ltr"}>
-    {!embedded && <header className="hp3-studio-hero"><div><span className="hp3-studio-eyebrow"><Dumbbell size={15} />{t.eyebrow}</span><h1>{t.title.split("\n").map((line, index) => <span key={line}>{line}{index === 0 && <br />}</span>)}</h1><p>{t.intro}</p></div><div className="hp3-studio-emblem" aria-hidden="true"><span>H<sup>+</sup></span><small>{t.tag}</small></div></header>}
+  const totalSets = draft.items.reduce((s, i) => s + i.sets, 0);
+  const doneSets = draft.items.reduce((s, i) => s + i.done, 0);
 
-    <div className="hp3-studio-summary"><div><span>{t.exercises}</span><strong>{String(plan.length).padStart(2, "0")}</strong></div><div><span>{t.sets}</span><strong>{String(totalSets).padStart(2, "0")}</strong></div><div><span>{t.timer}</span><strong dir="ltr">{formatClock(elapsed)}</strong></div><p>{t.planningNote}</p></div>
-
-    <div className="hp3-studio-grid">
-      <section className="hp3-studio-library" aria-labelledby="studio-library"><div className="hp3-studio-panel-title"><span>01</span><div><h2 id="studio-library">{t.library}</h2><p>{t.libraryText}</p></div></div>
-        <label className="hp3-studio-search"><Search size={17} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t.search} aria-label={t.search} /></label>
-        <div className="hp3-studio-filters" aria-label={t.library}>{(["all", "upper", "lower", "core", "full", "cardio"] as Group[]).map((value) => <button key={value} type="button" aria-pressed={group === value} onClick={() => setGroup(value)}>{t[value]}</button>)}</div>
-        <div className="hp3-studio-exercise-list">{filtered.length ? filtered.map((exercise) => <article key={exercise.id}><div><h3>{tr(exercise.en, exercise.ar)}</h3><span>{t[exercise.equipment]}</span></div><button type="button" onClick={() => addExercise(exercise)} disabled={plan.length >= 20} aria-label={`${t.add} ${tr(exercise.en, exercise.ar)}`}><Plus size={18} /></button></article>) : <p className="hp3-studio-empty-search">{t.noResults}</p>}</div>
-        {plan.length >= 20 && <p className="hp3-studio-limit" role="status">{t.maxExercises}</p>}
-      </section>
-
-      <div className="hp3-studio-workspace"><section className="hp3-studio-session" aria-labelledby="studio-session"><div className="hp3-studio-panel-title"><span>02</span><div><h2 id="studio-session">{t.session}</h2><p>{t.sessionText}</p></div><Dumbbell className="hp3-studio-title-icon" size={24} /></div>
-        {!plan.length ? <div className="hp3-studio-blank"><div><Plus size={30} /></div><h3>{t.empty}</h3><p>{t.emptyText}</p></div> : <ol className="hp3-studio-plan">{plan.map((item, index) => {
-          const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
-          return <li key={item.key}><div className="hp3-studio-movement-head"><b>{String(index + 1).padStart(2, "0")}</b><div><h3>{tr(exercise.en, exercise.ar)}</h3><span>{t[exercise.equipment]}</span></div><div className="hp3-studio-row-controls"><button type="button" onClick={() => moveExercise(index, -1)} disabled={index === 0} aria-label={`${t.moveUp}: ${tr(exercise.en, exercise.ar)}`}><ArrowUp size={15} /></button><button type="button" onClick={() => moveExercise(index, 1)} disabled={index === plan.length - 1} aria-label={`${t.moveDown}: ${tr(exercise.en, exercise.ar)}`}><ArrowDown size={15} /></button><button type="button" onClick={() => setPlan((current) => current.filter((entry) => entry.key !== item.key))} aria-label={`${t.remove}: ${tr(exercise.en, exercise.ar)}`}><Trash2 size={15} /></button></div></div>
-            <div className="hp3-studio-movement-inputs"><label>{t.sets}<input type="number" min={1} max={12} value={item.sets} onChange={(event) => updateExercise(item.key, "sets", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${t.sets}`} /></label><label>{exercise.unit ? t[exercise.unit] : t.reps}<input type="number" min={1} max={120} value={item.reps} onChange={(event) => updateExercise(item.key, "reps", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${exercise.unit ? t[exercise.unit] : t.reps}`} /></label><label>{t.rest}<input type="number" min={0} max={600} step={5} value={item.rest} onChange={(event) => updateExercise(item.key, "rest", event.target.value)} aria-label={`${tr(exercise.en, exercise.ar)} ${t.rest}`} /></label><button type="button" className="hp3-studio-rest-row" onClick={() => startRest(item.rest)} disabled={item.rest === 0}><Timer size={15} />{t.restButton}</button></div>
-          </li>;
-        })}</ol>}
-        <div className="hp3-studio-exports"><button type="button" onClick={() => window.print()} disabled={!plan.length}><Printer size={15} />{t.print}</button><button type="button" onClick={() => download("txt")} disabled={!plan.length}><Download size={15} />{t.download}</button><button type="button" onClick={() => download("json")} disabled={!plan.length}>{t.exportJson}<ArrowUpRight size={14} /></button></div>
-        <p className="hp3-studio-draft-note">{t.draftNote}</p>
-      </section>
-
-      <section className="hp3-studio-timers" aria-label={t.controls}><div className="hp3-studio-clock"><span><Clock3 size={15} />{t.timer}</span><strong dir="ltr" aria-label={t.timer}>{formatClock(elapsed)}</strong><div><button type="button" onClick={toggleClock}>{running ? <Pause size={15} /> : <Play size={15} />}{running ? t.pause : elapsed > 0 ? t.resume : t.start}</button><button type="button" className="hp3-studio-icon-btn" onClick={() => { setStartedAt(null); setElapsedBase(0); }} aria-label={`${t.reset}: ${t.timer}`}><RotateCcw size={16} /></button></div></div>
-        <div className="hp3-studio-rest-clock"><span><Timer size={15} />{t.restTimer}</span><strong dir="ltr">{formatClock(remainingRest)}</strong><div className="hp3-studio-rest-choices">{[60, 90, 120].map((value) => <button type="button" key={value} aria-pressed={restSeconds === value} onClick={() => setRestSeconds(value)} dir="ltr">{value}s</button>)}<input type="number" aria-label={`${t.restTimer}: ${t.seconds}`} min={1} max={600} value={restSeconds} onChange={(event) => setRestSeconds(Math.max(1, Math.min(600, Number(event.target.value) || 1)))} /></div><button type="button" className="hp3-studio-rest-start" onClick={() => restEndsAt !== null ? setRestEndsAt(null) : startRest(restSeconds)}>{restEndsAt !== null ? t.stop : t.startRest}</button><p>{t.restHelp}</p><span className="hp3-studio-rest-message" role="status">{restMessage}</span></div>
-      </section>
-
-      <section className="hp3-studio-save" aria-labelledby="studio-save"><div><span>{t.saveTitle}</span><h2 id="studio-save">{t.saveHeading}</h2><p>{t.saveIntro}</p></div><div className="hp3-studio-handoff"><button type="button" className="hp3-studio-log" disabled={!plan.length} onClick={toLog}><Check size={17} />{t.log}<ArrowUpRight size={17} /></button><p className="hp3-studio-feedback" role="status">{feedback}</p></div></section>
+  return <div className="wb" style={{ ["--wb-dock" as string]: `${dock}px` }}>
+    <form className="wb-add" onSubmit={submit}>
+      <label className="hp3-field" htmlFor="wb-name">{t("Add an exercise", "أضف تمريناً")}</label>
+      <div className="wb-add-row">
+        <input id="wb-name" className="hp3-input" value={text} onChange={(e) => { setText(e.target.value); setFeedback(""); }} maxLength={60} autoComplete="off" enterKeyHint="done" placeholder={t("Type any name, e.g. Bench press", "اكتب أي اسم، مثال: ضغط البنش")} />
+        <button type="submit" className="hp3-button hp3-red"><Plus size={16} />{t("Add", "أضف")}</button>
       </div>
+      {suggestions.length > 0 && <div className="wb-suggest" role="group" aria-label={t("Suggestions", "اقتراحات")}>{suggestions.map((l) => <button type="button" key={l.id} onClick={() => add({ id: l.id, name: l.en, unit: l.unit })}><Plus size={13} />{ar ? l.ar : l.en}</button>)}</div>}
+    </form>
+
+    {draft.items.length > 0 ? <>
+      <p className="wb-hint"><Check size={15} />{t("Tap a set when you finish it. The rest timer starts by itself.", "اضغط على رقم المجموعة عند إنهائها، فيبدأ مؤقّت الراحة تلقائياً.")}</p>
+      <ol className="wb-list">{draft.items.map((i, k) => {
+        const max = i.unit === "seconds" ? 600 : i.unit === "minutes" ? 120 : 100;
+        const step = i.unit === "seconds" ? 5 : 1;
+        return <li key={i.key} className={`wb-item${i.done >= i.sets ? " is-done" : ""}`}>
+          <div className="wb-item-head"><b className="wb-num">{n(k + 1)}</b><strong>{nameOf(i)}</strong><button type="button" className="ac-remove" aria-label={`${t("Remove", "حذف")}: ${nameOf(i)}`} onClick={() => remove(i.key)}><Trash2 size={16} /></button></div>
+          <div className="wb-steps">
+            <Stepper label={t("Sets", "المجموعات")} value={i.sets} min={1} max={12} onChange={(v) => set(i.key, { sets: v })} onStep={(d) => bump(i.key, "sets", d, 1, 12)} />
+            <Stepper label={i.unit === "seconds" ? t("Seconds", "ثوانٍ") : i.unit === "minutes" ? t("Minutes", "دقائق") : t("Reps", "التكرارات")} value={i.reps} min={1} max={max} onChange={(v) => set(i.key, { reps: v })} onStep={(d) => bump(i.key, "reps", d * step, 1, max)} />
+          </div>
+          <div className="wb-sets" role="group" aria-label={`${t("Sets done", "المجموعات المنجزة")}: ${nameOf(i)}`}>
+            {Array.from({ length: i.sets }, (_, s) => <button type="button" key={s} aria-pressed={s < i.done} aria-label={`${t("Set", "المجموعة")} ${n(s + 1)}`} onClick={() => tapSet(i, s)}>{s < i.done ? <Check size={17} strokeWidth={2.6} /> : n(s + 1)}</button>)}
+          </div>
+        </li>;
+      })}</ol>
+
+      <div className={`wb-bar${resting ? " is-resting" : ""}${restOver ? " is-over" : ""}`} role="region" aria-label={t("Session timer", "مؤقّت الحصة")}>
+        <div className="wb-clock">
+          <button type="button" className="wb-play" onClick={toggleClock} aria-label={running ? t("Pause the session clock", "إيقاف وقت الحصة مؤقتاً") : t("Start the session clock", "تشغيل وقت الحصة")}>{running ? <Pause size={18} /> : <Play size={18} />}</button>
+          <span><small><Clock3 size={13} />{t("Session", "الحصة")}</small><b dir="ltr">{clock(elapsed)}</b></span>
+          <span className="wb-progress"><small>{t("Sets", "المجموعات")}</small><b>{n(doneSets)}/{n(totalSets)}</b></span>
+        </div>
+        {resting ? <div className="wb-rest is-on" aria-live="polite">
+          <i style={{ transform: `scaleX(${restTotal ? left / restTotal : 0})` }} aria-hidden="true" />
+          <span className="wb-rest-label">{t("Rest", "راحة")}</span><b dir="ltr">{clock(left)}</b>
+          <button type="button" onClick={() => setRestEnds((e) => (e ? e + 15000 : e))}>{ar ? "+١٥ث" : "+15s"}</button>
+          <button type="button" onClick={() => setRestEnds(null)} aria-label={t("Skip the rest", "تخطَّ الراحة")}><X size={16} /></button>
+        </div> : <div className="wb-rest">
+          {restOver ? <span className="wb-rest-over" role="status"><Check size={15} />{t("Rest over. Next set!", "انتهت الراحة. المجموعة التالية!")}</span>
+            : <><span className="wb-rest-label">{t("Rest", "الراحة")}</span>{RESTS.map((s) => <button type="button" key={s} aria-pressed={draft.rest === s} onClick={() => update((d) => ({ ...d, rest: s }))}>{ar ? `${n(s)}ث` : `${s}s`}</button>)}</>}
+          <button type="button" className="wb-rest-go" onClick={() => startRest()}><Timer size={16} />{t("Rest now", "ابدأ الراحة")}</button>
+        </div>}
+      </div>
+
+      <div className="wb-finish">
+        <button type="button" className="hp3-button hp3-red" onClick={toLog}><Check size={16} />{t("Add to my workout log", "أضفها إلى سجل تماريني")}</button>
+        <button type="button" className="ac-link is-danger" onClick={clearAll}>{sureClear ? t("Tap again to clear", "اضغط مرة أخرى للمسح") : t("Start over", "ابدأ من جديد")}</button>
+      </div>
+    </> : <p className="ac-empty">{t("Type the name of your first exercise, or tap a suggestion above.", "اكتب اسم أول تمرين، أو اضغط على أحد الاقتراحات أعلاه.")}</p>}
+    {feedback && <p className="hp3-error" role="alert">{feedback}</p>}
+    <p className="wb-note">{t("Your plan is kept on this phone until you clear it. Suggested numbers are a starting point; agree weights and rest with your coach.", "تبقى خطتك على هذا الجهاز حتى تمسحها. الأرقام المقترحة نقطة بداية؛ اتفق على الأوزان والراحة مع مدربك.")}</p>
+  </div>;
+}
+
+function Stepper({ label, value, min, max, onChange, onStep }: { label: string; value: number; min: number; max: number; onChange: (v: number) => void; onStep: (by: number) => void }) {
+  const clamp = (v: number) => Math.max(min, Math.min(max, Math.round(v)));
+  return <div className="wb-step">
+    <span>{label}</span>
+    <div>
+      <button type="button" aria-label={`${label} −`} disabled={value <= min} onClick={() => onStep(-1)}><Minus size={16} /></button>
+      <input type="number" inputMode="numeric" min={min} max={max} value={value} aria-label={label} onChange={(e) => { const v = Number(e.target.value); if (Number.isFinite(v) && e.target.value !== "") onChange(clamp(v)); }} />
+      <button type="button" aria-label={`${label} +`} disabled={value >= max} onClick={() => onStep(1)}><Plus size={16} /></button>
     </div>
   </div>;
 }

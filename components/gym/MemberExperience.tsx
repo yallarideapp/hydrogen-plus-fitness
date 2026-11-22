@@ -140,7 +140,7 @@ export default function MemberExperience(){
 
   {seen.includes('workouts')&&<section className="ac-panel" id="ac-panel-workouts" role="tabpanel" aria-labelledby="ac-tab-workouts" hidden={tab!=='workouts'}>
    {needsAccount(()=><WorkoutLog lang={lang} workouts={workouts} classes={classLog} onSignedOut={signedOut}/>)}
-   {more('studio',Timer,t('Build your next workout','ابنِ تمرينك القادم'),t('Exercises, sets and timers','تمارين ومجموعات ومؤقّت'),()=><WorkoutStudio embedded/>,true)}
+   {more('studio',Timer,t('Build your next workout','ابنِ تمرينك القادم'),t('Exercises, sets and timers','تمارين ومجموعات ومؤقّت'),()=><WorkoutStudio/>)}
    {more('plan',CalendarDays,t('My classes','حصصي'),planState==='ready'?classesSummary(sessions,today,lang):'',()=><MyClasses lang={lang} today={today} sessions={sessions} state={planState} onRetry={()=>void loadPlan()}/>)}
    {more('goals',Goal,t('My weekly goal','هدفي الأسبوعي'),goal?(lang==='ar'?arCount(goal.weeklyTarget,'جلسة واحدة أسبوعياً','جلستان أسبوعياً','جلسات أسبوعياً','جلسة أسبوعياً'):`${goal.weeklyTarget} a week`):t('Not set yet','لم يُحدَّد بعد'),()=><TrainingJourney returnTo="/member?tab=goals"/>,true)}
   </section>}
