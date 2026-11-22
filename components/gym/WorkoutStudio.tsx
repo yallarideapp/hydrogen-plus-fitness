@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { ArrowDown, ArrowUp, ArrowUpRight, Check, Clock3, Download, Dumbbell, LoaderCircle, Pause, Play, Plus, Printer, RotateCcw, Search, Timer, Trash2 } from "lucide-react";
-import { legalConsent, legalError } from "@/lib/legal";
-import { memberChanged } from "@/lib/member-events";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowDown, ArrowUp, ArrowUpRight, Check, Clock3, Download, Dumbbell, Pause, Play, Plus, Printer, RotateCcw, Search, Timer, Trash2 } from "lucide-react";
+import { prefillLog } from "@/lib/member-events";
 import { useGymLanguage, useWords } from "./SiteShell";
 import "./workout-studio.css";
 
@@ -38,10 +37,10 @@ const exercises: Exercise[] = [
 
 const copy = {
   en: {
-    eyebrow: "THE WORKOUT STUDIO", title: "MAKE IT\nYOUR SESSION.", intro: "Build a session that fits your day. Set your pace, keep your time, and save the work you put in.", tag: "PLAN. MOVE. REPEAT.", library: "Exercise library", libraryText: "22 movements. Your choices.", search: "Find an exercise…", all: "All", upper: "Upper body", lower: "Lower body", core: "Core", full: "Full body", cardio: "Cardio", bodyweight: "Bodyweight", dumbbell: "Dumbbells", barbell: "Barbell", machine: "Machine / cable", kettlebell: "Kettlebells", add: "Add", noResults: "No exercises match. Try another search.", session: "Your session", sessionText: "Arrange the movements. Make the numbers your own.", empty: "A blank page. A fresh session.", emptyText: "Choose a movement from the library to start planning.", exercises: "Exercises", sets: "Sets", reps: "Reps", rest: "Rest · sec", seconds: "seconds", minutes: "minutes", restButton: "Start rest", remove: "Remove exercise", moveUp: "Move up", moveDown: "Move down", timer: "SESSION CLOCK", start: "Start", pause: "Pause", resume: "Resume", reset: "Reset", restTimer: "REST TIMER", startRest: "Start rest", stop: "Stop", restDone: "Rest timer finished.", restHelp: "Choose a break or use the rest button on any movement.", saveTitle: "DONE FOR TODAY?", saveHeading: "Put it in your journal.", saveIntro: "Save a completed session to your private workout history. Planning a session does not book gym space or a coach.", name: "Session name", placeholder: "e.g. Monday strength", duration: "Completed minutes", log: "Log completed session", saving: "Saving…", saved: "Session saved to your workout journal.", failed: "We couldn't save your session. Please try again.", noPlan: "Add at least one exercise before saving.", signIn: "Sign in to save", signInfo: "Sign in in the new tab, then return here to save your session. Keep this tab open to retain your draft.", privacy: "Privacy Policy", terms: "Terms", print: "Print session", download: "Download plan", exportJson: "Export JSON", printTitle: "My workout plan", draftNote: "Your draft stays on this page. Download it to keep a copy before leaving.", planningNote: "The starting numbers are editable planning suggestions. Choose movements, loads and rest with your coach to suit your ability.", maxExercises: "Your plan can hold up to 20 exercises.", moveCount: "movements", maxTime: "Enter a completed duration between 1 and 600 minutes.", controls: "Session controls", exportEmpty: "Add an exercise to export your session.", logDate: "Logged for today in Jordan", signInNewTab: "Sign in (opens a new tab)",
+    eyebrow: "THE WORKOUT STUDIO", title: "MAKE IT\nYOUR SESSION.", intro: "Build a session that fits your day. Set your pace, keep your time, and save the work you put in.", tag: "PLAN. MOVE. REPEAT.", library: "Exercise library", libraryText: "22 movements. Your choices.", search: "Find an exercise…", all: "All", upper: "Upper body", lower: "Lower body", core: "Core", full: "Full body", cardio: "Cardio", bodyweight: "Bodyweight", dumbbell: "Dumbbells", barbell: "Barbell", machine: "Machine / cable", kettlebell: "Kettlebells", add: "Add", noResults: "No exercises match. Try another search.", session: "Your session", sessionText: "Arrange the movements. Make the numbers your own.", empty: "A blank page. A fresh session.", emptyText: "Choose a movement from the library to start planning.", exercises: "Exercises", sets: "Sets", reps: "Reps", rest: "Rest · sec", seconds: "seconds", minutes: "minutes", restButton: "Start rest", remove: "Remove exercise", moveUp: "Move up", moveDown: "Move down", timer: "SESSION CLOCK", start: "Start", pause: "Pause", resume: "Resume", reset: "Reset", restTimer: "REST TIMER", startRest: "Start rest", stop: "Stop", restDone: "Rest timer finished.", restHelp: "Choose a break or use the rest button on any movement.", saveTitle: "DONE FOR TODAY?", saveHeading: "Put it in your journal.", saveIntro: "Send this session to Log a workout with its exercises and time filled in, then check it there and save.", name: "Session name", placeholder: "e.g. Monday strength", duration: "Completed minutes", log: "Add to my workout log", saving: "Saving…", saved: "Session saved to your workout journal.", failed: "We couldn't save your session. Please try again.", noPlan: "Add at least one exercise before saving.", signIn: "Sign in to save", signInfo: "Sign in to keep a workout log, then add this session to it.", privacy: "Privacy Policy", terms: "Terms", print: "Print session", download: "Download plan", exportJson: "Export JSON", printTitle: "My workout plan", draftNote: "Your draft stays on this page. Download it to keep a copy before leaving.", planningNote: "The starting numbers are editable planning suggestions. Choose movements, loads and rest with your coach to suit your ability.", maxExercises: "Your plan can hold up to 20 exercises.", moveCount: "movements", maxTime: "Enter a completed duration between 1 and 600 minutes.", controls: "Session controls", exportEmpty: "Add an exercise to export your session.", logDate: "Logged for today in Jordan", signInNewTab: "Sign in (opens a new tab)",
   },
   ar: {
-    eyebrow: "استوديو التمرين", title: "صمّم حصتك\nعلى طريقتك.", intro: "خطّط لحصة تناسب يومك. اختر إيقاعك، وتابع وقتك، واحفظ ما أنجزته.", tag: "خطّط. تحرّك. كرّر.", library: "مكتبة التمارين", libraryText: "٢٢ حركة. والاختيار لك.", search: "ابحث عن تمرين…", all: "الكل", upper: "الجزء العلوي", lower: "الجزء السفلي", core: "الجذع", full: "الجسم كاملاً", cardio: "الكارديو", bodyweight: "وزن الجسم", dumbbell: "الدمبل", barbell: "البار", machine: "جهاز / كابل", kettlebell: "الكيتلبيل", add: "إضافة", noResults: "لا توجد تمارين مطابقة. جرّب بحثاً آخر.", session: "حصتك التدريبية", sessionText: "رتّب الحركات وعدّل الأرقام بما يناسبك.", empty: "صفحة جديدة. وحصة جديدة.", emptyText: "اختر حركة من المكتبة لتبدأ التخطيط.", exercises: "التمارين", sets: "المجموعات", reps: "التكرارات", rest: "الراحة · ث", seconds: "ثوانٍ", minutes: "دقائق", restButton: "بدء الراحة", remove: "حذف التمرين", moveUp: "نقل للأعلى", moveDown: "نقل للأسفل", timer: "وقت الحصة", start: "بدء", pause: "إيقاف مؤقت", resume: "متابعة", reset: "إعادة الضبط", restTimer: "مؤقّت الراحة", startRest: "بدء الراحة", stop: "إيقاف", restDone: "انتهى وقت الراحة.", restHelp: "اختر مدة الراحة أو استخدم زر الراحة بجانب أي تمرين.", saveTitle: "أنهيت حصة اليوم؟", saveHeading: "أضفها إلى سجلك.", saveIntro: "احفظ الحصة المكتملة في سجل تمارينك الخاص. لا يحجز تخطيط الحصة مساحة في النادي أو موعداً مع مدرب.", name: "اسم الحصة", placeholder: "مثال: تمارين القوة يوم الإثنين", duration: "الدقائق المكتملة", log: "تسجيل الحصة المكتملة", saving: "جارٍ الحفظ…", saved: "حُفظت الحصة في سجل تمارينك.", failed: "تعذّر حفظ الحصة. يرجى المحاولة مرة أخرى.", noPlan: "أضف تمريناً واحداً على الأقل قبل الحفظ.", signIn: "سجّل الدخول للحفظ", signInfo: "سجّل الدخول في علامة التبويب الجديدة ثم عد إلى هنا لحفظ حصتك. أبقِ هذه الصفحة مفتوحة للاحتفاظ بالمسودة.", privacy: "سياسة الخصوصية", terms: "الشروط", print: "طباعة الحصة", download: "تنزيل الخطة", exportJson: "تصدير JSON", printTitle: "خطة تمريني", draftNote: "تبقى المسودة في هذه الصفحة فقط. نزّل نسخة منها للاحتفاظ بها قبل المغادرة.", planningNote: "الأرقام الأولية مقترحات قابلة للتعديل للتخطيط. اختر الحركات والأوزان والراحة مع مدربك بما يناسب قدرتك.", maxExercises: "تتسع الخطة لعشرين تمريناً كحد أقصى.", moveCount: "حركات", maxTime: "أدخل مدة مكتملة بين دقيقة واحدة و٦٠٠ دقيقة.", controls: "أدوات الحصة", exportEmpty: "أضف تمريناً لتصدير حصتك.", logDate: "يُحفظ بتاريخ اليوم في الأردن", signInNewTab: "تسجيل الدخول (يفتح علامة تبويب جديدة)",
+    eyebrow: "استوديو التمرين", title: "صمّم حصتك\nعلى طريقتك.", intro: "خطّط لحصة تناسب يومك. اختر إيقاعك، وتابع وقتك، واحفظ ما أنجزته.", tag: "خطّط. تحرّك. كرّر.", library: "مكتبة التمارين", libraryText: "٢٢ حركة. والاختيار لك.", search: "ابحث عن تمرين…", all: "الكل", upper: "الجزء العلوي", lower: "الجزء السفلي", core: "الجذع", full: "الجسم كاملاً", cardio: "الكارديو", bodyweight: "وزن الجسم", dumbbell: "الدمبل", barbell: "البار", machine: "جهاز / كابل", kettlebell: "الكيتلبيل", add: "إضافة", noResults: "لا توجد تمارين مطابقة. جرّب بحثاً آخر.", session: "حصتك التدريبية", sessionText: "رتّب الحركات وعدّل الأرقام بما يناسبك.", empty: "صفحة جديدة. وحصة جديدة.", emptyText: "اختر حركة من المكتبة لتبدأ التخطيط.", exercises: "التمارين", sets: "المجموعات", reps: "التكرارات", rest: "الراحة · ث", seconds: "ثوانٍ", minutes: "دقائق", restButton: "بدء الراحة", remove: "حذف التمرين", moveUp: "نقل للأعلى", moveDown: "نقل للأسفل", timer: "وقت الحصة", start: "بدء", pause: "إيقاف مؤقت", resume: "متابعة", reset: "إعادة الضبط", restTimer: "مؤقّت الراحة", startRest: "بدء الراحة", stop: "إيقاف", restDone: "انتهى وقت الراحة.", restHelp: "اختر مدة الراحة أو استخدم زر الراحة بجانب أي تمرين.", saveTitle: "أنهيت حصة اليوم؟", saveHeading: "أضفها إلى سجلك.", saveIntro: "أرسل هذه الحصة إلى «سجّل تمريناً» مع تمارينها ووقتها، ثم راجعها هناك واحفظها.", name: "اسم الحصة", placeholder: "مثال: تمارين القوة يوم الإثنين", duration: "الدقائق المكتملة", log: "أضفها إلى سجل تماريني", saving: "جارٍ الحفظ…", saved: "حُفظت الحصة في سجل تمارينك.", failed: "تعذّر حفظ الحصة. يرجى المحاولة مرة أخرى.", noPlan: "أضف تمريناً واحداً على الأقل قبل الحفظ.", signIn: "سجّل الدخول للحفظ", signInfo: "سجّل الدخول لتحتفظ بسجل تمارينك، ثم أضف هذه الحصة إليه.", privacy: "سياسة الخصوصية", terms: "الشروط", print: "طباعة الحصة", download: "تنزيل الخطة", exportJson: "تصدير JSON", printTitle: "خطة تمريني", draftNote: "تبقى المسودة في هذه الصفحة فقط. نزّل نسخة منها للاحتفاظ بها قبل المغادرة.", planningNote: "الأرقام الأولية مقترحات قابلة للتعديل للتخطيط. اختر الحركات والأوزان والراحة مع مدربك بما يناسب قدرتك.", maxExercises: "تتسع الخطة لعشرين تمريناً كحد أقصى.", moveCount: "حركات", maxTime: "أدخل مدة مكتملة بين دقيقة واحدة و٦٠٠ دقيقة.", controls: "أدوات الحصة", exportEmpty: "أضف تمريناً لتصدير حصتك.", logDate: "يُحفظ بتاريخ اليوم في الأردن", signInNewTab: "تسجيل الدخول (يفتح علامة تبويب جديدة)",
   },
 };
 
@@ -64,13 +63,7 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
   const [search, setSearch] = useState("");
   const [group, setGroup] = useState<Group>("all");
   const [plan, setPlan] = useState<PlannedExercise[]>([]);
-  const [name, setName] = useState("");
-  const [completedMinutes, setCompletedMinutes] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [logged, setLogged] = useState(false);
   const [feedback, setFeedback] = useState("");
-  const [needsSignIn, setNeedsSignIn] = useState(false);
   const [elapsedBase, setElapsedBase] = useState(0);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(0);
@@ -83,7 +76,6 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
   const totalSets = plan.reduce((sum, item) => sum + item.sets, 0);
   const filtered = useMemo(() => exercises.filter((exercise) => (group === "all" || exercise.group === group) && `${exercise.en} ${exercise.ar} ${t[exercise.equipment]}`.toLowerCase().includes(search.trim().toLowerCase())), [group, search, t]);
 
-  useEffect(() => { setLogged(false); }, [plan, name, completedMinutes]);
 
   useEffect(() => {
     if (!running && restEndsAt === null) return;
@@ -151,7 +143,7 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
 
   function download(format: "txt" | "json") {
     if (!plan.length) { setFeedback(t.exportEmpty); return; }
-    const draft = { title: name || t.printTitle, date: ammanDate(), exercises: plan.map((item) => {
+    const draft = { title: t.printTitle, date: ammanDate(), exercises: plan.map((item) => {
       const exercise = exercises.find((entry) => entry.id === item.exerciseId)!;
       return { name: tr(exercise.en, exercise.ar), equipment: t[exercise.equipment], sets: item.sets, quantity: item.reps, unit: exercise.unit ?? "reps", restSeconds: item.rest };
     }) };
@@ -162,19 +154,14 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  async function logWorkout(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setFeedback("");
+  // "Add to my workout log": fill the Log a workout form above with this session; the member checks it and saves there.
+  function toLog() {
+    setFeedback("");
     if (!plan.length) { setFeedback(t.noPlan); return; }
-    if (!consent) { setFeedback(legalError(lang)); return; }
-    const duration = Number(completedMinutes || Math.max(1, Math.ceil(elapsed / 60)));
-    if (!Number.isInteger(duration) || duration < 1 || duration > 600) { setFeedback(t.maxTime); return; }
-    setSaving(true); setNeedsSignIn(false);
-    try {
-      const response = await fetch("/api/workouts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), duration, date: ammanDate(), notes: exerciseLines().join("\n").slice(0, 1000), consent: true }) });
-      if (response.status === 401) { setNeedsSignIn(true); setFeedback(t.signInfo); return; }
-      if (!response.ok) { setFeedback(t.failed); return; }
-      setFeedback(t.saved); setConsent(false); setLogged(true); memberChanged();
-    } catch { setFeedback(t.failed); } finally { setSaving(false); }
+    const names = plan.map((item) => { const e = exercises.find((x) => x.id === item.exerciseId)!; return tr(e.en, e.ar); });
+    const more = names.length > 2 ? ` +${lang === "ar" ? (names.length - 2).toLocaleString("ar-JO-u-nu-arab") : names.length - 2}` : "";
+    const taken = prefillLog({ name: `${names.slice(0, 2).join(" · ")}${more}`.slice(0, 100), duration: elapsed >= 60 ? Math.min(600, Math.ceil(elapsed / 60)) : null, notes: exerciseLines().join("\n").slice(0, 1000) });
+    if (!taken) setFeedback(t.signInfo);
   }
 
   return <div className="hp3-studio" dir={lang === "ar" ? "rtl" : "ltr"}>
@@ -205,7 +192,7 @@ export default function WorkoutStudio({ embedded = false }: { embedded?: boolean
         <div className="hp3-studio-rest-clock"><span><Timer size={15} />{t.restTimer}</span><strong dir="ltr">{formatClock(remainingRest)}</strong><div className="hp3-studio-rest-choices">{[60, 90, 120].map((value) => <button type="button" key={value} aria-pressed={restSeconds === value} onClick={() => setRestSeconds(value)} dir="ltr">{value}s</button>)}<input type="number" aria-label={`${t.restTimer}: ${t.seconds}`} min={1} max={600} value={restSeconds} onChange={(event) => setRestSeconds(Math.max(1, Math.min(600, Number(event.target.value) || 1)))} /></div><button type="button" className="hp3-studio-rest-start" onClick={() => restEndsAt !== null ? setRestEndsAt(null) : startRest(restSeconds)}>{restEndsAt !== null ? t.stop : t.startRest}</button><p>{t.restHelp}</p><span className="hp3-studio-rest-message" role="status">{restMessage}</span></div>
       </section>
 
-      <section className="hp3-studio-save" aria-labelledby="studio-save"><div><span>{t.saveTitle}</span><h2 id="studio-save">{t.saveHeading}</h2><p>{t.saveIntro}</p></div><form onSubmit={logWorkout}><div className="hp3-studio-save-fields"><label>{t.name}<input required minLength={2} maxLength={100} value={name} onChange={(event) => setName(event.target.value)} placeholder={t.placeholder} /></label><label>{t.duration}<input required type="number" min={1} max={600} step={1} value={completedMinutes || Math.max(1, Math.ceil(elapsed / 60))} onChange={(event) => setCompletedMinutes(event.target.value)} /></label></div><small>{t.logDate}</small><label className="hp3-studio-consent"><input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} /><span>{legalConsent(lang)} <a href={lang === "ar" ? "/ar/privacy" : "/privacy"} target="_blank" rel="noopener noreferrer">{t.privacy}</a> · <a href={lang === "ar" ? "/ar/terms" : "/terms"} target="_blank" rel="noopener noreferrer">{t.terms}</a></span></label><button type="submit" className="hp3-studio-log" disabled={saving || !plan.length || logged}>{saving ? <LoaderCircle size={17} className="hp3-studio-spinner" /> : <Check size={17} />}{saving ? t.saving : logged ? t.saved : t.log}<ArrowUpRight size={17} /></button><p className="hp3-studio-feedback" role="status">{feedback}</p>{needsSignIn && <a className="hp3-studio-signin" href="/signin-with-chatgpt?return_to=/tools" target="_blank" rel="noopener noreferrer" aria-label={t.signInNewTab}>{t.signIn}<ArrowUpRight size={16} /></a>}</form></section>
+      <section className="hp3-studio-save" aria-labelledby="studio-save"><div><span>{t.saveTitle}</span><h2 id="studio-save">{t.saveHeading}</h2><p>{t.saveIntro}</p></div><div className="hp3-studio-handoff"><button type="button" className="hp3-studio-log" disabled={!plan.length} onClick={toLog}><Check size={17} />{t.log}<ArrowUpRight size={17} /></button><p className="hp3-studio-feedback" role="status">{feedback}</p></div></section>
       </div>
     </div>
   </div>;

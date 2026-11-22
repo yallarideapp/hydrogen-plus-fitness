@@ -5,10 +5,10 @@
 // the data once and arranges these under its three tabs; each piece only saves or deletes, then announces the change
 // (memberChanged) so the page reloads its numbers.
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ChevronLeft, ChevronRight, LoaderCircle, Plus, Trash2, X } from "lucide-react";
 import { legalConsent, legalError } from "@/lib/legal";
-import { memberChanged } from "@/lib/member-events";
+import { LOG_PREFILL, memberChanged, type LogPrefill } from "@/lib/member-events";
 
 export type Lang = "en" | "ar";
 export type Workout = { id: string | number; name: string; duration: number; date: string; notes?: string | null };
@@ -19,14 +19,14 @@ export type MemberData = { user: { displayName: string; email: string } | null; 
 const copy = {
   en: {
     addWorkout: "Log a workout", quick: "Quick picks", workoutName: "What did you train?", workoutPlaceholder: "e.g. Chest and triceps", duration: "Duration (minutes)", date: "Date", notes: "Notes (optional)", notesPlaceholder: "What went well today?", saveWorkout: "Save workout", saving: "Saving…", workoutSaved: "Workout saved. Keep showing up.", weightSaved: "Weight saved.", deleted: "Entry deleted.", allDeleted: "Your saved records have been deleted.", saveError: "We couldn't save that. Please try again.", deleteError: "We couldn't delete that. Please try again.", privacy: "Privacy Policy", terms: "Terms & Conditions", deleteEntry: "Delete entry",
-    prevMonth: "Previous month", nextMonth: "Next month", statSessions: "Workouts", statTime: "Time", statDays: "Training days", statAvg: "Average", calLabel: "Days of the month. Choose a day to log its workout.", monthWorkouts: "This month's workouts", emptyMonth: "No workouts logged this month.", showAllRows: "Show all", showLess: "Show fewer", moreThanLast: "more than last month", fewerThanLast: "fewer than last month", sameAsLast: "Same as last month", workoutsOn: "workouts", classTag: "Class",
+    prevMonth: "Previous month", nextMonth: "Next month", statSessions: "Workouts", statTime: "Time", statDays: "Training days", statAvg: "Average", calLabel: "Days of the month. Choose a day to log its workout.", monthWorkouts: "This month's workouts", emptyMonth: "No workouts logged this month.", showAllRows: "Show all", showLess: "Show fewer", moreThanLast: "more than last month", fewerThanLast: "fewer than last month", sameAsLast: "Same as last month", workoutsOn: "workouts", classTag: "Class", prefilled: "Filled in from your workout. Check it, tick the box and save.",
     weightTitle: "My weight", weightIntro: "Record your weight every so often and see how it changes. These are personal records, not a health assessment.", weightLabel: "Today's weight (kg)", saveWeight: "Add weight", emptyWeights: "Add a weight to start your chart.", allEntries: "All entries", chartLabel: "Weight history in kilograms", kg: "kg", since: "since",
     requests: "My requests", requestIntro: "Tour, membership and class requests you send appear here. The club confirms availability and prices with you directly.", emptyRequests: "No requests yet.", pending: "Awaiting confirmation", contacted: "Contacted by the team", confirmed: "Confirmed", cancelled: "Cancelled", rejected: "Not available", preferred: "Preferred date", tour: "Club tour", membership: "Membership request", class: "Class enquiry", training: "Personal training", contact: "Contact enquiry",
     privacyText: "Your records are private to your account.", signedInAs: "Signed in as", help: "Help centre", signOut: "Sign out", deleteData: "Delete my saved data", deleteConfirm: "Delete all saved records? This cannot be undone.", confirmDelete: "Yes, delete my data", cancel: "Cancel", deleteBusy: "Deleting…",
   },
   ar: {
     addWorkout: "سجّل تمريناً", quick: "اختيارات سريعة", workoutName: "ماذا تمرّنت؟", workoutPlaceholder: "مثال: صدر وترايسبس", duration: "المدة (بالدقائق)", date: "التاريخ", notes: "ملاحظات (اختياري)", notesPlaceholder: "كيف كان تمرينك اليوم؟", saveWorkout: "حفظ التمرين", saving: "جارٍ الحفظ…", workoutSaved: "تم حفظ التمرين. واصل التقدم.", weightSaved: "تم حفظ الوزن.", deleted: "تم حذف الإدخال.", allDeleted: "تم حذف سجلاتك المحفوظة.", saveError: "تعذّر الحفظ. يُرجى المحاولة مرة أخرى.", deleteError: "تعذّر الحذف. يُرجى المحاولة مرة أخرى.", privacy: "سياسة الخصوصية", terms: "الشروط والأحكام", deleteEntry: "حذف الإدخال",
-    prevMonth: "الشهر السابق", nextMonth: "الشهر التالي", statSessions: "التمارين", statTime: "الوقت", statDays: "أيام التمرين", statAvg: "معدل التمرين", calLabel: "أيام الشهر. اختر يوماً لتسجيل تمرينه.", monthWorkouts: "تمارين الشهر", emptyMonth: "لا توجد تمارين مسجّلة في هذا الشهر.", showAllRows: "عرض الكل", showLess: "عرض أقل", moreThanLast: "أكثر من الشهر الماضي", fewerThanLast: "أقل من الشهر الماضي", sameAsLast: "مثل الشهر الماضي", workoutsOn: "تمارين", classTag: "حصة",
+    prevMonth: "الشهر السابق", nextMonth: "الشهر التالي", statSessions: "التمارين", statTime: "الوقت", statDays: "أيام التمرين", statAvg: "معدل التمرين", calLabel: "أيام الشهر. اختر يوماً لتسجيل تمرينه.", monthWorkouts: "تمارين الشهر", emptyMonth: "لا توجد تمارين مسجّلة في هذا الشهر.", showAllRows: "عرض الكل", showLess: "عرض أقل", moreThanLast: "أكثر من الشهر الماضي", fewerThanLast: "أقل من الشهر الماضي", sameAsLast: "مثل الشهر الماضي", workoutsOn: "تمارين", classTag: "حصة", prefilled: "عُبّئ النموذج من حصتك. راجعه ثم وافق واحفظ.",
     weightTitle: "وزني", weightIntro: "سجّل وزنك بين فترة وأخرى وتابع تغيّره. هذه سجلات شخصية وليست تقييماً صحياً.", weightLabel: "وزن اليوم (كغ)", saveWeight: "أضف الوزن", emptyWeights: "أضف وزناً لبدء مخططك.", allEntries: "كل القياسات", chartLabel: "سجل الوزن بالكيلوغرام", kg: "كغ", since: "منذ",
     requests: "طلباتي", requestIntro: "تظهر هنا طلبات الزيارة والاشتراك والحصص التي ترسلها. يؤكد النادي التوفر والأسعار معك مباشرة.", emptyRequests: "لا توجد طلبات بعد.", pending: "بانتظار التأكيد", contacted: "تم التواصل", confirmed: "مؤكد", cancelled: "ملغى", rejected: "غير متاح", preferred: "التاريخ المفضّل", tour: "زيارة النادي", membership: "طلب اشتراك", class: "استفسار عن حصة", training: "تدريب شخصي", contact: "طلب تواصل",
     privacyText: "سجلاتك خاصة بحسابك.", signedInAs: "الحساب:", help: "مركز المساعدة", signOut: "تسجيل الخروج", deleteData: "حذف بياناتي المحفوظة", deleteConfirm: "هل تريد حذف جميع السجلات؟ لا يمكن التراجع عن هذا الإجراء.", confirmDelete: "نعم، احذف بياناتي", cancel: "إلغاء", deleteBusy: "جارٍ الحذف…",
@@ -100,6 +100,9 @@ export function WorkoutLog({ lang, workouts, classes = [], onSignedOut }: { lang
   const [month, setMonth] = useState(thisMonth);
   const [date, setDate] = useState(today);
   const [name, setName] = useState("");
+  const [duration, setDuration] = useState("60");
+  const [notes, setNotes] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
   const [busy, setBusy] = useState("");
   const [fb, setFb] = useState<Feedback>(quiet);
   const [all, setAll] = useState(false);
@@ -119,17 +122,30 @@ export function WorkoutLog({ lang, workouts, classes = [], onSignedOut }: { lang
   const lead = (first.getUTCDay() + 1) % 7; // empty cells before day 1, week starting Saturday
   const heads = Array.from({ length: 7 }, (_, i) => new Intl.DateTimeFormat(locale(lang), { weekday: "narrow", timeZone: "UTC" }).format(new Date(Date.UTC(2023, 0, 7 + i)))); // 7 Jan 2023 was a Saturday
 
+  // A session from the workout builder: fill the form with it, then bring the form into view to check and save.
+  useEffect(() => {
+    const take = (e: Event) => {
+      const d = (e as CustomEvent<LogPrefill>).detail;
+      e.preventDefault();
+      setName(d.name); if (d.duration) setDuration(String(d.duration)); setNotes(d.notes); setDate(today); setMonth(today.slice(0, 7));
+      setFb({ error: "", notice: t.prefilled });
+      requestAnimationFrame(() => { formRef.current?.scrollIntoView({ block: "start", behavior: "smooth" }); formRef.current?.querySelector<HTMLInputElement>('input[name="consent"]')?.focus({ preventScroll: true }); });
+    };
+    window.addEventListener(LOG_PREFILL, take);
+    return () => window.removeEventListener(LOG_PREFILL, take);
+  }, [today, t.prefilled]);
+
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const values = new FormData(form);
     if (values.get("consent") !== "on") { setFb({ error: legalError(lang), notice: "" }); return; }
     setBusy("save"); setFb(quiet);
-    const result = await send("/api/workouts", json({ name: name.trim(), duration: Number(values.get("duration")), date, notes: String(values.get("notes") ?? "").trim(), consent: true }));
+    const result = await send("/api/workouts", json({ name: name.trim(), duration: Number(duration), date, notes: notes.trim(), consent: true }));
     setBusy("");
     if (result === "signedOut") { onSignedOut(); return; }
     if (result !== "ok") { setFb({ error: t.saveError, notice: "" }); return; }
-    form.reset(); setName(""); setMonth(date.slice(0, 7)); setFb({ error: "", notice: t.workoutSaved }); memberChanged();
+    form.reset(); setName(""); setDuration("60"); setNotes(""); setMonth(date.slice(0, 7)); setFb({ error: "", notice: t.workoutSaved }); memberChanged();
   }
   async function remove(i: Item) {
     const id = i.kind === "workout" ? i.w.id : i.c.id;
@@ -166,15 +182,15 @@ export function WorkoutLog({ lang, workouts, classes = [], onSignedOut }: { lang
           })}
         </div>
       </section>
-      <form className="ac-card ac-form" onSubmit={(event) => void save(event)}>
+      <form ref={formRef} className="ac-card ac-form" onSubmit={(event) => void save(event)}>
         <h3>{t.addWorkout}</h3>
         <div className="ac-quick" role="group" aria-label={t.quick}>{QUICK[lang].map((q) => <button type="button" key={q} className={name === q ? "is-on" : ""} onClick={() => setName(q)}>{q}</button>)}</div>
         <label className="hp3-field">{t.workoutName}<input className="hp3-input" name="name" value={name} onChange={(e) => setName(e.target.value)} required minLength={2} maxLength={100} placeholder={t.workoutPlaceholder} enterKeyHint="done" /></label>
         <div className="ac-form-row">
-          <label className="hp3-field">{t.duration}<input className="hp3-input" name="duration" type="number" inputMode="numeric" min="1" max="600" step="1" defaultValue="60" required /></label>
+          <label className="hp3-field">{t.duration}<input className="hp3-input" name="duration" type="number" inputMode="numeric" min="1" max="600" step="1" value={duration} onChange={(e) => setDuration(e.target.value)} required /></label>
           <label className="hp3-field">{t.date}<input className="hp3-input" name="date" type="date" value={date} max={today} onChange={(e) => { if (e.target.value) setDate(e.target.value); }} required /></label>
         </div>
-        <label className="hp3-field">{t.notes}<textarea className="hp3-input" name="notes" maxLength={1000} rows={2} placeholder={t.notesPlaceholder} /></label>
+        <label className="hp3-field">{t.notes}<textarea className="hp3-input" name="notes" maxLength={1000} rows={notes.includes("\n") ? 4 : 2} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t.notesPlaceholder} /></label>
         <Consent lang={lang} />
         <Status {...fb} />
         <button className="hp3-button hp3-red" type="submit" disabled={busy !== ""}>{busy === "save" ? <LoaderCircle size={16} className="ac-spin" /> : <Plus size={16} />}{busy === "save" ? t.saving : t.saveWorkout}</button>
