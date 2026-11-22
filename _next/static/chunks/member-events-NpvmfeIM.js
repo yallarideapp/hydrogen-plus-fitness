@@ -1,0 +1,1 @@
+var e=`hp-member-changed`,t=()=>{window.dispatchEvent(new Event(e))},n=`hp-log-prefill`,r=e=>!window.dispatchEvent(new CustomEvent(n,{detail:e,cancelable:!0}));export{r as i,e as n,t as r,n as t};

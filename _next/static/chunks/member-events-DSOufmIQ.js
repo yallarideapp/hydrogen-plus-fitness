@@ -1,1 +1,0 @@
-var e=`hp-member-changed`,t=()=>{window.dispatchEvent(new Event(e))};export{t as n,e as t};
