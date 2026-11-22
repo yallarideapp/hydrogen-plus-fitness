@@ -198,6 +198,7 @@ html.hx-light .ac-page input[type=date]{color-scheme:light}
  .hp3[dir=rtl] .ac-id h1{font-size:38px;line-height:1.35}
  .ac-plan{line-height:1.6}
  .ac-plan{font-size:14px;margin-top:6px}
+ .hp3[dir=rtl] .ac-plan{margin-top:12px}
  .ac-glance b{font-size:23px}
  .hp3[dir=rtl] .ac-glance b{font-size:18px}
  .ac-glance span{font-size:12px;line-height:1.5}
