@@ -101,7 +101,10 @@ export default function Calculators() {
   const oneRm = R <= 1 ? L : L * (1 + R / 30);
   const maxHr = 208 - 0.7 * A;
   const zones: [string, number, number][] = [[t('Zone 1 · easy recovery', 'المنطقة 1 · استشفاء سهل'), .5, .6], [t('Zone 2 · steady endurance', 'المنطقة 2 · تحمّل ثابت'), .6, .7], [t('Zone 3 · tempo', 'المنطقة 3 · إيقاع متوسط'), .7, .8], [t('Zone 4 · threshold', 'المنطقة 4 · العتبة'), .8, .9], [t('Zone 5 · max effort', 'المنطقة 5 · أقصى جهد'), .9, 1]];
-  const water = W * 0.033 + (num(mins) / 30) * 0.35;
+  // Water a day: about 33 ml per kg of body weight, plus 350 ml for every 30 minutes of training. With a body-scan reading it
+  // follows fat-free mass instead, since lean tissue holds most of the body's water: 41 ml per kg of fat-free mass, the same
+  // amount for a man at 20% body fat (as on the Galaxy Gym site).
+  const water = (byComp ? lean * 0.041 : W * 0.033) + (num(mins) / 30) * 0.35;
   const N = num(neck), Wa = num(waist), Hi = num(hip);
   const bf = !picked ? NaN : sex === 'm' ? 495 / (1.0324 - 0.19077 * Math.log10(Wa - N) + 0.15456 * Math.log10(H)) - 450 : 495 / (1.29579 - 0.35004 * Math.log10(Wa + Hi - N) + 0.221 * Math.log10(H)) - 450;
 
@@ -165,7 +168,7 @@ export default function Calculators() {
         <Card icon={<HeartPulse size={22} />} title={t('Heart-rate zones', 'مناطق نبض القلب')} intro={t('Estimated max heart rate (208 − 0.7 × age) and training zones.', 'تقدير أقصى نبض (208 − 0.7 × العمر) ومناطق التدريب.')} result={<><b>{n0(maxHr)} <em>bpm</em></b><ul className="fc-zones">{zones.map(([l, a, b]) => <li key={l}><span>{l}</span><b dir="ltr">{n0(maxHr * a)}–{n0(maxHr * b)}</b></li>)}</ul></>}>
           <p className="fc-hint">{t('Uses your age above. Great for cycling and cardio classes.', 'يستخدم عمرك أعلاه. مفيد لحصص الدراجات والكارديو.')}</p>
         </Card>
-        <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم 250 مل')}</span></>}>
+        <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم 250 مل')}</span>{byComp && <small>{t('Worked out from your fat-free mass, as you entered a body-scan reading.', 'محسوبة من كتلتك الخالية من الدهون لأنك أدخلت قراءة جهاز تحليل الجسم.')}</small>}</>}>
           <Field label={t('Training today', 'مدة التمرين اليوم')} value={mins} onChange={setMins} unit={t('min', 'دقيقة')} min={0} max={300} step={5} />
         </Card>
         <Card id="body-fat" icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={!picked ? need : <><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
