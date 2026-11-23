@@ -132,7 +132,7 @@ export default function Calculators() {
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
           {totalMuscle && <small>{t('A reading above 50% is total muscle mass, not skeletal muscle. It works out to a body fat of about', 'القراءة فوق 50% هي الكتلة العضلية الكلية وليست العضلات الهيكلية، وتعادل نسبة دهون تقارب')} {n0(fatPct)}%.</small>}
           {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
-          {compLevel >= 2 && asFat && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 0 && asFat && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
         </>}>
           <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
           <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
