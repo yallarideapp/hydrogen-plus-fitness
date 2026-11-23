@@ -118,9 +118,9 @@
       "_phone-D36fIaBK.js"
     ]
   },
-  "_feature-pages.C2sO2E_Z.css": {
-    "file": "_next/static/css/feature-pages.C2sO2E_Z.css",
-    "src": "_feature-pages.C2sO2E_Z.css"
+  "_feature-pages.DyFTGFua.css": {
+    "file": "_next/static/css/feature-pages.DyFTGFua.css",
+    "src": "_feature-pages.DyFTGFua.css"
   },
   "_flame-CXGQpImP.js": {
     "file": "_next/static/chunks/flame-CXGQpImP.js",
@@ -251,7 +251,7 @@
     ]
   },
   "components/admin/AdminPanel.tsx": {
-    "file": "_next/static/chunks/AdminPanel-BBGScutn.js",
+    "file": "_next/static/chunks/AdminPanel-D7g7wTYP.js",
     "name": "AdminPanel",
     "src": "components/admin/AdminPanel.tsx",
     "isDynamicEntry": true,
@@ -283,7 +283,7 @@
     ]
   },
   "components/gym/Calculators.tsx": {
-    "file": "_next/static/chunks/Calculators-DYeFMC6a.js",
+    "file": "_next/static/chunks/Calculators-BjqAiIdy.js",
     "name": "Calculators",
     "src": "components/gym/Calculators.tsx",
     "isDynamicEntry": true,
@@ -300,12 +300,12 @@
       "_framework-D_rUT4EX.js"
     ],
     "css": [
-      "_next/static/css/feature-pages.C2sO2E_Z.css",
+      "_next/static/css/feature-pages.DyFTGFua.css",
       "_next/static/css/service-page.NlpRtbH4.css"
     ]
   },
   "components/gym/CareersPage.tsx": {
-    "file": "_next/static/chunks/CareersPage-C-CVm2s-.js",
+    "file": "_next/static/chunks/CareersPage-Bf_TmwBC.js",
     "name": "CareersPage",
     "src": "components/gym/CareersPage.tsx",
     "isDynamicEntry": true,
@@ -318,7 +318,7 @@
       "_framework-D_rUT4EX.js"
     ],
     "css": [
-      "_next/static/css/feature-pages.C2sO2E_Z.css",
+      "_next/static/css/feature-pages.DyFTGFua.css",
       "_next/static/css/service-page.NlpRtbH4.css"
     ]
   },
@@ -376,7 +376,7 @@
     ]
   },
   "components/gym/CoachesPage.tsx": {
-    "file": "_next/static/chunks/CoachesPage-DjpusGWT.js",
+    "file": "_next/static/chunks/CoachesPage-BAL4Aahw.js",
     "name": "CoachesPage",
     "src": "components/gym/CoachesPage.tsx",
     "isDynamicEntry": true,
@@ -394,12 +394,12 @@
     ],
     "css": [
       "_next/static/css/experiences.51ggzAUO.css",
-      "_next/static/css/feature-pages.C2sO2E_Z.css",
+      "_next/static/css/feature-pages.DyFTGFua.css",
       "_next/static/css/service-page.NlpRtbH4.css"
     ]
   },
   "components/gym/ContactPage.tsx": {
-    "file": "_next/static/chunks/ContactPage-juwBdsiK.js",
+    "file": "_next/static/chunks/ContactPage-0vXccYdI.js",
     "name": "ContactPage",
     "src": "components/gym/ContactPage.tsx",
     "isDynamicEntry": true,
@@ -416,7 +416,7 @@
       "_framework-D_rUT4EX.js"
     ],
     "css": [
-      "_next/static/css/feature-pages.C2sO2E_Z.css",
+      "_next/static/css/feature-pages.DyFTGFua.css",
       "_next/static/css/service-page.NlpRtbH4.css"
     ]
   },
@@ -686,7 +686,7 @@
     "isDynamicEntry": true
   },
   "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
-    "file": "_next/static/chunks/app-route-prefetch-policy-DYpxAjNX.js",
+    "file": "_next/static/chunks/app-route-prefetch-policy-CpE4miis.js",
     "name": "app-route-prefetch-policy",
     "src": "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
     "isDynamicEntry": true,
@@ -695,7 +695,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-SfbHVZqK.js",
+    "file": "_next/static/chunks/layout-segment-context-YH7exg6I.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -716,7 +716,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-Bk-nq7ht.js",
+    "file": "_next/static/chunks/index-DISfwq9I.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
