@@ -53,11 +53,6 @@ export default function Calculators() {
   const bmi = W / ((H / 100) ** 2);
   const bmiBand = !Number.isFinite(bmi) ? '' : bmi < 18.5 ? t('Below the healthy range', 'أقل من المعدل الصحي') : bmi < 25 ? t('Within the healthy range', 'ضمن المعدل الصحي') : bmi < 30 ? t('Above the healthy range', 'أعلى من المعدل الصحي') : t('Well above the healthy range', 'أعلى بكثير من المعدل الصحي');
   const healthyLo = 18.5 * (H / 100) ** 2, healthyHi = 24.9 * (H / 100) ** 2;
-  // The BMI limits are wide (the lower one is the edge of underweight, not a target), so the card leads with the usual
-  // "ideal weight" for the height: the span of the Devine, Robinson, Miller and Hamwi formulas, kept inside the BMI limits.
-  const over60 = H / 2.54 - 60;
-  const ideal = (sex === 'm' ? [50 + 2.3 * over60, 52 + 1.9 * over60, 56.2 + 1.41 * over60, 48 + 2.7 * over60] : [45.5 + 2.3 * over60, 49 + 1.7 * over60, 53.1 + 1.36 * over60, 45.5 + 2.2 * over60]).map((v) => Math.min(Math.max(v, healthyLo), healthyHi));
-  const idealLo = Math.min(...ideal), idealHi = Math.max(...ideal);
   const whtr = num(waist) / H;
   // Optional reading from a body-composition scale: body fat %, or muscle %.
   // Muscle % comes in two kinds. Omron-type scales give skeletal muscle (about 25–45%; the scale shows 50% at most).
@@ -74,7 +69,20 @@ export default function Calculators() {
   const compLevel = !hasComp ? -1 : asFat ? level(fatPct, FAT_BANDS[sex][band]) : level(C, MUSCLE_BANDS[sex][band]);
   const fb = FAT_BANDS[sex][band];
   const lean = W * (1 - fatPct / 100); // fat-free mass, kg
-  const fitLo = lean / (1 - fb[0] / 100), fitHi = lean / (1 - fb[1] / 100);
+  // A good weight for the height, for a gym member: an athletic build (fat-free mass index 20–22 for men, 15–17 for women)
+  // at the middle of the healthy body-fat band. The BMI limits are wide and their lower end is the edge of underweight, and
+  // the classic ideal-weight formulas describe a light, untrained build (73–79 kg for a 182 cm man), which reads as too thin.
+  const h2 = (H / 100) ** 2;
+  const FFMI: [number, number] = sex === 'm' ? [20, 22] : [15, 17];
+  const fbMid = (fb[0] + fb[1]) / 2;
+  const idealLo = (FFMI[0] * h2) / (1 - fbMid / 100), idealHi = (FFMI[1] * h2) / (1 - fbMid / 100);
+  // With a fat (or total-muscle) reading: the weight at a healthy body fat on this member's own lean mass, but never on less
+  // lean mass than the athletic build above. A member with little muscle is pointed at building it, not at a low weight.
+  // The range starts at the member's own body fat when that is already in the leaner half of the healthy band.
+  const leanRef = FFMI[0] * h2;
+  const buildMuscle = lean < leanRef;
+  const leanGoal = Math.max(lean, leanRef);
+  const fitLo = leanGoal / (1 - Math.min(Math.max(fatPct, fb[0]), fbMid) / 100), fitHi = leanGoal / (1 - fb[1] / 100);
   const overBmi = bmi >= 25;
   const compVerdict = compLevel < 0 ? '' : asFat
     ? [t('Body fat is below the healthy range — your weight isn’t too high. Talk to the nutritionist about gaining well.', 'نسبة الدهون أقل من المعدل الصحي، فوزنك ليس زائداً. تحدّث مع أخصائية التغذية عن زيادة صحية.'),
@@ -129,13 +137,14 @@ export default function Calculators() {
         <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('A quick check of your weight for your height. It can’t tell muscle from fat, so a muscular member may show as overweight — the waist check below helps.', 'مقارنة سريعة بين وزنك وطولك. لا يفرّق بين العضل والدهون، لذلك قد يظهر المتدرّب صاحب العضلات الكبيرة بوزن زائد — قياس الخصر بالأسفل يوضّح الصورة.')} result={<>
           <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
           {!picked && need}
-          {picked && Number.isFinite(idealLo) && <span>{t('A good weight for your height', 'الوزن المناسب لطولك')}: {t('about', 'نحو')} {n0(idealLo) === n0(idealHi) ? n0(idealLo) : `${n0(idealLo)}–${n0(idealHi)}`} {t('kg', 'كغ')}</span>}
+          {picked && !(compLevel >= 0 && asFat) && Number.isFinite(idealLo) && <span>{t('A good weight for your height, with an athletic build', 'وزن مناسب لطولك ببنية رياضية')}: {t('about', 'نحو')} {n0(idealLo)}–{n0(idealHi)} {t('kg', 'كغ')}</span>}
           {Number.isFinite(healthyLo) && <span>{t('Healthy limits by BMI', 'الحدود الصحية حسب المؤشر')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re above the upper limit by', 'أنت أعلى من الحد الأعلى بـ')} ${n0(W - healthyHi)} ${t('kg', 'كغ')}` : W < healthyLo ? ` · ${t('you’re below the lower limit by', 'أنت أقل من الحد الأدنى بـ')} ${n0(healthyLo - W)} ${t('kg', 'كغ')}` : ''}</span>}
           {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من 0.5)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
-          {totalMuscle && <small>{t('A reading above 50% is total muscle mass, not skeletal muscle. It works out to a body fat of about', 'القراءة فوق 50% هي الكتلة العضلية الكلية وليست العضلات الهيكلية، وتعادل نسبة دهون تقارب')} {n0(fatPct)}%.</small>}
+          {totalMuscle && <small>{t('A reading above 50% is total muscle mass. Add bone (about', 'القراءة فوق 50% هي الكتلة العضلية الكلية. يُضاف إليها العظم (نحو')} {n0(C * 0.0526)}%){t(', and what is left of your weight is fat: about', '، وما يبقى من الوزن دهون: نحو')} {n0(fatPct)}%. {t('Your scale shows body fat too, and it should be close to this.', 'جهازك يعرض نسبة الدهون أيضاً، ويُفترض أن تكون قريبة من هذا الرقم.')}</small>}
           {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
-          {compLevel >= 0 && asFat && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 0 && asFat && <span>{t('A good weight for you at a healthy body fat', 'وزن مناسب لك بنسبة دهون صحية')}: {t('about', 'نحو')} {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 0 && asFat && buildMuscle && <small>{t('This range counts on building some muscle, as yours is below an athletic build for your height. Lose fat and build muscle, rather than only losing weight.', 'هذا النطاق يفترض بناء بعض العضل، لأن كتلتك العضلية أقل من البنية الرياضية لطولك. الأفضل خسارة الدهون مع بناء العضل، لا خسارة الوزن فقط.')}</small>}
         </>}>
           <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
           <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
