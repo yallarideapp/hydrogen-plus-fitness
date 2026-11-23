@@ -251,7 +251,7 @@
     ]
   },
   "components/admin/AdminPanel.tsx": {
-    "file": "_next/static/chunks/AdminPanel-BLW9GtbZ.js",
+    "file": "_next/static/chunks/AdminPanel-Dm_zxSk7.js",
     "name": "AdminPanel",
     "src": "components/admin/AdminPanel.tsx",
     "isDynamicEntry": true,
@@ -283,7 +283,7 @@
     ]
   },
   "components/gym/Calculators.tsx": {
-    "file": "_next/static/chunks/Calculators-D7ZGpdzW.js",
+    "file": "_next/static/chunks/Calculators-COTSGXn3.js",
     "name": "Calculators",
     "src": "components/gym/Calculators.tsx",
     "isDynamicEntry": true,
@@ -686,7 +686,7 @@
     "isDynamicEntry": true
   },
   "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
-    "file": "_next/static/chunks/app-route-prefetch-policy-Dve0P6RW.js",
+    "file": "_next/static/chunks/app-route-prefetch-policy-BEfy6sMz.js",
     "name": "app-route-prefetch-policy",
     "src": "node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
     "isDynamicEntry": true,
@@ -695,7 +695,7 @@
     ]
   },
   "node_modules/vinext/dist/shims/layout-segment-context.js": {
-    "file": "_next/static/chunks/layout-segment-context-BLbyIzut.js",
+    "file": "_next/static/chunks/layout-segment-context-B7v1bm01.js",
     "name": "layout-segment-context",
     "src": "node_modules/vinext/dist/shims/layout-segment-context.js",
     "isDynamicEntry": true,
@@ -716,7 +716,7 @@
     ]
   },
   "virtual:vinext-app-browser-entry": {
-    "file": "_next/static/chunks/index-Crk2b6fR.js",
+    "file": "_next/static/chunks/index-62VbIdud.js",
     "name": "index",
     "src": "virtual:vinext-app-browser-entry",
     "isEntry": true,
