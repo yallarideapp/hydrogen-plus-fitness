@@ -34,7 +34,10 @@ export default function Calculators() {
   const { t, lang } = useGymLanguage();
   const n0 = (v: number, d = 0) => (Number.isFinite(v) ? v.toLocaleString(lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB', { maximumFractionDigits: d, minimumFractionDigits: d }) : '—');
   // shared profile
-  const [sex, setSex] = useState<Sex>('f');
+  // Sex starts unset, so nobody reads numbers worked out for the wrong one. `sex` below is only used once `picked` is true.
+  const [pick, setPick] = useState<Sex | ''>('');
+  const picked = pick !== '';
+  const sex: Sex = pick || 'f';
   const [age, setAge] = useState('28');
   const [height, setHeight] = useState('165');
   const [weight, setWeight] = useState('65');
@@ -62,7 +65,7 @@ export default function Calculators() {
   // So a muscle reading above 50% is read as muscle mass.
   const C = num(comp);
   const band = A < 40 ? 0 : A < 60 ? 1 : 2;
-  const hasComp = Number.isFinite(C) && C >= 3 && C <= (compKind === 'fat' ? 60 : 90);
+  const hasComp = picked && Number.isFinite(C) && C >= 3 && C <= (compKind === 'fat' ? 60 : 90);
   const totalMuscle = hasComp && compKind === 'muscle' && C > 50;
   const asFat = compKind === 'fat' || totalMuscle;
   // Body fat % behind the reading. Muscle mass plus bone (about 5% of lean mass) is fat-free mass, so that one is close.
@@ -85,22 +88,24 @@ export default function Calculators() {
   const compGood = asFat ? compLevel === 1 : compLevel >= 1 && !(overBmi && compLevel === 1);
   // Resting burn: from fat-free mass (Katch–McArdle) when there is a body-scan reading, otherwise Mifflin–St Jeor.
   const byComp = compLevel >= 0 && Number.isFinite(lean) && lean > 0;
-  const bmr = byComp ? 370 + 21.6 * lean : 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
+  const bmr = !picked ? NaN : byComp ? 370 + 21.6 * lean : 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
   const tdee = bmr * num(activity);
   const floor = sex === 'm' ? 1500 : 1200;
   const target = goal === 'lose' ? Math.max(tdee - 500, floor) : goal === 'gain' ? tdee + 300 : tdee;
   const macros = useMemo(() => {
     // Protein follows lean mass when it is known (for an average build this matches 1.6–1.8 g per kg of body weight).
-    const protein = byComp ? lean * (goal === 'keep' ? 2.1 : 2.4) : W * (goal === 'keep' ? 1.6 : 1.8); const fat = (target * 0.27) / 9; const carbs = (target - protein * 4 - fat * 9) / 4;
+    const protein = !picked ? NaN : byComp ? lean * (goal === 'keep' ? 2.1 : 2.4) : W * (goal === 'keep' ? 1.6 : 1.8); const fat = (target * 0.27) / 9; const carbs = (target - protein * 4 - fat * 9) / 4;
     return { protein, fat, carbs: Math.max(carbs, 0) };
-  }, [W, goal, target, byComp, lean]);
+  }, [W, goal, target, byComp, lean, picked]);
   const L = num(lift), R = Math.min(num(reps), 12);
   const oneRm = R <= 1 ? L : L * (1 + R / 30);
   const maxHr = 208 - 0.7 * A;
   const zones: [string, number, number][] = [[t('Zone 1 · easy recovery', 'المنطقة 1 · استشفاء سهل'), .5, .6], [t('Zone 2 · steady endurance', 'المنطقة 2 · تحمّل ثابت'), .6, .7], [t('Zone 3 · tempo', 'المنطقة 3 · إيقاع متوسط'), .7, .8], [t('Zone 4 · threshold', 'المنطقة 4 · العتبة'), .8, .9], [t('Zone 5 · max effort', 'المنطقة 5 · أقصى جهد'), .9, 1]];
   const water = W * 0.033 + (num(mins) / 30) * 0.35;
   const N = num(neck), Wa = num(waist), Hi = num(hip);
-  const bf = sex === 'm' ? 495 / (1.0324 - 0.19077 * Math.log10(Wa - N) + 0.15456 * Math.log10(H)) - 450 : 495 / (1.29579 - 0.35004 * Math.log10(Wa + Hi - N) + 0.221 * Math.log10(H)) - 450;
+  const bf = !picked ? NaN : sex === 'm' ? 495 / (1.0324 - 0.19077 * Math.log10(Wa - N) + 0.15456 * Math.log10(H)) - 450 : 495 / (1.29579 - 0.35004 * Math.log10(Wa + Hi - N) + 0.221 * Math.log10(H)) - 450;
+
+  const need = <a className="fc-need" href="#your-details">{t('Choose female or male at the top to see your numbers.', 'اختر الجنس في الأعلى لتظهر أرقامك.')}</a>;
 
   return (
     <div className="sp">
@@ -108,8 +113,11 @@ export default function Calculators() {
         <div><span className="sp-kicker"><Activity size={14} />{t('YOUR FITNESS IN NUMBERS', 'لياقتك بالأرقام')}</span><h1>{t('Know your numbers.', 'اعرف أرقامك.')}</h1></div>
         <div><p>{t('Quick estimates to start a conversation with your coach or the club’s nutritionist. Enter your details once — every calculator uses them.', 'تقديرات سريعة لتبدأ بها الحديث مع مدربك أو أخصائية التغذية في النادي. أدخل بياناتك مرة واحدة وتستخدمها كل الحاسبات.')}</p></div>
       </section>
-      <section className="sp-container fc-profile" aria-label={t('Your details', 'بياناتك')}>
-        <Seg label={t('Sex', 'الجنس')} value={sex} onChange={setSex} options={[['f', t('Female', 'أنثى')], ['m', t('Male', 'ذكر')]]} />
+      <section className="sp-container fc-profile" id="your-details" aria-label={t('Your details', 'بياناتك')}>
+        <div className={`fc-sex${picked ? '' : ' is-unset'}`}>
+          {!picked && <small>{t('Choose one to start', 'اختر الجنس للبدء')}</small>}
+          <Seg label={t('Sex', 'الجنس')} value={pick} onChange={setPick} options={[['f', t('Female', 'أنثى')], ['m', t('Male', 'ذكر')]]} />
+        </div>
         <Field label={t('Age', 'العمر')} value={age} onChange={setAge} unit={t('yrs', 'سنة')} min={18} max={90} />
         <Field label={t('Height', 'الطول')} value={height} onChange={setHeight} unit="cm" min={120} max={230} />
         <Field label={t('Weight', 'الوزن')} value={weight} onChange={setWeight} unit="kg" min={35} max={250} step={0.5} />
@@ -117,7 +125,8 @@ export default function Calculators() {
       <section className="sp-container fc-grid">
         <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('A quick check of your weight for your height. It can’t tell muscle from fat, so a muscular member may show as overweight — the waist check below helps.', 'مقارنة سريعة بين وزنك وطولك. لا يفرّق بين العضل والدهون، لذلك قد يظهر المتدرّب صاحب العضلات الكبيرة بوزن زائد — قياس الخصر بالأسفل يوضّح الصورة.')} result={<>
           <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
-          {Number.isFinite(idealLo) && <span>{t('A good weight for your height', 'الوزن المناسب لطولك')}: {t('about', 'نحو')} {n0(idealLo) === n0(idealHi) ? n0(idealLo) : `${n0(idealLo)}–${n0(idealHi)}`} {t('kg', 'كغ')}</span>}
+          {!picked && need}
+          {picked && Number.isFinite(idealLo) && <span>{t('A good weight for your height', 'الوزن المناسب لطولك')}: {t('about', 'نحو')} {n0(idealLo) === n0(idealHi) ? n0(idealLo) : `${n0(idealLo)}–${n0(idealHi)}`} {t('kg', 'كغ')}</span>}
           {Number.isFinite(healthyLo) && <span>{t('Healthy limits by BMI', 'الحدود الصحية حسب المؤشر')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re above the upper limit by', 'أنت أعلى من الحد الأعلى بـ')} ${n0(W - healthyHi)} ${t('kg', 'كغ')}` : W < healthyLo ? ` · ${t('you’re below the lower limit by', 'أنت أقل من الحد الأدنى بـ')} ${n0(healthyLo - W)} ${t('kg', 'كغ')}` : ''}</span>}
           {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من 0.5)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
@@ -137,7 +146,7 @@ export default function Calculators() {
               : t('Enter the number your device shows. Omron scales give skeletal muscle (usually 25–45%). Tanita, Xiaomi and similar give total muscle mass (usually 60–85%). Body fat % is the more exact reading.', 'أدخل الرقم كما يظهر على جهازك. أجهزة Omron تعطي العضلات الهيكلية (عادةً بين 25% و45%)، وأجهزة مثل Tanita و Xiaomi تعطي الكتلة العضلية الكلية (عادةً بين 60% و85%). ونسبة الدهون هي القراءة الأدق.')}</p>
           </div>
         </Card>
-        <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('An estimate of what you burn in a day, with a target for your goal.', 'تقدير لما تحرقه في اليوم، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>
+        <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('An estimate of what you burn in a day, with a target for your goal.', 'تقدير لما تحرقه في اليوم، مع هدف حسب غايتك.')} result={!picked ? need : <><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>
           {byComp
             ? <small>{t('Worked out from your fat-free mass', 'محسوبة من كتلتك الخالية من الدهون')} ({n0(lean)} {t('kg', 'كغ')}) {t('with the Katch–McArdle formula.', 'بمعادلة Katch–McArdle.')}{!asFat && ` ${t('From a skeletal-muscle reading this is a rough figure. A body fat % reading is more exact.', 'من قراءة العضلات الهيكلية يكون الرقم تقريبياً، وقراءة نسبة الدهون أدق.')}`}</small>
             : <small>{t('Worked out from weight, height and age (Mifflin–St Jeor). Add a body-scan reading in the BMI calculator to base it on your muscle.', 'محسوبة من الوزن والطول والعمر (Mifflin–St Jeor). أدخل قراءة جهاز تحليل الجسم في حاسبة مؤشر كتلة الجسم لتُحسب حسب عضلك.')}</small>}{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
@@ -146,7 +155,7 @@ export default function Calculators() {
           </select></label>
           <Seg label={t('Goal', 'الهدف')} value={goal} onChange={setGoal} options={[['lose', t('Lose fat', 'خسارة دهون')], ['keep', t('Maintain', 'محافظة')], ['gain', t('Build muscle', 'بناء عضل')]]} />
         </Card>
-        <Card icon={<Dumbbell size={22} />} title={t('Macros', 'المغذيات الكبرى')} intro={t('A starting split of protein, carbs and fat for your calorie target.', 'تقسيم مبدئي للبروتين والكربوهيدرات والدهون حسب سعراتك.')} result={<div className="fc-macros"><span><b>{n0(macros.protein)}g</b>{t('Protein', 'بروتين')}</span><span><b>{n0(macros.carbs)}g</b>{t('Carbs', 'كربوهيدرات')}</span><span><b>{n0(macros.fat)}g</b>{t('Fat', 'دهون')}</span></div>}>
+        <Card icon={<Dumbbell size={22} />} title={t('Macros', 'المغذيات الكبرى')} intro={t('A starting split of protein, carbs and fat for your calorie target.', 'تقسيم مبدئي للبروتين والكربوهيدرات والدهون حسب سعراتك.')} result={!picked ? need : <div className="fc-macros"><span><b>{n0(macros.protein)}g</b>{t('Protein', 'بروتين')}</span><span><b>{n0(macros.carbs)}g</b>{t('Carbs', 'كربوهيدرات')}</span><span><b>{n0(macros.fat)}g</b>{t('Fat', 'دهون')}</span></div>}>
           <p className="fc-hint">{t('Based on your daily-calorie goal. Hydro Rest’s meal plans are calorie-counted.', 'حسب هدف السعرات اليومية. وجبات هايدرو ريست محسوبة السعرات.')}{byComp && ` ${t('Protein is set by your fat-free mass.', 'البروتين محسوب حسب كتلتك الخالية من الدهون.')}`} <a className="sp-link" href="/services/hydro-rest">Hydro Rest<ArrowUpRight size={12} /></a></p>
         </Card>
         <Card icon={<Dumbbell size={22} />} title={t('One-rep max', 'أقصى تكرار واحد')} intro={t('Estimate your 1RM from a set you’ve done (Epley formula).', 'قدّر أقصى وزن لتكرار واحد من مجموعة نفذتها (معادلة Epley).')} result={<><b>{n0(oneRm, 1)} <em>kg</em></b><div className="fc-pcts">{[0.9, 0.8, 0.7, 0.6].map((p) => <span key={p}>{p * 100}% · {n0(oneRm * p, 1)}</span>)}</div></>}>
@@ -159,10 +168,10 @@ export default function Calculators() {
         <Card icon={<Droplets size={22} />} title={t('Water intake', 'شرب الماء')} intro={t('A simple daily guide, plus extra for training time.', 'دليل يومي بسيط مع كمية إضافية لوقت التمرين.')} result={<><b>{n0(water, 1)} <em>{t('litres', 'لتر')}</em></b><span>{t('About', 'حوالي')} {n0(water * 4)} {t('glasses of 250 ml', 'كوب بحجم 250 مل')}</span></>}>
           <Field label={t('Training today', 'مدة التمرين اليوم')} value={mins} onChange={setMins} unit={t('min', 'دقيقة')} min={0} max={300} step={5} />
         </Card>
-        <Card id="body-fat" icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={<><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
+        <Card id="body-fat" icon={<Percent size={22} />} title={t('Body fat (tape measure)', 'نسبة الدهون (شريط القياس)')} intro={t('US Navy estimate from neck, waist and (for women) hip measurements.', 'تقدير البحرية الأمريكية من قياس الرقبة والخصر (والورك للسيدات).')} result={!picked ? need : <><b>{n0(bf, 1)}<em>%</em></b><small>{t('An estimate — a coach can measure you properly.', 'تقدير فقط — يمكن للمدرب قياسك بدقة.')}</small></>}>
           <Field label={t('Neck', 'الرقبة')} value={neck} onChange={setNeck} unit="cm" min={20} max={70} step={0.5} />
           <Field label={t('Waist (at navel)', 'الخصر (عند السرة)')} value={waist} onChange={setWaist} unit="cm" min={40} max={200} step={0.5} />
-          {sex === 'f' && <Field label={t('Hips (widest point)', 'الورك (أعرض نقطة)')} value={hip} onChange={setHip} unit="cm" min={50} max={200} step={0.5} />}
+          {pick === 'f' && <Field label={t('Hips (widest point)', 'الورك (أعرض نقطة)')} value={hip} onChange={setHip} unit="cm" min={50} max={200} step={0.5} />}
         </Card>
       </section>
       <Nutritionist />

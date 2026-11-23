@@ -140,3 +140,13 @@
 .fc-verdict{margin:4px 0 0;padding:10px 12px;font-size:14px;font-weight:700;line-height:1.55;border-inline-start:4px solid}
 .fc-verdict.is-good{background:#3fae6a1f;border-color:#3fae6a;color:#c9f0d6}
 .fc-verdict.is-warn{background:#e0a33a1f;border-color:#e0a33a;color:#f5ddb0}
+/* calculators: sex is not preselected */
+.fc-profile{scroll-margin-top:90px}
+.fc-sex{display:grid;gap:6px;justify-items:start}
+.fc-sex small{font-size:12px;font-weight:700;color:#c5cac2}
+.fc-sex.is-unset .fc-seg{border-color:#e73434;box-shadow:0 0 0 3px #e7343440}
+.fc-need{display:block;padding:10px 12px;font-size:14px;font-weight:700;line-height:1.55;text-decoration:none;background:#e0a33a1f;border-inline-start:4px solid #e0a33a;color:#f5ddb0}
+@media(max-width:820px){
+.fc-profile .fc-sex{grid-column:1/-1}
+}
+

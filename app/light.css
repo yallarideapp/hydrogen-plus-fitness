@@ -2440,6 +2440,18 @@ html.hx-light.hp-ar-pending body {
         border-color: #e0a33a;
         color: #6d4c0e
     }
+    :scope:is(html.hx-light) .fc-sex small {
+        color: #383d35
+    }
+    :scope:is(html.hx-light) .fc-sex.is-unset .fc-seg {
+        border-color: #e73434;
+        box-shadow: 0 0 0 3px #e7343440
+    }
+    :scope:is(html.hx-light) .fc-need {
+        background: #e0a33a1f;
+        border-inline-start: 4px solid #e0a33a;
+        color: #6d4c0e
+    }
     :scope:is(html.hx-light) .hp-help {
         background: #eceeed;
         color: #14150f
