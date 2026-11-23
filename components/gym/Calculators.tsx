@@ -62,6 +62,10 @@ export default function Calculators() {
   const fb = FAT_BANDS[sex];
   const compLevel = hasComp ? level(C, fb) : -1;
   const lean = W * (1 - fatPct / 100); // fat-free mass, kg
+  // Skeletal muscle cannot be read off fat %: the scan measures it. It is a little over half of the fat-free mass, so the
+  // page gives a band (55–59% of fat-free mass for men, 52–56% for women, as on typical InBody sheets) and calls it an
+  // estimate. The member's real figure is SMM on the sheet.
+  const smmShare: [number, number] = sex === 'm' ? [0.55, 0.59] : [0.52, 0.56];
   // A good weight for the height, for a gym member: an athletic build (fat-free mass index 20–22 for men, 16–18 for women)
   // at InBody's ideal body fat (15% men, 23% women). The BMI limits are wide and their lower end is the edge of underweight, and
   // the classic ideal-weight formulas describe a light, untrained build (73–79 kg for a 182 cm man), which reads as too thin.
@@ -132,7 +136,9 @@ export default function Calculators() {
           {Number.isFinite(healthyLo) && <span>{t('Healthy limits by BMI', 'الحدود الصحية حسب المؤشر')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re above the upper limit by', 'أنت أعلى من الحد الأعلى بـ')} ${n0(W - healthyHi)} ${t('kg', 'كغ')}` : W < healthyLo ? ` · ${t('you’re below the lower limit by', 'أنت أقل من الحد الأدنى بـ')} ${n0(healthyLo - W)} ${t('kg', 'كغ')}` : ''}</span>}
           {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من 0.5)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
-          {compLevel >= 0 && <span>{t('Fat-free mass', 'الكتلة الخالية من الدهون')}: {n0(lean, 1)} {t('kg', 'كغ')} · {t('body fat', 'الدهون')}: {n0(W - lean, 1)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 0 && <span>{t('Fat-free mass', 'الكتلة الخالية من الدهون')}: {n0(lean, 1)} {t('kg', 'كغ')} ({n0(100 - fatPct)}%) · {t('body fat', 'الدهون')}: {n0(W - lean, 1)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 0 && <span>{t('Skeletal muscle, estimated', 'العضلات الهيكلية (تقدير)')}: {t('about', 'نحو')} {n0((lean * smmShare[0]) / W * 100)}–{n0((lean * smmShare[1]) / W * 100)}% {t('of your weight', 'من وزنك')} ({n0(lean * smmShare[0])}–{n0(lean * smmShare[1])} {t('kg', 'كغ')})</span>}
+          {compLevel >= 0 && <small>{t('The muscle figure is an estimate from your fat-free mass. Your exact figure is on the InBody sheet as SMM.', 'رقم العضلات تقدير من كتلتك الخالية من الدهون. رقمك الدقيق مكتوب على ورقة InBody باسم SMM.')}</small>}
           {compLevel >= 0 && <span>{t('InBody’s standard body fat range', 'معدل نسبة الدهون على InBody')}: {fb[0]}–{fb[1]}%</span>}
           {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
           {compLevel >= 0 && <span>{t('A good weight for you at a standard body fat', 'وزن مناسب لك بنسبة دهون ضمن المعدل')}: {t('about', 'نحو')} {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
