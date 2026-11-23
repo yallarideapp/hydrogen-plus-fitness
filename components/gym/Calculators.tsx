@@ -50,16 +50,30 @@ export default function Calculators() {
   const bmi = W / ((H / 100) ** 2);
   const bmiBand = !Number.isFinite(bmi) ? '' : bmi < 18.5 ? t('Below the healthy range', 'أقل من المعدل الصحي') : bmi < 25 ? t('Within the healthy range', 'ضمن المعدل الصحي') : bmi < 30 ? t('Above the healthy range', 'أعلى من المعدل الصحي') : t('Well above the healthy range', 'أعلى بكثير من المعدل الصحي');
   const healthyLo = 18.5 * (H / 100) ** 2, healthyHi = 24.9 * (H / 100) ** 2;
+  // The BMI limits are wide (the lower one is the edge of underweight, not a target), so the card leads with the usual
+  // "ideal weight" for the height: the span of the Devine, Robinson, Miller and Hamwi formulas, kept inside the BMI limits.
+  const over60 = H / 2.54 - 60;
+  const ideal = (sex === 'm' ? [50 + 2.3 * over60, 52 + 1.9 * over60, 56.2 + 1.41 * over60, 48 + 2.7 * over60] : [45.5 + 2.3 * over60, 49 + 1.7 * over60, 53.1 + 1.36 * over60, 45.5 + 2.2 * over60]).map((v) => Math.min(Math.max(v, healthyLo), healthyHi));
+  const idealLo = Math.min(...ideal), idealHi = Math.max(...ideal);
   const whtr = num(waist) / H;
-  // Optional reading from a body-composition scale: body fat % or skeletal muscle %.
+  // Optional reading from a body-composition scale: body fat %, or muscle %.
+  // Muscle % comes in two kinds. Omron-type scales give skeletal muscle (about 25–45%; the scale shows 50% at most).
+  // Tanita, Xiaomi, Renpho and similar give "muscle mass": all lean tissue except bone (about 60–85%).
+  // So a muscle reading above 50% is read as muscle mass.
   const C = num(comp);
   const band = A < 40 ? 0 : A < 60 ? 1 : 2;
-  const compLevel = Number.isFinite(C) && C > 0 && C < 75 ? level(C, (compKind === 'fat' ? FAT_BANDS : MUSCLE_BANDS)[sex][band]) : -1;
+  const hasComp = Number.isFinite(C) && C >= 3 && C <= (compKind === 'fat' ? 60 : 90);
+  const totalMuscle = hasComp && compKind === 'muscle' && C > 50;
+  const asFat = compKind === 'fat' || totalMuscle;
+  // Body fat % behind the reading. Muscle mass plus bone (about 5% of lean mass) is fat-free mass, so that one is close.
+  // Skeletal muscle is looser: a straight line that puts Omron's "normal" muscle at an average build. The page says it is rough.
+  const fatPct = !hasComp ? NaN : compKind === 'fat' ? C : totalMuscle ? 100 - C / 0.95 : 100 - Math.min(Math.max(sex === 'm' ? (C + 19) / 0.72 : (C + 5.5) / 0.47, 45), 96);
+  const compLevel = !hasComp ? -1 : asFat ? level(fatPct, FAT_BANDS[sex][band]) : level(C, MUSCLE_BANDS[sex][band]);
   const fb = FAT_BANDS[sex][band];
-  const lean = W * (1 - C / 100);
+  const lean = W * (1 - fatPct / 100); // fat-free mass, kg
   const fitLo = lean / (1 - fb[0] / 100), fitHi = lean / (1 - fb[1] / 100);
   const overBmi = bmi >= 25;
-  const compVerdict = compLevel < 0 ? '' : compKind === 'fat'
+  const compVerdict = compLevel < 0 ? '' : asFat
     ? [t('Body fat is below the healthy range — your weight isn’t too high. Talk to the nutritionist about gaining well.', 'نسبة الدهون أقل من المعدل الصحي، فوزنك ليس زائداً. تحدّث مع أخصائية التغذية عن زيادة صحية.'),
        overBmi ? t('Body fat is healthy, so your weight suits you — the extra BMI is muscle.', 'نسبة الدهون ضمن المعدل الصحي، فوزنك مناسب لك، والزيادة في المؤشر عضل.') : t('Body fat is healthy and your weight suits you.', 'نسبة الدهون ضمن المعدل الصحي ووزنك مناسب لك.'),
        t('Body fat is above the healthy range.', 'نسبة الدهون أعلى من المعدل الصحي.'),
@@ -68,15 +82,18 @@ export default function Calculators() {
        overBmi ? t('Muscle is normal, so part of the extra weight is likely fat. A body-fat reading will tell you more.', 'الكتلة العضلية طبيعية، لذلك جزء من الوزن الزائد على الأغلب دهون. قياس نسبة الدهون يوضّح أكثر.') : t('Muscle is normal and your weight suits you.', 'الكتلة العضلية طبيعية ووزنك مناسب لك.'),
        overBmi ? t('Muscle is high, so your weight likely suits you — the extra is muscle.', 'الكتلة العضلية مرتفعة، فوزنك على الأغلب مناسب لك، والزيادة عضل.') : t('Muscle is high — great work.', 'الكتلة العضلية مرتفعة، أحسنت.'),
        overBmi ? t('Muscle is very high, so your weight suits you — the extra is muscle.', 'الكتلة العضلية مرتفعة جداً، فوزنك مناسب لك والزيادة عضل.') : t('Muscle is very high — great work.', 'الكتلة العضلية مرتفعة جداً، أحسنت.')][compLevel];
-  const compGood = compKind === 'fat' ? compLevel === 1 : compLevel >= 1 && !(overBmi && compLevel === 1);
-  const bmr = 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
+  const compGood = asFat ? compLevel === 1 : compLevel >= 1 && !(overBmi && compLevel === 1);
+  // Resting burn: from fat-free mass (Katch–McArdle) when there is a body-scan reading, otherwise Mifflin–St Jeor.
+  const byComp = compLevel >= 0 && Number.isFinite(lean) && lean > 0;
+  const bmr = byComp ? 370 + 21.6 * lean : 10 * W + 6.25 * H - 5 * A + (sex === 'm' ? 5 : -161);
   const tdee = bmr * num(activity);
   const floor = sex === 'm' ? 1500 : 1200;
   const target = goal === 'lose' ? Math.max(tdee - 500, floor) : goal === 'gain' ? tdee + 300 : tdee;
   const macros = useMemo(() => {
-    const protein = W * (goal === 'keep' ? 1.6 : 1.8); const fat = (target * 0.27) / 9; const carbs = (target - protein * 4 - fat * 9) / 4;
+    // Protein follows lean mass when it is known (for an average build this matches 1.6–1.8 g per kg of body weight).
+    const protein = byComp ? lean * (goal === 'keep' ? 2.1 : 2.4) : W * (goal === 'keep' ? 1.6 : 1.8); const fat = (target * 0.27) / 9; const carbs = (target - protein * 4 - fat * 9) / 4;
     return { protein, fat, carbs: Math.max(carbs, 0) };
-  }, [W, goal, target]);
+  }, [W, goal, target, byComp, lean]);
   const L = num(lift), R = Math.min(num(reps), 12);
   const oneRm = R <= 1 ? L : L * (1 + R / 30);
   const maxHr = 208 - 0.7 * A;
@@ -100,11 +117,13 @@ export default function Calculators() {
       <section className="sp-container fc-grid">
         <Card icon={<Scale size={22} />} title={t('Body mass index (BMI)', 'مؤشر كتلة الجسم')} intro={t('A quick check of your weight for your height. It can’t tell muscle from fat, so a muscular member may show as overweight — the waist check below helps.', 'مقارنة سريعة بين وزنك وطولك. لا يفرّق بين العضل والدهون، لذلك قد يظهر المتدرّب صاحب العضلات الكبيرة بوزن زائد — قياس الخصر بالأسفل يوضّح الصورة.')} result={<>
           <b>{n0(bmi, 1)}</b><span>{bmiBand}</span>
-          {Number.isFinite(healthyLo) && <span>{t('Healthy weight for your height', 'الوزن الصحي لطولك')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re', 'أنت أعلى بـ')} ${n0(W - healthyHi)} ${t('kg above', 'كغ')}` : W < healthyLo ? ` · ${t('you’re', 'أنت أقل بـ')} ${n0(healthyLo - W)} ${t('kg below', 'كغ')}` : ''}</span>}
+          {Number.isFinite(idealLo) && <span>{t('A good weight for your height', 'الوزن المناسب لطولك')}: {t('about', 'نحو')} {n0(idealLo) === n0(idealHi) ? n0(idealLo) : `${n0(idealLo)}–${n0(idealHi)}`} {t('kg', 'كغ')}</span>}
+          {Number.isFinite(healthyLo) && <span>{t('Healthy limits by BMI', 'الحدود الصحية حسب المؤشر')}: {n0(healthyLo)}–{n0(healthyHi)} {t('kg', 'كغ')}{W > healthyHi ? ` · ${t('you’re above the upper limit by', 'أنت أعلى من الحد الأعلى بـ')} ${n0(W - healthyHi)} ${t('kg', 'كغ')}` : W < healthyLo ? ` · ${t('you’re below the lower limit by', 'أنت أقل من الحد الأدنى بـ')} ${n0(healthyLo - W)} ${t('kg', 'كغ')}` : ''}</span>}
           {Number.isFinite(whtr) && <span>{t('Waist ÷ height', 'الخصر ÷ الطول')}: {n0(whtr, 2)} · {whtr < 0.5 ? t('healthy (under 0.5)', 'صحي (أقل من 0.5)') : whtr < 0.6 ? t('a little high', 'مرتفع قليلاً') : t('high', 'مرتفع')}</span>}
           {compLevel < 0 && bmi >= 25 && Number.isFinite(whtr) && whtr < 0.5 && <small>{t('Your waist is in the healthy range, so the extra weight is likely muscle.', 'خصرك ضمن المعدل الصحي، لذلك الوزن الزائد غالباً عضل.')}</small>}
+          {totalMuscle && <small>{t('A reading above 50% is total muscle mass, not skeletal muscle. It works out to a body fat of about', 'القراءة فوق 50% هي الكتلة العضلية الكلية وليست العضلات الهيكلية، وتعادل نسبة دهون تقارب')} {n0(fatPct)}%.</small>}
           {compLevel >= 0 && <p className={`fc-verdict ${compGood ? 'is-good' : 'is-warn'}`}>{compVerdict}</p>}
-          {compLevel >= 2 && compKind === 'fat' && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
+          {compLevel >= 2 && asFat && <span>{t('A good weight for you, keeping your muscle', 'وزن مناسب لك مع الحفاظ على عضلك')}: {n0(fitLo)}–{n0(fitHi)} {t('kg', 'كغ')}</span>}
         </>}>
           <div className="fc-scale" aria-hidden="true"><span className="is-low" /><span className="is-ok" /><span className="is-over" /><span className="is-high" />{Number.isFinite(bmi) && <i style={{ insetInlineStart: `${Math.min(Math.max((bmi - 15) / 20, 0), 1) * 100}%` }} />}</div>
           <div className="fc-scale-labels" aria-hidden="true"><span style={{ left: '0%' }}>{n0(15)}</span><span style={{ left: '17.5%' }}>{n0(18.5, 1)}</span><span style={{ left: '50%' }}>{n0(25)}</span><span style={{ left: '75%' }}>{n0(30)}</span><span style={{ left: '100%' }}>{n0(35)}</span></div>
@@ -112,20 +131,23 @@ export default function Calculators() {
           <div className="fc-comp">
             <span className="fc-comp-title">{t('Have a body-scan reading? (optional)', 'لديك قراءة من جهاز تحليل الجسم؟ (اختياري)')}</span>
             <Seg label={t('Reading type', 'نوع القراءة')} value={compKind} onChange={(v) => setCompKind(v)} options={[['fat', t('Body fat %', 'نسبة الدهون %')], ['muscle', t('Muscle %', 'نسبة العضلات %')]]} />
-            <Field label={compKind === 'fat' ? t('Body fat', 'نسبة الدهون') : t('Skeletal muscle', 'نسبة العضلات الهيكلية')} value={comp} onChange={setComp} unit="%" min={3} max={70} step={0.1} />
+            <Field label={compKind === 'fat' ? t('Body fat', 'نسبة الدهون') : t('Muscle', 'نسبة العضلات')} value={comp} onChange={setComp} unit="%" min={3} max={compKind === 'fat' ? 60 : 90} step={0.1} />
             <p className="fc-hint">{compKind === 'fat'
               ? <>{t('No reading? Estimate it with', 'لا تملك قراءة؟ احسبها بـ')} <a href="#body-fat">{t('the tape-measure calculator', 'حاسبة شريط القياس')}</a>.</>
-              : t('Muscle % differs between devices (these bands follow Omron scales). Body fat % compares more reliably.', 'تختلف نسبة العضلات بين الأجهزة (هذه الحدود حسب أجهزة Omron)، ونسبة الدهون أدق للمقارنة.')}</p>
+              : t('Enter the number your device shows. Omron scales give skeletal muscle (usually 25–45%). Tanita, Xiaomi and similar give total muscle mass (usually 60–85%). Body fat % is the more exact reading.', 'أدخل الرقم كما يظهر على جهازك. أجهزة Omron تعطي العضلات الهيكلية (عادةً بين 25% و45%)، وأجهزة مثل Tanita و Xiaomi تعطي الكتلة العضلية الكلية (عادةً بين 60% و85%). ونسبة الدهون هي القراءة الأدق.')}</p>
           </div>
         </Card>
-        <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('Mifflin–St Jeor estimate of what you burn, with a target for your goal.', 'تقدير معادلة Mifflin–St Jeor لما تحرقه، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
+        <Card icon={<Flame size={22} />} title={t('Daily calories', 'السعرات اليومية')} intro={t('An estimate of what you burn in a day, with a target for your goal.', 'تقدير لما تحرقه في اليوم، مع هدف حسب غايتك.')} result={<><b>{n0(target)} <em>kcal</em></b><span>{t('Maintenance', 'للحفاظ على الوزن')}: {n0(tdee)} · BMR {n0(bmr)}</span>
+          {byComp
+            ? <small>{t('Worked out from your fat-free mass', 'محسوبة من كتلتك الخالية من الدهون')} ({n0(lean)} {t('kg', 'كغ')}) {t('with the Katch–McArdle formula.', 'بمعادلة Katch–McArdle.')}{!asFat && ` ${t('From a skeletal-muscle reading this is a rough figure. A body fat % reading is more exact.', 'من قراءة العضلات الهيكلية يكون الرقم تقريبياً، وقراءة نسبة الدهون أدق.')}`}</small>
+            : <small>{t('Worked out from weight, height and age (Mifflin–St Jeor). Add a body-scan reading in the BMI calculator to base it on your muscle.', 'محسوبة من الوزن والطول والعمر (Mifflin–St Jeor). أدخل قراءة جهاز تحليل الجسم في حاسبة مؤشر كتلة الجسم لتُحسب حسب عضلك.')}</small>}{goal === 'lose' && target === floor && <small>{t('Capped at a safe minimum — speak with the nutritionist.', 'تم تحديده عند حد أدنى آمن — تحدّث مع أخصائية التغذية.')}</small>}</>}>
           <label className="fc-field"><span>{t('Activity', 'النشاط')}</span><select value={activity} onChange={(e) => setActivity(e.target.value)}>
             <option value="1.2">{t('Mostly sitting', 'جلوس معظم الوقت')}</option><option value="1.375">{t('Training 1–3 days a week', 'تمرين 1–3 أيام أسبوعياً')}</option><option value="1.55">{t('Training 3–5 days a week', 'تمرين 3–5 أيام أسبوعياً')}</option><option value="1.725">{t('Training 6–7 days a week', 'تمرين 6–7 أيام أسبوعياً')}</option>
           </select></label>
           <Seg label={t('Goal', 'الهدف')} value={goal} onChange={setGoal} options={[['lose', t('Lose fat', 'خسارة دهون')], ['keep', t('Maintain', 'محافظة')], ['gain', t('Build muscle', 'بناء عضل')]]} />
         </Card>
         <Card icon={<Dumbbell size={22} />} title={t('Macros', 'المغذيات الكبرى')} intro={t('A starting split of protein, carbs and fat for your calorie target.', 'تقسيم مبدئي للبروتين والكربوهيدرات والدهون حسب سعراتك.')} result={<div className="fc-macros"><span><b>{n0(macros.protein)}g</b>{t('Protein', 'بروتين')}</span><span><b>{n0(macros.carbs)}g</b>{t('Carbs', 'كربوهيدرات')}</span><span><b>{n0(macros.fat)}g</b>{t('Fat', 'دهون')}</span></div>}>
-          <p className="fc-hint">{t('Based on your daily-calorie goal. Hydro Rest’s meal plans are calorie-counted.', 'حسب هدف السعرات اليومية. وجبات هايدرو ريست محسوبة السعرات.')} <a className="sp-link" href="/services/hydro-rest">Hydro Rest<ArrowUpRight size={12} /></a></p>
+          <p className="fc-hint">{t('Based on your daily-calorie goal. Hydro Rest’s meal plans are calorie-counted.', 'حسب هدف السعرات اليومية. وجبات هايدرو ريست محسوبة السعرات.')}{byComp && ` ${t('Protein is set by your fat-free mass.', 'البروتين محسوب حسب كتلتك الخالية من الدهون.')}`} <a className="sp-link" href="/services/hydro-rest">Hydro Rest<ArrowUpRight size={12} /></a></p>
         </Card>
         <Card icon={<Dumbbell size={22} />} title={t('One-rep max', 'أقصى تكرار واحد')} intro={t('Estimate your 1RM from a set you’ve done (Epley formula).', 'قدّر أقصى وزن لتكرار واحد من مجموعة نفذتها (معادلة Epley).')} result={<><b>{n0(oneRm, 1)} <em>kg</em></b><div className="fc-pcts">{[0.9, 0.8, 0.7, 0.6].map((p) => <span key={p}>{p * 100}% · {n0(oneRm * p, 1)}</span>)}</div></>}>
           <Field label={t('Weight lifted', 'الوزن المرفوع')} value={lift} onChange={setLift} unit="kg" min={1} max={500} step={0.5} />

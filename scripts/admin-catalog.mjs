@@ -12,7 +12,7 @@ const AREAS = {
   ClubExperience: 'The club', ClassesExperience: 'Classes', MembershipAdvisor: 'Memberships',
   TrainingExperience: 'Training', TrainingJourney: 'Training', CoachesPage: 'Coaches', ContactPage: 'Contact',
   CareersPage: 'Careers', HelpCentre: 'Help centre', Calculators: 'Tools & calculators', VisitForm: 'Visit & join form',
-  ServicePage: 'Service pages (shared)', ServicesIndex: 'All services', MemberExperience: 'Member area',
+  ServicePage: 'Service pages (shared)', ServicesIndex: 'All services', MemberExperience: 'Member area', MyClasses: 'Member area',
   WorkoutStudio: 'Workout studio', SocialArchive: 'Community', Plans: 'Plans & prices',
 };
 const SKIP_FILES = new Set(['StaffArea', 'MemberArea', 'LegalPage', 'PhotoSwapper']);
@@ -83,7 +83,8 @@ const code = ['components/gym', 'lib', 'app'].flatMap(function walk(d) {
   return fs.readdirSync(path.join(ROOT, d), { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : /\.(tsx?|css)$/.test(e.name) ? [fs.readFileSync(path.join(ROOT, d, e.name), 'utf8')] : []));
 }).join('\n');
 const referenced = new Set([...code.matchAll(/\/images\/[A-Za-z0-9_./-]+\.(?:webp|jpe?g|png|svg)/g)].map((m) => m[0]).filter((p) => !/\/(archive|thumbs|og|originals|facebook)\//.test(p)));
-for (const f of fs.readdirSync(path.join(ROOT, 'public/images/display'))) referenced.add('/images/display/' + f);
+// the -480w/-960w/-1440w files are phone-sized copies of a photo, not photos of their own
+for (const f of fs.readdirSync(path.join(ROOT, 'public/images/display'))) if (!/-\d+w\.webp$/.test(f)) referenced.add('/images/display/' + f);
 for (const f of fs.readdirSync(path.join(ROOT, 'public/images/hydro-rest'))) referenced.add('/images/hydro-rest/' + f);
 const servicesSrc = fs.readFileSync(path.join(ROOT, 'lib/services.ts'), 'utf8');
 const names = Object.fromEntries([...servicesSrc.matchAll(/slug: '([a-z-]+)'[^\n]*\n?\s*name: \['([^']+)', '([^']+)'\]/g)].map((m) => [m[1], [m[2], m[3]]]));
